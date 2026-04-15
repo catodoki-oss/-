@@ -1,0 +1,1391 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>구룡캠 키우기 🥚</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Jua&family=Noto+Sans+KR:wght@400;500;700&display=swap');
+
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+
+:root{
+  --pink:#ff6b6b;--peach:#ffa07a;--cream:#fff5f0;--card:#ffffff;
+  --border:#ffd6cc;--text:#5a2a2a;--muted:#c08888;--green:#66bb6a;
+  --purple:#9c27b0;--blue:#1976d2;--gold:#f5a623;
+}
+
+body{
+  font-family:'Noto Sans KR',sans-serif;
+  background:linear-gradient(145deg,#ffe8e0 0%,#ffd6e8 50%,#ffe8c0 100%);
+  min-height:100vh;display:flex;align-items:flex-start;justify-content:center;
+  padding:20px 16px 40px;
+}
+
+.device{
+  width:100%;max-width:420px;background:var(--card);
+  border-radius:32px;border:3px solid var(--border);
+  box-shadow:0 24px 64px rgba(255,107,107,.22),0 0 0 6px rgba(255,200,180,.25);
+  overflow:hidden;margin:auto;
+}
+
+.device-top{
+  background:linear-gradient(135deg,var(--pink),var(--peach));
+  padding:14px 20px 12px;text-align:center;
+}
+.device-top h1{font-family:'Jua',sans-serif;font-size:1.35rem;color:#fff;text-shadow:0 2px 8px rgba(0,0,0,.15);}
+.device-top p{font-size:.7rem;color:rgba(255,255,255,.85);margin-top:2px;}
+
+.screen{padding:20px 18px 22px;}
+
+/* START */
+#startScreen{text-align:center;}
+.egg-wrap{margin:8px 0 10px;cursor:pointer;user-select:none;display:inline-block;}
+.egg-anim{font-size:7rem;display:block;animation:float 2s ease-in-out infinite;}
+.egg-hint{font-size:.72rem;color:var(--muted);margin-bottom:14px;}
+.info-box{background:var(--cream);border:1.5px solid var(--border);border-radius:16px;padding:12px 14px;margin-bottom:14px;text-align:left;}
+.info-box p{font-size:.8rem;color:var(--text);line-height:1.9;}
+.hard-badge{display:inline-block;background:#fce4ec;color:#c62828;font-size:.72rem;font-weight:700;padding:3px 12px;border-radius:20px;margin-bottom:12px;}
+.char-chips{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin-bottom:18px;}
+.chip{background:#fff5f5;border:1.5px solid var(--border);border-radius:20px;padding:3px 11px;font-size:.73rem;font-weight:700;color:var(--pink);}
+.main-btn{font-family:'Jua',sans-serif;background:linear-gradient(135deg,var(--pink),#e04444);color:#fff;border:none;border-radius:50px;padding:14px 0;width:100%;font-size:1.05rem;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,107,.35);transition:transform .18s,box-shadow .18s;margin-bottom:8px;}
+.main-btn:hover{transform:translateY(-2px);box-shadow:0 10px 28px rgba(255,107,107,.4);}
+.main-btn.secondary{background:linear-gradient(135deg,#667eea,#764ba2);margin-top:6px;}
+
+/* GAME */
+#gameScreen{display:none;}
+.char-card{background:linear-gradient(135deg,#fff5f5,#fff0ea);border:2px solid var(--border);border-radius:20px;padding:16px 14px 12px;text-align:center;margin-bottom:14px;position:relative;}
+.char-emoji{font-size:5rem;display:block;line-height:1;margin-bottom:6px;animation:float 2.5s ease-in-out infinite;}
+.char-meta{display:flex;align-items:center;justify-content:center;gap:5px;flex-wrap:wrap;margin-bottom:6px;}
+.char-name{font-family:'Jua',sans-serif;font-size:1.3rem;color:var(--pink);}
+.tag{font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:8px;}
+.tag-mbti{background:rgba(255,107,107,.12);color:var(--pink);}
+.tag-job{background:rgba(25,118,210,.12);color:var(--blue);}
+.mode-badge{font-size:.66rem;font-weight:700;padding:2px 9px;border-radius:10px;background:#e8f5e9;color:#2e7d32;}
+.mode-badge.hard{background:#f3e5f5;color:var(--purple);animation:pulse 1s infinite;}
+.char-status{font-size:.8rem;color:#e07070;background:rgba(255,200,190,.45);padding:5px 14px;border-radius:20px;display:inline-block;max-width:300px;line-height:1.5;}
+
+/* 호감도 게이지 (선호도 표시) */
+.affinity-bar{display:flex;gap:4px;justify-content:center;margin-top:6px;flex-wrap:wrap;}
+.affinity-chip{font-size:.6rem;padding:2px 7px;border-radius:10px;font-weight:700;}
+.af-love{background:#fce4ec;color:#c62828;}
+.af-like{background:#fff3e0;color:#e65100;}
+.af-hate{background:#f3e5f5;color:#6a1b9a;}
+
+.bar-wrap{margin-bottom:12px;}
+.bar-header{display:flex;justify-content:space-between;font-size:.78rem;font-weight:700;color:var(--pink);margin-bottom:5px;}
+.bar-bg{background:#ffe0d8;border-radius:10px;height:12px;overflow:hidden;border:1px solid #ffccc0;}
+.bar-fill{height:100%;border-radius:10px;background:linear-gradient(90deg,var(--pink),#e04444);transition:width .5s ease;}
+.bar-fill.hard{background:linear-gradient(90deg,var(--purple),#e91e63);}
+
+/* 이벤트 포인트 */
+.event-bar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;background:#fff8f0;border:1.5px solid #ffd6b0;border-radius:10px;padding:6px 12px;}
+.event-label{font-size:.72rem;font-weight:700;color:#e65100;}
+.event-val{font-size:.72rem;color:#666;}
+
+.log-box{background:#fff8f5;border:1.5px solid var(--border);border-radius:12px;padding:8px 12px;min-height:62px;max-height:100px;overflow-y:auto;margin-bottom:12px;font-size:.77rem;color:var(--muted);line-height:1.9;}
+.log-box::-webkit-scrollbar{width:3px;}
+.log-box::-webkit-scrollbar-thumb{background:var(--border);border-radius:2px;}
+.log-box .line{display:block;}
+.log-box .line.new{color:var(--pink);font-weight:700;}
+.log-box .line.hd{color:var(--purple);font-weight:700;}
+.log-box .line.sc{color:var(--blue);font-weight:700;}
+.log-box .line.mood{color:#e65100;font-weight:700;}
+.log-box .line.event{color:var(--gold);font-weight:700;}
+.log-box .line.good{color:#2e7d32;font-weight:700;}
+
+.divider{border:none;border-top:1.5px dashed var(--border);margin:10px 0;}
+
+.act-header{display:flex;align-items:center;gap:6px;margin-bottom:7px;}
+.act-label{font-size:.8rem;font-weight:700;color:var(--pink);}
+.cd-badge{font-size:.67rem;font-weight:700;padding:2px 9px;border-radius:12px;color:#fff;background:var(--green);min-width:54px;text-align:center;transition:background .3s;}
+.cd-badge.busy{background:var(--pink);}
+.cd-badge.hard-busy{background:var(--purple);}
+
+.btn-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:6px;margin-bottom:2px;}
+.act-btn{font-family:'Noto Sans KR',sans-serif;background:linear-gradient(135deg,#fff0ee,#ffe4df);border:2px solid var(--border);border-radius:12px;padding:8px 3px 7px;cursor:pointer;font-size:.68rem;font-weight:600;color:#c05050;text-align:center;line-height:1.3;transition:all .16s;position:relative;}
+.act-btn .ico{font-size:1.1rem;display:block;margin-bottom:2px;}
+.act-btn:hover:not(:disabled){background:linear-gradient(135deg,#ffccc0,var(--border));transform:translateY(-2px);box-shadow:0 4px 10px rgba(255,100,80,.2);}
+.act-btn:disabled{opacity:.35;cursor:not-allowed;transform:none;}
+.act-btn.hard-style{background:linear-gradient(135deg,#f3e5f5,#e1bee7);border-color:#ce93d8;color:#6a1b9a;}
+.act-btn.hard-style:hover:not(:disabled){background:linear-gradient(135deg,#e1bee7,#ce93d8);}
+.act-btn.secret{background:linear-gradient(135deg,#e3f2fd,#bbdefb);border-color:#64b5f6;color:var(--blue);animation:pulse 1.4s infinite;}
+/* 선호도 뱃지 */
+.pref-dot{position:absolute;top:4px;right:5px;font-size:.55rem;font-weight:900;}
+.pref-love .pref-dot{color:#ff1744;}
+.pref-like .pref-dot{color:#ff9100;}
+.pref-hate .pref-dot{color:#9c27b0;}
+
+/* 이벤트 버튼 */
+.event-btn{font-family:'Jua',sans-serif;background:linear-gradient(135deg,#fff3e0,#ffe0b2);border:2px dashed #ffb74d;border-radius:12px;padding:10px;width:100%;font-size:.8rem;color:#e65100;cursor:pointer;margin-bottom:10px;animation:pulse 2s infinite;transition:all .2s;}
+.event-btn:hover:not(:disabled){background:linear-gradient(135deg,#ffe0b2,#ffcc80);transform:translateY(-2px);}
+.event-btn:disabled{opacity:.35;cursor:not-allowed;animation:none;}
+
+/* ENDING */
+#endingScreen{display:none;text-align:center;padding:8px 0;}
+.end-emoji{font-size:4.5rem;display:block;margin-bottom:12px;}
+.end-title{font-family:'Jua',sans-serif;font-size:1.2rem;margin-bottom:8px;}
+.end-title.good{color:var(--pink);}
+.end-title.bad{color:#9e9e9e;}
+.end-title.secret{color:var(--blue);}
+.end-title.hard{color:var(--purple);}
+.end-title.hidden{color:var(--gold);}
+.hidden-badge{font-family:'Jua',sans-serif;font-size:1.4rem;color:var(--gold);display:block;margin-bottom:6px;text-shadow:0 0 10px rgba(245,166,35,.5);animation:pulse .8s infinite;}
+.end-msg{font-size:.82rem;color:#888;line-height:2;margin-bottom:22px;white-space:pre-line;}
+.restart-btn{font-family:'Jua',sans-serif;background:linear-gradient(135deg,var(--pink),#e04444);color:#fff;border:none;border-radius:50px;padding:13px 0;width:100%;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(255,107,107,.32);transition:transform .18s;margin-bottom:8px;}
+.restart-btn:hover{transform:translateY(-2px);}
+.album-btn{font-family:'Jua',sans-serif;background:linear-gradient(135deg,#667eea,#764ba2);color:#fff;border:none;border-radius:50px;padding:13px 0;width:100%;font-size:1rem;cursor:pointer;box-shadow:0 6px 20px rgba(102,126,234,.32);transition:transform .18s;}
+.album-btn:hover{transform:translateY(-2px);}
+
+/* ALBUM */
+#albumScreen{display:none;}
+.album-title{font-family:'Jua',sans-serif;font-size:1.2rem;color:var(--pink);margin-bottom:12px;text-align:center;}
+.album-grid{display:flex;flex-direction:column;gap:8px;margin-bottom:16px;}
+.album-card{background:var(--cream);border:1.5px solid var(--border);border-radius:12px;padding:10px 14px;}
+.album-card-title{font-size:.8rem;font-weight:700;color:var(--text);margin-bottom:4px;}
+.album-card-title.hidden-e{color:var(--gold);}
+.album-card-msg{font-size:.72rem;color:var(--muted);line-height:1.7;}
+.album-empty{text-align:center;color:var(--muted);font-size:.8rem;padding:20px 0;}
+.back-btn{font-family:'Jua',sans-serif;background:linear-gradient(135deg,#eee,#ddd);color:#555;border:none;border-radius:50px;padding:12px 0;width:100%;font-size:.95rem;cursor:pointer;transition:transform .18s;}
+.back-btn:hover{transform:translateY(-2px);}
+
+/* POPUP */
+.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%) scale(1);background:rgba(255,255,255,.97);border:3px solid var(--border);border-radius:20px;padding:16px 28px;text-align:center;font-size:.9rem;font-weight:700;color:var(--pink);z-index:999;box-shadow:0 14px 44px rgba(255,107,107,.28);pointer-events:none;animation:popIn .22s ease;}
+.popup.hd{border-color:#ce93d8;color:var(--purple);}
+.popup.gold{border-color:var(--gold);color:#8b5e00;}
+.popup-ico{font-size:2.2rem;display:block;margin-bottom:4px;}
+
+/* OVERLAY */
+.overlay{position:fixed;inset:0;background:rgba(60,0,90,.82);display:flex;align-items:center;justify-content:center;z-index:9999;animation:fadeIn .25s ease;}
+.overlay-box{background:#fff;border-radius:24px;padding:28px 26px;text-align:center;max-width:300px;width:90%;}
+.overlay-box .ov-ico{font-size:3rem;display:block;margin-bottom:8px;}
+.overlay-box h2{color:var(--purple);font-size:1.08rem;margin-bottom:8px;}
+.overlay-box p{font-size:.79rem;color:#555;line-height:1.8;margin-bottom:16px;}
+.ov-yes,.ov-no{font-family:'Jua',sans-serif;border:none;border-radius:14px;padding:10px 24px;font-size:.9rem;cursor:pointer;margin:4px;transition:transform .16s;}
+.ov-yes{background:linear-gradient(135deg,#9c27b0,#6a1b9a);color:#fff;}
+.ov-yes:hover{transform:translateY(-2px);}
+.ov-no{background:#eee;color:#555;}
+
+/* 이벤트 오버레이 */
+.event-overlay{position:fixed;inset:0;background:rgba(0,60,30,.8);display:flex;align-items:center;justify-content:center;z-index:9999;animation:fadeIn .25s ease;}
+.event-box{background:#fff;border-radius:24px;padding:24px 22px;text-align:center;max-width:300px;width:90%;border:3px solid var(--gold);}
+.event-box .ev-ico{font-size:2.8rem;display:block;margin-bottom:8px;}
+.event-box h2{color:var(--gold);font-family:'Jua',sans-serif;font-size:1.1rem;margin-bottom:8px;}
+.event-box p{font-size:.8rem;color:#555;line-height:1.8;margin-bottom:16px;}
+.ev-choice{font-family:'Jua',sans-serif;border:none;border-radius:12px;padding:10px 18px;font-size:.85rem;cursor:pointer;margin:4px;transition:transform .16s;background:linear-gradient(135deg,#ffe082,#f5a623);color:#fff;}
+.ev-choice:hover{transform:translateY(-2px);}
+.ev-skip{background:#eee;color:#555;font-family:'Jua',sans-serif;border:none;border-radius:12px;padding:10px 18px;font-size:.85rem;cursor:pointer;margin:4px;}
+
+@keyframes float{0%,100%{transform:translateY(0);}50%{transform:translateY(-10px);}}
+@keyframes shake{0%,100%{transform:translateX(0) rotate(0);}20%{transform:translateX(-7px) rotate(-6deg);}40%{transform:translateX(7px) rotate(6deg);}60%{transform:translateX(-4px) rotate(-3deg);}80%{transform:translateX(4px) rotate(3deg);}}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.5;}}
+@keyframes popIn{from{transform:translate(-50%,-50%) scale(.4);opacity:0;}to{transform:translate(-50%,-50%) scale(1);opacity:1;}}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+</style>
+</head>
+<body>
+<div class="device">
+  <div class="device-top">
+    <h1>🥚 구룡캠 키우기</h1>
+    <p>알을 부화시켜 나만의 캐릭터를 키워보세요!</p>
+  </div>
+  <div class="screen">
+
+    <!-- START -->
+    <div id="startScreen">
+      <div class="egg-wrap" onclick="eggTap()">
+        <span class="egg-anim" id="eggEl">🥚</span>
+      </div>
+      <p class="egg-hint">알을 여러 번 눌러보세요 👆</p>
+      <div class="info-box">
+        <p>
+          9종류의 캐릭터 중 하나가 랜덤으로 태어납니다.<br>
+          음식·놀이 선호도는 MBTI 성격별로 달라요!<br>
+          <b>❤️ 아주좋아</b> / <b>🧡 좋아</b> / <b>💜 싫어</b>로 포인트가 다르게 적용됩니다.<br>
+          성장도가 0이 되면 슬픈 엔딩이 찾아옵니다...
+        </p>
+      </div>
+      <div class="hard-badge">⚠️ 10% 확률로 하드모드 진입!</div>
+      <div class="char-chips">
+        <span class="chip">🐱 찌</span><span class="chip">🐰 쭈은</span>
+        <span class="chip">🐻 한쭈</span><span class="chip">🌸 따경</span>
+        <span class="chip">🦊 찌눅</span><span class="chip">🐼 뱅</span>
+        <span class="chip">🐯 맹</span><span class="chip">🐸 봉</span>
+        <span class="chip">🐹 뀨</span>
+      </div>
+      <button class="main-btn" onclick="startGame()">🐣 알 부화시키기</button>
+      <button class="main-btn secondary" onclick="showAlbum()">🏆 엔딩 앨범 보기</button>
+    </div>
+
+    <!-- GAME -->
+    <div id="gameScreen">
+      <div class="char-card">
+        <span class="char-emoji" id="charEmoji">🥚</span>
+        <div class="char-meta">
+          <span class="char-name" id="charName"></span>
+          <span class="tag tag-mbti" id="charMbti"></span>
+          <span class="tag tag-job"  id="charJob"></span>
+          <span class="mode-badge"  id="modeBadge">일반모드</span>
+        </div>
+        <span class="char-status" id="charStatus">부화 중...</span>
+        <div class="affinity-bar" id="affinityBar"></div>
+      </div>
+
+      <div class="bar-wrap">
+        <div class="bar-header"><span>🌱 성장도</span><span id="barLabel">0 / 100</span></div>
+        <div class="bar-bg"><div class="bar-fill" id="barFill" style="width:0%"></div></div>
+      </div>
+
+      <div class="event-bar">
+        <span class="event-label">⚡ 이벤트 포인트</span>
+        <span class="event-val" id="eventPts">0 / 10</span>
+      </div>
+
+      <div class="log-box" id="logBox"></div>
+
+      <button class="event-btn" id="eventBtn" onclick="triggerEvent()" disabled>🎲 특별 이벤트 발동! (10포인트)</button>
+
+      <hr class="divider">
+      <div class="act-header">
+        <span class="act-label">🍽️ 밥 주기</span>
+        <span class="cd-badge" id="foodBadge">준비 완료</span>
+      </div>
+      <div class="btn-grid" id="foodGrid"></div>
+
+      <hr class="divider">
+      <div class="act-header">
+        <span class="act-label">🎮 놀아주기</span>
+        <span class="cd-badge" id="playBadge">준비 완료</span>
+      </div>
+      <div class="btn-grid" id="playGrid"></div>
+    </div>
+
+    <!-- ENDING -->
+    <div id="endingScreen">
+      <span class="end-emoji" id="endEmoji"></span>
+      <span class="hidden-badge" id="hiddenBadge" style="display:none">✨ 히든엔딩!!! ✨</span>
+      <div class="end-title" id="endTitle"></div>
+      <div class="end-msg"   id="endMsg"></div>
+      <button class="restart-btn" onclick="restartGame()">🥚 다시 시작하기</button>
+      <button class="album-btn"   onclick="showAlbum()">🏆 엔딩 앨범 보기</button>
+    </div>
+
+    <!-- ALBUM -->
+    <div id="albumScreen">
+      <div class="album-title">🏆 엔딩 앨범</div>
+      <div class="album-grid" id="albumGrid"></div>
+      <button class="back-btn" onclick="showStart()">← 돌아가기</button>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// ════════════════════════════════════════════════
+// 캐릭터 데이터
+// ════════════════════════════════════════════════
+var CHARS = {
+  '찌':{
+    emoji:'🐱', mbti:'ENFJ', job:'건축직 공무원',
+    // love: +15, like: +7, neutral: +2, hate: -10
+    foodPref:{ '마라탕':'love', '엽기떡볶이':'like', '고기':'like', '샐러드':'neutral', '해장국':'neutral', '와인':'hate', '편의점도시락':'hate', '라면':'like', '치킨':'like' },
+    playPref:{ '기타치기':'love', '노래방가기':'love', '책읽기':'like', '술마시기':'like', '귀여운것쇼핑':'neutral', '롤하기':'like', '대전빵집':'neutral', '좀보이드':'like', '포켓몬유나이트':'like', '등산':'hate' },
+    hungry:[
+      '찌: "마라탕 먹고 싶어... 내가 뭘 좋아할 것 같아.."',
+      '찌: "밥 먹었어? 나는... 아직. 뭐 드실?"',
+      '찌의 뱃속에서 소리가 났다. 밥 먹자',
+      '찌: "으앙 배고프다. 마라탕 사줘."'
+    ],
+    bored:[
+      '찌: "기타 치고 싶다... 합주실 ㄱㄱ?"',
+      '찌: "요즘 포켓몬 유나이트 안 했더니 손이 근질거려"',
+      '찌는 좀보이드 생각이 났다. 할래?',
+      '찌: "심심한데 기타나 칠까ㅋㅋㅋㅋ"'
+    ],
+    random:[
+      '찌눅이 또 "할매~" 라고 불렀다. 찌는 못 들은 척했다.',
+      '찌: "웃기지마 ㅋㅋㅋㅋㅋ"',
+      '찌는 오운완 인증샷을 찍었다. 필터를 7개 썼다.',
+      '찌: "다들 밥은 먹었어? 나는 못 먹었어. 괜찮아." (안 괜찮음)',
+      '찌가 포켓몬 유나이트에서 MVP를 받았다. 오늘 하루가 완성됐다.',
+      '찌: "나 화 안 났어." (화 많이 났음)',
+      '찌는 좀보이드에서 또 죽었다. 아 진짜 맨날 죽어.',
+      '찌가 단체 카톡방을 만들었다. 아무도 원하지 않았다.',
+      '찌: "오운완! 오늘도 운동 완료~" (사진은 어제 거)',
+      '찌는 남의 고민을 듣다가 자기가 더 울었다. ENFJ의 숙명.'
+    ],
+    happy:['최고야! 🎸🌶️','너무 좋아~','행복해! 유나이트도 이기고!','이게 바로 삶이지!'],
+    sad:['이건 싫은데...','찌는 실망한 눈빛을 보낸다','찌의 감성엔 안 맞아','흥미없음'],
+    mood:['오늘따라 기타가 손에 안 잡혀... 그냥 쉬고 싶어','컨디션이 별로야. 마라탕도 별로 안 당겨.','이상하게 오늘은 아무것도 하기 싫다. 눈물날 것 같아.']
+  },
+  '쭈은':{
+    emoji:'🐰', mbti:'ENFJ', job:'행정직 공무원',
+    foodPref:{ '엽기떡볶이':'love', '마라탕':'like', '고기':'like', '샐러드':'like', '해장국':'neutral', '와인':'neutral', '편의점도시락':'hate', '라면':'neutral', '치킨':'like' },
+    playPref:{ '책읽기':'love', '기타치기':'like', '노래방가기':'like', '술마시기':'neutral', '귀여운것쇼핑':'like', '롤하기':'neutral', '대전빵집':'like', '좀보이드':'hate', '포켓몬유나이트':'neutral', '등산':'hate' },
+    hungry:[
+      '쭈은: "밥 묵나"',
+      '쭈은: "밥 안 주나!!"',
+      '쭈은의 뱃속이 엽기떡볶이를 외치고 있다.',
+      '쭈은: "아 밥 먹자~~~~ 밥 안 주노~~~"'
+    ],
+    bored:[
+      '쭈은: "책이라도 읽어야겠어."',
+      '쭈은: "뭐하고 놀지? 찌 지금 뭐하지?"',
+      '쭈은은 독서 안 하면 하루가 허전하다..',
+      '쭈은: "심심해. 뭔가 읽을 게 없나. 똥윤이는 뭐하지?"'
+    ],
+    random:[
+      '찌눅이 쭈은한테 "할매~" 라고 불렀다. 쭈은이 눈을 흘겼다.',
+      '쭈은: "나 사실 다 알고 있었어."',
+      '쭈은: "나랑 놀 사람?"',
+      '쭈은이 갑자기 조용해졌다. 방해하지 마라.',
+      '쭈은: "엽떡이랑 책이면 인생 완성.."',
+      '쭈은: "나 오늘 민원 5건 처리했어. 나는 누가 처리해줘?"',
+      '쭈은은 오운완 인증샷을 제일 성실하게 올린다.',
+      '쭈은: "리더 하기 싫은데 왜 자꾸 나한테 맡겨..." (또 맡음)',
+      '쭈은은 모두의 편인 척하지만 사실 당신 편이다.'
+    ],
+    happy:['완전 좋아! 📚🍢','최고의 하루~','행복해! 민원도 없고!','이런 날이 있어야지'],
+    sad:['이건 별로야','쭈은이 북마크를 덮었다','인간적으로 부적절해','흥미없음...'],
+    mood:['오늘 일이 너무 많았어... 책도 읽기 싫어','몸이 무거워. 엽떡도 별로 안 당겨. 이상하다.','왜 이렇게 눈물이 날 것 같지. 그냥 집에 가고 싶어.']
+  },
+  '한쭈':{
+    emoji:'🐻', mbti:'INTJ', job:'건축직 공무원',
+    foodPref:{ '마라탕':'love', '샐러드':'like', '해장국':'neutral', '엽기떡볶이':'like', '고기':'like', '와인':'like', '편의점도시락':'neutral', '라면':'hate', '치킨':'neutral' },
+    playPref:{ '책읽기':'love', '좀보이드':'like', '기타치기':'neutral', '노래방가기':'hate', '술마시기':'hate', '귀여운것쇼핑':'hate', '롤하기':'neutral', '대전빵집':'like', '포켓몬유나이트':'neutral', '등산':'like' },
+    hungry:[
+      '한쭈: "식사는 에너지 보충이다. 에에에에에엥."',
+      '한쭈: "마라탕은 논리적인 음식이야. 에에에에에엥."',
+      '한쭈의 위장이 신호를 보냈다. 에에에에에엥',
+      '한쭈: "배고프다. 비효율적인 상황이다. 마라탕 주면 해결된다. 에에에에에엥"'
+    ],
+    bored:[
+      '한쭈: "독서 시간이야. 방해하지 마."',
+      '한쭈: "할 일 목록에 독서가 있다. 지금 해야 한다."',
+      '한쭈는 비생산적인 시간을 견디지 못한다. 책을 펼쳤다.',
+      '한쭈: "심심함은 비효율이다.."'
+    ],
+    random:[
+      '한쭈: "한주 등장!"',
+      '한쭈는 건축 설계 계획을 수정하고 있다. 47번째 수정이다.',
+      '한쭈: "감정적으로 굴지 마. ...근데 나 지금 좀 슬프다."',
+      '한쭈가 당신을 분석했다. 결과는 말해주지 않는다.',
+      '한쭈는 혼자 있는 게 좋다고 했다. 근데 당신이 나가자 허전하다.',
+      '한쭈: "석규는 내 키링~"',
+      '한쭈가 조용히 당신 걱정을 하고 있다. 절대 티는 안 낸다.',
+      '한쭈: "계획에 없던 민원이 생겼다. 스트레스다. 하지만 대처한다."',
+      '한쭈는 당신 말의 논리적 오류를 3개 발견했다. 말은 안 한다.',
+      '한쭈: "석뀨는 내꺼"'
+    ],
+    happy:['완벽한 하루! 📚🌶️','계획대로야','효율 100%','설계도 완성!'],
+    sad:['비효율적','한쭈가 눈을 가늘게 떴다','이건 취향이 아니야','설계 변경 불가'],
+    mood:['오늘은 계획이 다 틀어졌다. 아무것도 하기 싫어.','논리적으로 생각하면... 그냥 쉬는 게 맞다. 오늘은.','감정 기복이 생겼다. 비효율적이지만 어쩔 수 없다.']
+  },
+  '따경':{
+    emoji:'🌸', mbti:'INTJ', job:'건축직 공무원(육아중)',
+    foodPref:{ '샐러드':'love', '마라탕':'like', '엽기떡볶이':'neutral', '고기':'neutral', '해장국':'like', '와인':'like', '편의점도시락':'hate', '라면':'hate', '치킨':'neutral' },
+    playPref:{ '귀여운것쇼핑':'love', '좀보이드':'like', '책읽기':'like', '기타치기':'neutral', '노래방가기':'hate', '술마시기':'neutral', '롤하기':'neutral', '대전빵집':'like', '포켓몬유나이트':'neutral', '등산':'hate' },
+    hungry:[
+      '따경: "샐러드... 아기 재우고 나서 먹어야지"',
+      '따경: "아기 이유식은 만들어야 해."',
+      '따경의 위장이 샐러드를 원하고 있다. 아기 울음소리도 들린다.',
+      '따경: "밥 먹을 시간도 없어. 아기가 또 깼어."'
+    ],
+    bored:[
+      '따경: "귀여운 거 사러 가고 싶은데... 아기 봐줄 사람이 없어"',
+      '따경: "좀보이드 하고 싶다. 근데 또 죽을 것 같아서 무서워."',
+      '따경: "쇼핑 목록 업데이트 하고 싶은데 아기가 안 자."',
+      '따경: "귀엽지 않은 세상은 살 의미가 없어."'
+    ],
+    random:[
+      '따경: "귀엽지 않은 건 살 이유가 없어." (아기 보면서 하는 말)',
+      '따경은 샐러드를 먹으며 세계 정복을 구상하고 있다. 아기를 안고.',
+      '따경: "좀보이드에서 또 죽었어. 건물 지어야 하는데."',
+      '따경이 귀여운 아기 용품을 발견했다. 계획이 흔들렸다.',
+      '따경: "나 계획 다 있어. 근데 아기 보면 다 날아가."',
+      '따경은 쇼핑 목록을 스프레드시트로 관리한다. 아기 용품 포함.',
+      '따경: "감정 낭비는 비효율이야. ...아기가 웃었어 어떡해 너무 귀여워"',
+      '따경: "나한테 말 걸기 전에 아기 울음 없을 때 와줘. 고마워."',
+      '따경은 좀보이드에서 좀비한테 또 잡혔다. 아기 생각하다가.',
+      '따경: "육아휴직 중인데 왜 이렇게 바쁘지. 회사 다닐 때보다 힘들어."'
+    ],
+    happy:['너무 좋아~ 🛍️🥗','완벽한 하루!','귀여움 충전 완료!','아기도 좋아하겠지?'],
+    sad:['이건 별로야','따경이 목록에서 지웠다','아기한테나 줘','취향이 아니야'],
+    mood:['아기가 밤새 울었어... 아무것도 하기 싫다.','샐러드도 귀찮아. 그냥 누워있고 싶어.','육아에 지쳤나봐. 오늘은 아무것도 안 당겨.']
+  },
+  '찌눅':{
+    emoji:'🦊', mbti:'ENFP', job:'건축직 공무원',
+    foodPref:{ '고기':'love', '마라탕':'like', '엽기떡볶이':'like', '치킨':'love', '샐러드':'hate', '해장국':'neutral', '와인':'neutral', '편의점도시락':'like', '라면':'like' },
+    playPref:{ '노래방가기':'love', '술마시기':'love', '포켓몬유나이트':'like', '기타치기':'like', '좀보이드':'like', '책읽기':'hate', '귀여운것쇼핑':'neutral', '롤하기':'like', '대전빵집':'neutral', '등산':'hate' },
+    hungry:[
+      '찌눅: "고기 먹고 싶어. 삼겹살. 지금 당장."',
+      '찌눅: "고기 없는 삶은 상상도 못 해. 건축도 고기 먹어야 설계되거든."',
+      '찌눅의 뱃속이 고기를 외치고 있다. 아주 크게.',
+      '찌눅: "고기 사줘~~응애~ 고기 먹으러 가자~"'
+    ],
+    bored:[
+      '찌눅: "노래방 가고 싶어! 지금 당장 가자!"',
+      '찌눅: "오운완 가야 하는데 노래방이 더 당겨."',
+      '찌눅: "할매들한테 장난치고 싶은데 보복이 무서워."',
+      '찌눅: "노래 한 곡 뽑아야 기분이 풀릴 것 같아."'
+    ],
+    random:[
+      '찌눅이 찌한테 "할매~" 라고 불렀다. 도망갈 준비를 했다.',
+      '찌눅: "야 나 지금 엄청난 설계 아이디어 떠올랐어!" (3초 후 잊음)',
+      '찌눅은 동시에 7가지를 생각하고 있다. 결론은 고기다.',
+      '찌눅: "인생은 즉흥이야! 설계 계획 같은 거 몰라!" (한쭈가 한숨쉼)',
+      '찌눅이 오운완 단톡방에 "오늘 운동 패스~" 를 보냈다. 또.',
+      '찌눅: "고기 먹으면 설계도 잘 돼. 진짜야. 공학적으로도."',
+      '찌눅이 또 새로운 취미를 시작했다. 완성 확률: 12%.',
+      '찌눅: "나 ENFP인데 그게 뭔지는 몰라. 근데 맞대."',
+      '찌눅이 할매 두 명(찌, 쭈은)을 동시에 놀렸다. 용감하다.',
+      '찌눅: "노래방 한 곡이면 인생 완성이야. 고기도 있으면 더 좋고."'
+    ],
+    happy:['행복해! 🎤🥩','최고야!','에너지 폭발!','고기에 노래방까지!'],
+    sad:['이건 별로야','찌눅이 풀 죽었다','흥미없음','할매한테 혼날 것 같은 느낌'],
+    mood:['오늘은 기분이 다운돼서 노래방도 별로야...','왜 이렇게 에너지가 없지. 고기도 별로 안 당겨.','찌눅이 조용하다. 뭔가 잘못됐다. 심각하다.']
+  },
+  '뱅':{
+    emoji:'🐼', mbti:'INFJ', job:'건축직 공무원',
+    foodPref:{ '해장국':'love', '와인':'like', '마라탕':'neutral', '샐러드':'like', '고기':'like', '엽기떡볶이':'neutral', '편의점도시락':'neutral', '라면':'hate', '치킨':'neutral' },
+    playPref:{ '기타치기':'love', '좀보이드':'like', '책읽기':'like', '술마시기':'like', '노래방가기':'neutral', '귀여운것쇼핑':'neutral', '롤하기':'neutral', '대전빵집':'like', '포켓몬유나이트':'hate', '등산':'neutral' },
+    hungry:[
+      '뱅: "해장국... 어제 또 취했거든."',
+      '뱅: "해장국은 영혼을 달래주는 음식이야. 특히 다음날."',
+      '뱅의 위장이 해장국을 간절히 원하고 있다. 어제 술 때문이다.',
+      '뱅: "또 취해서 해장이 필요해. 해장국 줘."'
+    ],
+    bored:[
+      '뱅: "기타 치고 싶어. 지금 이 감정을 음악으로."',
+      '뱅: "좀보이드 켤까. 나는 잘하니까 괜찮아."',
+      '뱅: "멜로디가 머릿속을 맴돌고 있어. 기타 줄 잡아야겠어."',
+      '뱅은 심심함을 기타로 표현하고 싶다. 진심으로.'
+    ],
+    random:[
+      '뱅: "나 또 취했어. 해장국 어디 있어?"',
+      '뱅은 좀보이드에서 좀비를 우아하게 처치했다. 잘한다.',
+      '뱅: "기타 소리가 내 영혼을 건드려." (또취 상태에서도 잘 침)',
+      '뱅이 당신을 5초째 바라보고 있다. 또취한 눈이다.',
+      '뱅: "나는 술이 많은 곳이 좋아. 근데 다음날이 힘들어."',
+      '뱅이 혼자 기타를 치고 있다. 반주는 해장국 냄새다.',
+      '뱅: "해장국은 위로야. 내가 또취할 때마다 깨달아."',
+      '뱅은 또취 별명을 부정하지 않는다. 사실이니까.',
+      '뱅: "나는 말을 아끼는 편이야. 술 마실 때 빼고."',
+      '뱅이 조용히 당신 곁에 앉았다. 해장국 냄새가 난다.'
+    ],
+    happy:['행복해! 🎸🍲','영혼이 충전됐어','해장 성공!','이 순간이 영원했으면'],
+    sad:['이건 별로야','뱅이 조용히 자리를 피했다','또취 상태엔 별로','흥미없음...'],
+    mood:['또취 후유증이 심하다. 기타도 치기 싫어.','오늘은 아무것도 하기 싫어. 그냥 누워있을래.','뱅이 평소보다 더 조용하다. 뭔가 있다.']
+  },
+  '맹':{
+    emoji:'🐯', mbti:'ENFP', job:'건축직 공무원',
+    foodPref:{ '고기':'love', '치킨':'love', '마라탕':'like', '엽기떡볶이':'like', '해장국':'like', '샐러드':'hate', '와인':'neutral', '편의점도시락':'neutral', '라면':'like' },
+    playPref:{ '술마시기':'love', '포켓몬유나이트':'love', '노래방가기':'like', '기타치기':'neutral', '좀보이드':'like', '책읽기':'hate', '귀여운것쇼핑':'hate', '롤하기':'like', '대전빵집':'neutral', '등산':'like' },
+    hungry:[
+      '맹: "고기 먹고 싶어. 삼겹살 + 소주 = 인생"',
+      '맹: "지금 당장 고깃집 가야 해. 설계는 나중에."',
+      '맹의 뱃속이 고기를 외치고 있다. 찌눅이랑 합창이다.',
+      '맹: "오운완 하고 고기 먹으러 가자. 운동 효과 상쇄지만 괜찮아."'
+    ],
+    bored:[
+      '맹: "한잔 하고 싶어. 누가 같이 안 할래?"',
+      '맹: "포켓몬 유나이트 한판 하자. 내가 캐리해줄게."',
+      '맹: "오늘 같은 날엔 한잔이지. 오 캠핑 갈래?"',
+      '맹: "심심한데 찌 불러서 유나이트 하면 되겠다."'
+    ],
+    random:[
+      '맹: "야 오늘 고기 먹고 한잔 해야지 안 해?" (매일 하는 말)',
+      '맹이 포켓몬 유나이트에서 찌랑 듀오로 이겼다. 기분 최고.',
+      '맹: "인생 뭐 있어~ 고기 먹고 유나이트 하면 되지!"',
+      '맹은 술자리 계획을 짜고 있다. 오운완 멤버 전원 소집 예정.',
+      '맹: "나 사실 감수성 풍부해. 술 마시면 더 그래."',
+      '맹이 당신 어깨를 탁 쳤다. 친근함의 표현이다. 좀 아프다.',
+      '맹: "오운완! 운동하고 고기 먹으면 제로섬 아니야?"',
+      '맹은 모임을 주도하고 있다. 아무도 시키지 않았다.',
+      '맹: "걱정 마! 내가 유나이트 캐리해줄게!" (진짜 잘함)',
+      '맹이 오늘만 세 번째 마지막 한 잔을 하고 있다.'
+    ],
+    happy:['행복해! 🍺🥩','이게 인생이지~','유나이트도 이기고!','오늘 제대로 즐겼다!'],
+    sad:['이건 별로야','맹이 분위기를 읽었다. 드물게.','흠...','취향이 아니야'],
+    mood:['오늘은 술도 별로 안 당겨. 뭔가 이상하다.','고기도 귀찮아. 맹이 이러면 진짜 힘든 거다.','에너지가 0이야. 유나이트도 지고 싶지 않아.']
+  },
+  '봉':{
+    emoji:'🐸', mbti:'ISTP', job:'건축직 공무원',
+    foodPref:{ '와인':'love', '대전빵집':'love', '해장국':'neutral', '샐러드':'like', '고기':'like', '마라탕':'neutral', '엽기떡볶이':'hate', '편의점도시락':'neutral', '라면':'hate', '치킨':'neutral' },
+    playPref:{ '대전빵집':'love', '좀보이드':'like', '술마시기':'love', '기타치기':'neutral', '책읽기':'like', '노래방가기':'hate', '귀여운것쇼핑':'hate', '롤하기':'neutral', '포켓몬유나이트':'neutral', '등산':'like' },
+    hungry:[
+      '봉: "와인... 오늘은 어떤 걸로 할까."',
+      '봉: "술 컬렉션 꺼낼 시간이야. 오늘은 와인으로."',
+      '봉의 위장이 와인을 원하고 있다. 컬렉션 중 뭘 열까 고민 중.',
+      '봉: "..." (냉장고에서 와인을 꺼내고 있다)'
+    ],
+    bored:[
+      '봉: "대전빵집 가야겠어. 성심당."',
+      '봉: "좀보이드 켜볼까. 총을 구해야 해 총... (죽음 확정)"',
+      '봉: "술 컬렉션 정리할 시간이야. 심심할 때 하는 일."',
+      '봉: "빵이 없으면 뭘로 살아. 대전 가야겠다."'
+    ],
+    random:[
+      '봉: "..." (술 컬렉션을 바라보며)',
+      '봉은 좀보이드에서 또 죽었다. 이게 다 이다경 때문이다.',
+      '봉: "대전까지 가는 게 귀찮냐고? 성심당을 위해서라면 아니."',
+      '봉이 당신 말을 듣고 있다. 반응은 없다. 와인을 마시고 있다.',
+      '봉: "와인은 설명하는 게 아니야. 그냥 마시는 거야."',
+      '봉은 혼자 빵집에 갔다. 술 한 병 들고. 혼자가 편하다.',
+      '봉: "말이 많으면 피곤해." (술 컬렉션이 말 상대임)',
+      '봉이 새 술을 컬렉션에 추가했다. 몇 병째인지 세는 걸 포기했다.',
+      '봉: "좋은 빵이랑 좋은 와인이면 좀보이드 죽어도 괜찮아."',
+      '봉은 감정 표현을 술로 한다. 오늘은 좋은 와인을 꺼냈다.'
+    ],
+    happy:['행복해! 🍞🍷','말이 필요 없는 순간','컬렉션 추가 완료!','최고야~'],
+    sad:['이건 별로야','봉이 자리를 떴다. 조용히.','흥미없음','별로야...'],
+    mood:['오늘은 와인도 별로야. 봉이 이러면 진짜 심각한 거다.','말하기도 귀찮아. 그냥 혼자 있고 싶어.','컬렉션을 봐도 설레지 않는다. 이상한 날이다.']
+  },
+  '뀨':{
+    emoji:'🐹', mbti:'INFJ', job:'건축직 공무원',
+    foodPref:{ '해장국':'love', '마라탕':'like', '고기':'like', '샐러드':'neutral', '엽기떡볶이':'like', '와인':'neutral', '편의점도시락':'hate', '라면':'neutral', '치킨':'like' },
+    playPref:{ '롤하기':'love', '좀보이드':'love', '책읽기':'like', '기타치기':'neutral', '노래방가기':'neutral', '술마시기':'neutral', '귀여운것쇼핑':'hate', '대전빵집':'like', '포켓몬유나이트':'like', '등산':'hate' },
+    hungry:[
+      '뀨: "해장국... 롤 하다 보니 밥 먹는 걸 깜빡했어"',
+      '뀨: "해장국은 나의 정신적 지주야. 롤 지더라도 해장국 있으면 돼."',
+      '뀨의 위장이 해장국을 원하고 있다. 롤 로딩 중에 깨달았다.',
+      '뀨: "해장국 먹으면서 롤 하는 게 꿈이야. 오늘 이루자."'
+    ],
+    bored:[
+      '뀨: "롤 한판 하자. 내가 캐리해줄게."',
+      '뀨: "아 한쭈 귀여워"',
+      '뀨: "아...한쭈 너무 귀여워.........하트하트."',
+      '뀨: "캐리 한번 하면 오늘 하루 기분이 풀릴 것 같아."'
+    ],
+    random:[
+      '뀨: "나 롤에서는 달라. 좀보이드에서도 달라. 모든 게임에서 달라."',
+      '뀨는 해장국을 후루룩 마시며 롤 다음 판을 준비하고 있다.',
+      '뀨: "트롤 만났어. 인류에 회의감이 든다."',
+      '뀨가 조용히 당신 옆에 앉았다. 말은 없다. 롤 하는 소리만 난다.',
+      '뀨: "롤은 내 감정의 배출구야. 건축 민원보다 스트레스가 덜해."',
+      '뀨는 겉으론 조용하지만 속으로는 할 말이 3000자다.',
+      '뀨: "나 사실 게임 다 잘해. 겸손한 거야 진짜로."',
+      '뀨가 롤에서 캐리했다. 좀보이드도 클리어했다. 오늘 완벽하다.',
+      '뀨: "한쭈... 오늘도 귀엽네. 내 취약점이야."',
+      '뀨는 INFJ라서 당신의 감정을 다 읽었다. 말은 안 한다.'
+    ],
+    happy:['캐리했다! 🎮🍲','오늘 내가 제일 잘나가','모든 게임 클리어!','완전 좋아~'],
+    sad:['이건 별로야','뀨가 탈주를 고민하고 있다','롤보다 별로','흥미없음...'],
+    mood:['오늘은 롤도 하기 싫어. 뭔가 잘못됐다.','해장국도 별로야. 뀨가 이러면 진짜 힘든 거다.','그냥 조용히 혼자 있고 싶어. 오늘은 다 귀찮아.']
+  }
+};
+
+// ════════════════════════════════════════════════
+// 아이템 목록
+// ════════════════════════════════════════════════
+var ALL_FOOD = [
+  {id:'마라탕',icon:'🌶️',label:'마라탕'},
+  {id:'엽기떡볶이',icon:'🍢',label:'엽기떡볶이'},
+  {id:'샐러드',icon:'🥗',label:'샐러드'},
+  {id:'고기',icon:'🥩',label:'고기'},
+  {id:'와인',icon:'🍷',label:'와인'},
+  {id:'해장국',icon:'🍲',label:'해장국'},
+  {id:'편의점도시락',icon:'🍱',label:'도시락'},
+  {id:'라면',icon:'🍜',label:'라면'},
+  {id:'치킨',icon:'🍗',label:'치킨'}
+];
+var FOOD_NM = ALL_FOOD.slice(0,6);
+var FOOD_HD = ALL_FOOD;
+
+var ALL_PLAY = [
+  {id:'기타치기',icon:'🎸',label:'기타치기'},
+  {id:'책읽기',icon:'📚',label:'책읽기'},
+  {id:'귀여운것쇼핑',icon:'🛍️',label:'쇼핑'},
+  {id:'술마시기',icon:'🍺',label:'술마시기'},
+  {id:'대전빵집',icon:'🍞',label:'대전빵집'},
+  {id:'롤하기',icon:'🎮',label:'롤하기'},
+  {id:'노래방가기',icon:'🎤',label:'노래방'},
+  {id:'등산',icon:'⛰️',label:'등산'},
+  {id:'좀보이드',icon:'🧟',label:'좀보이드'},
+  {id:'포켓몬유나이트',icon:'⚡',label:'유나이트'}
+];
+var PLAY_NM = ALL_PLAY.slice(0,7);
+var PLAY_HD = ALL_PLAY;
+
+// ════════════════════════════════════════════════
+// 선호도 포인트
+// ════════════════════════════════════════════════
+var PREF_PT = { love: 15, like: 7, neutral: 2, hate: -10 };
+var PREF_PT_HARD = { love: 20, like: 10, neutral: 3, hate: -15 };
+
+// ════════════════════════════════════════════════
+// 이벤트 목록
+// ════════════════════════════════════════════════
+var EVENTS = [
+  {
+    title:'🌮 갑자기 단체 회식!',
+    desc:'팀 전체가 회식이다. 밥값은 팀장님이 낸대. 어디 갈까?',
+    choices:[
+      {label:'🥩 고깃집 GO!', food:'고기'},
+      {label:'🌶️ 마라탕 GO!', food:'마라탕'},
+      {label:'🍢 엽떡 GO!', food:'엽기떡볶이'}
+    ]
+  },
+  {
+    title:'🎵 오운완 노래방 챌린지!',
+    desc:'오운완 단체 채팅방이 들썩인다. 오늘 다 같이 노래방!',
+    choices:[
+      {label:'🎤 신나게 GO!', play:'노래방가기'},
+      {label:'🏃 나는 집에...', play:'등산'}
+    ]
+  },
+  {
+    title:'🎲 이다경이 초대장을 보냈다!',
+    desc:'이다경: "좀보이드 같이 할 사람?" (봉이 죽는다)',
+    choices:[
+      {label:'🧟 참여한다', play:'좀보이드'},
+      {label:'📚 나는 혼자 공부...', play:'책읽기'}
+    ]
+  },
+  {
+    title:'🍡 성심당 특별 세트 입고!',
+    desc:'봉이 대전에서 성심당 빵을 잔뜩 사왔다.',
+    choices:[
+      {label:'🍞 빵 먹기!', play:'대전빵집'},
+      {label:'🍷 와인이랑 곁들이기', food:'와인'}
+    ]
+  },
+  {
+    title:'⚡ 유나이트 긴급 소집!',
+    desc:'찌: "나 지금 지고있어 도와줘ㅠㅠ" (맹이 이미 접속 중)',
+    choices:[
+      {label:'⚡ 바로 접속!', play:'포켓몬유나이트'},
+      {label:'🥩 밥 먹고 감', food:'고기'}
+    ]
+  },
+  {
+    title:'🎸 합주 갑자기 생겼다!',
+    desc:'찌: "오늘 합주실 예약됐어! 같이 가자!" (뱅도 간대)',
+    choices:[
+      {label:'🎸 합주 GO!', play:'기타치기'},
+      {label:'🍲 나는 해장국...', food:'해장국'}
+    ]
+  },
+  {
+    title:'📦 편의점 도시락 파티!',
+    desc:'야근이다. 편의점 도시락으로 버텨야 한다.',
+    choices:[
+      {label:'🍱 먹는다', food:'편의점도시락'},
+      {label:'🍜 라면이 낫겠다', food:'라면'}
+    ]
+  },
+  {
+    title:'🍗 치킨 배달!',
+    desc:'찌눅: "치킨 시켰는데 혼자 먹기 아까워~~"',
+    choices:[
+      {label:'🍗 치킨 먹기!', food:'치킨'},
+      {label:'🥗 나는 샐러드...', food:'샐러드'}
+    ]
+  },
+  {
+    title:'⛰️ 오운완 등산 투표!',
+    desc:'오운완 단체 채팅방: "이번 주 토요일 등산 어때?" (찌눅이 반대 중)',
+    choices:[
+      {label:'⛰️ 찬성! 등산 GO!', play:'등산'},
+      {label:'🎮 롤이나 하자', play:'롤하기'}
+    ]
+  }
+];
+
+// ════════════════════════════════════════════════
+// 엔딩 목록
+// ════════════════════════════════════════════════
+var ENDINGS_DEF = [
+  // 일반 배드
+  {id:'egg_back',  title:'😢 다시 알로...', emoji:'🥚', cls:'bad', hidden:false,
+   msg:'너무 힘들었나봐...\n결국 다시 알로 돌아가 버렸다. 🥚\n\n알이 흔들리다 조용해졌다.\n\n[ 알 회귀 엔딩 ]'},
+  {id:'lonely',    title:'😔 외로운 이별...', emoji:'🌙', cls:'bad', hidden:false,
+   msg:'너무 외로웠던 것 같아...\n아무도 돌봐주지 않아 쓸쓸히 세상을 떠났다. 🌙\n\n[ 고독 엔딩 ]'},
+  {id:'runaway',   title:'🚪 가출 엔딩...', emoji:'🧳', cls:'bad', hidden:false,
+   msg:'"나를 이해해주는 곳으로 떠날게요."\n짐을 싸서 나가버렸다. 🧳\n\n[ 가출 엔딩 ]'},
+  {id:'burnout',   title:'💤 번아웃 엔딩...', emoji:'😪', cls:'bad', hidden:false,
+   msg:'감정 기복이 너무 심했나봐.\n그냥 무기력하게 쓰러졌다.\n아무것도 하고 싶지 않대.\n\n[ 번아웃 엔딩 ]'},
+  // 일반 해피
+  {id:'happy',     title:'🌟 해피 엔딩!', emoji:'🎉', cls:'good', hidden:false,
+   msg:'이제 완전히 행복해졌다! 🎊\n함께한 시간이 정말 소중했어. 💕\n\n[ 성장도 100 달성 ]'},
+  // 하드 클리어
+  {id:'hard_win',  title:'👑 전설의 보호자', emoji:'👑', cls:'hard', hidden:false,
+   msg:'하드모드에서 끝까지 키워냈다.\n이건 보통 일이 아니야.\n\n"...당신 진짜 대단하다. 인정."\n\n전설이 되었다. 🏆\n\n[ 하드모드 클리어 ]'},
+  // 하드 최악
+  {id:'hard_bad',  title:'💀 하드모드 최악 엔딩', emoji:'🌪️', cls:'bad', hidden:false,
+   msg:'"...나 이제 진짜 간다."\n짐도 안 쌌다. 그냥 나갔다.\n돌아오지 않았다.\n\n[ 하드모드 최악 엔딩 ]'},
+  // 퍼펙트
+  {id:'perfect',   title:'✨ 퍼펙트 엔딩', emoji:'✨', cls:'secret', hidden:false,
+   msg:'완전히 신뢰하게 됐다.\n한 번도 싫어하는 걸 강요하지 않았거든.\n\n"당신 같은 사람 처음이야. 진짜로."\n\n영원한 단짝이다. 💫\n\n[ 퍼펙트 클리어 · 싫어요 0회 ]'},
+  // 히든 엔딩들
+  {id:'hidden_maratang', title:'🌶️ 마라탕 홀릭 엔딩', emoji:'🌶️', cls:'hidden', hidden:true,
+   msg:'마라탕을 10번 이상 먹었다.\n\n"나... 마라탕 없으면 못 살아."\n\n뇌에 마라 중독 판정을 받았다.\n화성시청 구내식당이 마라탕을 추가하기로 했다.\n\n[ 마라탕 중독 히든엔딩 ]'},
+  {id:'hidden_norae', title:'🎤 노래방 전설 엔딩', emoji:'🎤', cls:'hidden', hidden:true,
+   msg:'노래방에 8번 이상 갔다.\n\n"이 마이크... 내 손을 떠난 적이 없어."\n\n건축직 공무원을 그만두고\n노래방 사장이 될 뻔했다.\n\n[ 노래방 전설 히든엔딩 ]'},
+  {id:'hidden_game', title:'🎮 찐겜러 엔딩', emoji:'🎮', cls:'hidden', hidden:true,
+   msg:'게임을 10번 이상 했다.\n\n업무 중 롤 화면이 발각됐다.\n하지만 그 판 캐리해서\n팀장님도 박수쳤다.\n\n[ 찐겜러 히든엔딩 ]'},
+  {id:'hidden_oowoon', title:'💪 오운완 엔딩', emoji:'💪', cls:'hidden', hidden:true,
+   msg:'이벤트를 5번 이상 참여했다.\n\n"오운완! 오운완! 오운완!"\n\n구룡캠 오운완 단체 채팅방의\n전설이 되었다.\n\n[ 오운완 히든엔딩 ]'},
+  {id:'hidden_mood', title:'😤 감정 기복 서바이버 엔딩', emoji:'😤', cls:'hidden', hidden:true,
+   msg:'감정 기복을 10번 이상 버텼다.\n\n"나... 나를 이겼다."\n\n정신건강의학과에서 연락이 왔다.\n피험자 되어달라고.\n\n[ 감정 기복 서바이버 히든엔딩 ]'},
+  {id:'hidden_hate', title:'😈 취향 파괴자 엔딩', emoji:'😈', cls:'hidden', hidden:true,
+   msg:'싫어하는 것만 15번 골랐다.\n\n"...너 진짜 일부러 그랬지?"\n\n눈물이 났다. 하지만 끝까지 버텼다.\n\n이게 무슨 관계지.\n\n[ 취향 파괴자 히든엔딩 ]'},
+  {id:'hidden_secretfood', title:'🌟 신비의 음식 발견 엔딩', emoji:'🌟', cls:'hidden', hidden:true,
+   msg:'히든 아이템을 3번 이상 발견했다.\n\n"이게 뭐야... 근데 맛있어?"\n\n화성시에 신종 음식 문화가 탄생했다.\n공무원 복지 1위 달성.\n\n[ 신비의 발견 히든엔딩 ]'}
+];
+
+// ════════════════════════════════════════════════
+// 게임 상태
+// ════════════════════════════════════════════════
+var G = {
+  key:'', char:null,
+  growth:10,
+  foodCD:0, playCD:0,
+  foodTimer:null, playTimer:null, statusTimer:null,
+  ended:false, isHard:false,
+  liked:0, disliked:0, turns:0,
+  moodOn:false, moodCount:0,
+  eventPts:0, eventCount:0,
+  hiddenItems:0,
+  foodCount:{}, playCount:{},
+  unlockedEndings:[]
+};
+var COOLDOWN = 5;
+var eggCnt = 0;
+var unlockedAlbum = [];
+
+// localStorage로 앨범 저장
+function loadAlbum(){
+  try { unlockedAlbum = JSON.parse(localStorage.getItem('guryongAlbum')||'[]'); } catch(e){ unlockedAlbum=[]; }
+}
+function saveAlbum(){
+  try { localStorage.setItem('guryongAlbum', JSON.stringify(unlockedAlbum)); } catch(e){}
+}
+function unlockEnding(id){
+  if(unlockedAlbum.indexOf(id) < 0){ unlockedAlbum.push(id); saveAlbum(); }
+}
+
+// ════════════════════════════════════════════════
+// 유틸
+// ════════════════════════════════════════════════
+function pick(arr){ return arr[Math.floor(Math.random()*arr.length)]; }
+
+function log(msg, cls){
+  var box = document.getElementById('logBox');
+  var prev = box.querySelector('.new');
+  if(prev) prev.classList.remove('new');
+  var span = document.createElement('span');
+  span.className = 'line new'+(cls?' '+cls:'');
+  span.textContent = msg;
+  box.appendChild(span);
+  box.scrollTop = box.scrollHeight;
+}
+
+function updateBar(){
+  var g = Math.max(0, Math.min(100, G.growth));
+  document.getElementById('barLabel').textContent = g+' / 100';
+  var fill = document.getElementById('barFill');
+  fill.style.width = g+'%';
+  fill.className = 'bar-fill'+(G.isHard?' hard':'');
+}
+
+function updateEventBar(){
+  var pts = Math.min(G.eventPts, 10);
+  document.getElementById('eventPts').textContent = pts+' / 10';
+  var btn = document.getElementById('eventBtn');
+  btn.disabled = (G.eventPts < 10 || G.ended);
+}
+
+function showPopup(ico, msg, hard, gold){
+  var old = document.getElementById('popup');
+  if(old) old.remove();
+  var p = document.createElement('div');
+  p.id = 'popup';
+  p.className = 'popup'+(gold?' gold':(hard?' hd':''));
+  p.innerHTML = '<span class="popup-ico">'+ico+'</span>'+msg;
+  document.body.appendChild(p);
+  setTimeout(function(){ if(p.parentNode) p.parentNode.removeChild(p); }, 1800);
+}
+
+// ════════════════════════════════════════════════
+// 선호도 분류
+// ════════════════════════════════════════════════
+function getPref(type, id){
+  var map = type==='food' ? G.char.foodPref : G.char.playPref;
+  return map[id] || 'neutral';
+}
+
+function getPrefEmoji(pref){
+  if(pref==='love') return '❤️';
+  if(pref==='like') return '🧡';
+  if(pref==='hate') return '💜';
+  return '⬜';
+}
+
+function getPrefClass(pref){
+  if(pref==='love') return 'pref-love';
+  if(pref==='like') return 'pref-like';
+  if(pref==='hate') return 'pref-hate';
+  return '';
+}
+
+// ════════════════════════════════════════════════
+// 선호도 힌트 표시
+// ════════════════════════════════════════════════
+function renderAffinityBar(){
+  var bar = document.getElementById('affinityBar');
+  bar.innerHTML = '';
+  // 아주좋아
+  var loves = [];
+  var fMap = G.char.foodPref;
+  var pMap = G.char.playPref;
+  Object.keys(fMap).forEach(function(k){ if(fMap[k]==='love') loves.push(k); });
+  Object.keys(pMap).forEach(function(k){ if(pMap[k]==='love') loves.push(k); });
+  if(loves.length){
+    var chip = document.createElement('span');
+    chip.className = 'affinity-chip af-love';
+    chip.textContent = '❤️ 아주좋아: '+loves.slice(0,3).join(', ')+'...';
+    bar.appendChild(chip);
+  }
+}
+
+// ════════════════════════════════════════════════
+// 버튼 렌더링
+// ════════════════════════════════════════════════
+function renderButtons(){
+  var fList = G.isHard ? FOOD_HD : FOOD_NM;
+  var pList = G.isHard ? PLAY_HD : PLAY_NM;
+  var fg = document.getElementById('foodGrid');
+  var pg = document.getElementById('playGrid');
+  fg.innerHTML = '';
+  pg.innerHTML = '';
+
+  fList.forEach(function(item){ fg.appendChild(makeBtn(item,'food',false)); });
+  pList.forEach(function(item){ pg.appendChild(makeBtn(item,'play',false)); });
+
+  // 히든 아이템 (하드 10%)
+  if(G.isHard && Math.random()<.1)
+    fg.appendChild(makeBtn({id:'히든음식',icon:'🌟',label:'???'},'food',true));
+  if(G.isHard && Math.random()<.1)
+    pg.appendChild(makeBtn({id:'히든놀이',icon:'💫',label:'???'},'play',true));
+
+  setGridDisabled('foodGrid', G.foodCD>0);
+  setGridDisabled('playGrid', G.playCD>0);
+}
+
+function makeBtn(item, type, secret){
+  var btn = document.createElement('button');
+  var pref = secret ? '' : getPref(type, item.id);
+  var cls = 'act-btn';
+  if(secret)       cls += ' secret';
+  else if(G.isHard) cls += ' hard-style';
+  if(pref) cls += ' '+getPrefClass(pref);
+  btn.className = cls;
+
+  var dot = secret ? '' : '<span class="pref-dot">'+getPrefEmoji(pref)+'</span>';
+  btn.innerHTML = dot+'<span class="ico">'+item.icon+'</span>'+item.label;
+  btn.onclick = function(){ type==='food' ? doFeed(item.id,secret) : doPlay(item.id,secret); };
+  return btn;
+}
+
+function setGridDisabled(gridId, v){
+  document.getElementById(gridId).querySelectorAll('button').forEach(function(b){ b.disabled=v; });
+}
+
+// ════════════════════════════════════════════════
+// 쿨다운
+// ════════════════════════════════════════════════
+function startCD(type){
+  var cdKey = type+'CD';
+  var timerKey = type+'Timer';
+  var badgeId = type+'Badge';
+  var gridId = type+'Grid';
+
+  G[cdKey] = COOLDOWN;
+  setGridDisabled(gridId, true);
+  var badge = document.getElementById(badgeId);
+  badge.className = 'cd-badge '+(G.isHard?'hard-busy':'busy');
+  badge.textContent = COOLDOWN+'초 후';
+
+  if(G[timerKey]) clearInterval(G[timerKey]);
+  G[timerKey] = setInterval(function(){
+    if(G.ended){ clearInterval(G[timerKey]); return; }
+    G[cdKey]--;
+    if(G[cdKey]<=0){
+      clearInterval(G[timerKey]);
+      G[timerKey]=null;
+      G[cdKey]=0;
+      renderButtons();
+      badge.className='cd-badge';
+      badge.textContent='준비 완료';
+    } else {
+      badge.textContent=G[cdKey]+'초 후';
+    }
+  }, 1000);
+}
+
+// ════════════════════════════════════════════════
+// 상태 루프
+// ════════════════════════════════════════════════
+function startStatusLoop(){
+  if(G.statusTimer) clearInterval(G.statusTimer);
+  G.statusTimer = setInterval(function(){
+    if(G.ended){ clearInterval(G.statusTimer); return; }
+
+    // 이벤트 포인트 자동 증가
+    if(G.eventPts < 10){ G.eventPts++; updateEventBar(); }
+
+    var g = G.growth;
+    var n = G.key;
+    var status;
+    if     (g<=10) status = n+'는 거의 쓰러질 것 같다... 😰';
+    else if(g<=25) status = n+'는 많이 지쳐있다.';
+    else if(g<=50) status = n+'는 그럭저럭 버티고 있다.';
+    else if(g<=75) status = n+'는 꽤 즐거워 보인다! 😊';
+    else            status = n+'는 매우 행복하다! 🌟';
+    if(G.isHard) status='[💀] '+status;
+    document.getElementById('charStatus').textContent = status;
+
+    if(Math.random()<.15){
+      G.moodOn=true;
+      G.moodCount++;
+      log('💢 '+pick(G.char.mood),'mood');
+      log('⚠️ '+n+'의 감정 기복이 생겼다!','mood');
+      document.getElementById('charStatus').textContent='😤 '+n+'의 감정 기복 발동!';
+    } else {
+      G.moodOn=false;
+      var r=Math.random();
+      if     (r<.33) log(pick(G.char.hungry));
+      else if(r<.66) log(pick(G.char.bored));
+      else            log(pick(G.char.random));
+    }
+  }, 9000);
+}
+
+// ════════════════════════════════════════════════
+// 행동
+// ════════════════════════════════════════════════
+function doAction(id, secret, type){
+  if(G.ended) return;
+  var cdKey = type+'CD';
+  if(G[cdKey]>0) return;
+
+  var n = G.key;
+  var c = G.char;
+  G.turns++;
+  G.eventPts = Math.min(10, G.eventPts+1);
+  updateEventBar();
+
+  var typeLabel = type==='food'?'🍽️':'🎮';
+  var typeName  = type==='food'?'을(를) 줬다':'와(과) 놀았다';
+
+  // 히든 아이템
+  if(secret){
+    G.growth = Math.min(100, G.growth+20);
+    G.hiddenItems++;
+    log((type==='food'?'🌟':'💫')+' '+n+'가 신비한 '+(type==='food'?'음식':'활동')+'을 경험했다!','sc');
+    log(n+'의 성장도 +20! 현재: '+G.growth,'sc');
+    showPopup(type==='food'?'🌟':'💫','히든 '+(type==='food'?'음식':'활동')+'! +20!!',false,true);
+    updateBar();
+    G.moodOn=false;
+    if(!checkEnding()) startCD(type);
+    return;
+  }
+
+  var pref = getPref(type, id);
+  var pts = G.isHard ? PREF_PT_HARD[pref] : PREF_PT[pref];
+
+  // 카운트 증가
+  if(type==='food'){ G.foodCount[id] = (G.foodCount[id]||0)+1; }
+  else             { G.playCount[id] = (G.playCount[id]||0)+1; }
+
+  // 감정 기복 발동 (love여도 20% 거부)
+  if(pref==='love' && G.moodOn && Math.random()<.2){
+    var penalty = G.isHard ? 12 : 8;
+    G.growth = Math.max(0, G.growth-penalty);
+    G.disliked++;
+    log(typeLabel+' '+n+'와(과) '+id+typeName+'.','mood');
+    log('💢 '+n+': "오늘은 이것도 별로야..."','mood');
+    log('😤 감정 기복! 성장도 -'+penalty+' → 현재: '+G.growth,'mood');
+    showPopup('💢','감정 기복 -'+penalty,true);
+    G.moodOn=false;
+    updateBar();
+    if(!checkEnding()) startCD(type);
+    return;
+  }
+
+  G.growth = Math.max(0, Math.min(100, G.growth+pts));
+
+  if(pref==='love'){
+    G.liked+=2;
+    log(typeLabel+' '+n+'와(과) '+id+typeName+'!');
+    log('❤️ '+n+': "'+pick(c.happy)+'"');
+    log('성장도: '+G.growth+' (+'+(pts)+')', 'good');
+    showPopup('😍','아주 좋아해요! +'+pts,G.isHard);
+  } else if(pref==='like'){
+    G.liked++;
+    log(typeLabel+' '+n+'와(과) '+id+typeName+'!');
+    log('🧡 '+n+': "'+pick(c.happy)+'"');
+    log('성장도: '+G.growth+' (+'+(pts)+')','good');
+    showPopup('😊','좋아해요! +'+pts,G.isHard);
+  } else if(pref==='neutral'){
+    log(typeLabel+' '+n+'와(과) '+id+typeName+'...');
+    log('⬜ '+n+': "...그냥 그래."');
+    log('성장도: '+G.growth+' (+'+pts+')');
+    showPopup('😐','그냥그냥... +'+pts,G.isHard);
+  } else {
+    G.disliked++;
+    log(typeLabel+' '+n+'와(과) '+id+typeName+'...');
+    log('💜 '+n+': "'+pick(c.sad)+'"');
+    log('성장도: '+G.growth+' ('+pts+')', 'mood');
+    showPopup('😒','싫어해요... '+pts,G.isHard);
+  }
+
+  G.moodOn=false;
+  updateBar();
+  if(!checkEnding()) startCD(type);
+}
+
+function doFeed(id,secret){ doAction(id,secret,'food'); }
+function doPlay(id,secret){ doAction(id,secret,'play'); }
+
+// ════════════════════════════════════════════════
+// 특별 이벤트
+// ════════════════════════════════════════════════
+function triggerEvent(){
+  if(G.eventPts<10||G.ended) return;
+  G.eventPts=0;
+  G.eventCount++;
+  updateEventBar();
+
+  var ev = pick(EVENTS);
+  showEventOverlay(ev);
+}
+
+function showEventOverlay(ev){
+  var ov = document.createElement('div');
+  ov.className = 'event-overlay';
+  var choiceHTML = ev.choices.map(function(c,i){
+    return '<button class="ev-choice" id="evc'+i+'">'+c.label+'</button>';
+  }).join('');
+  ov.innerHTML =
+    '<div class="event-box">'+
+    '<span class="ev-ico">⚡</span>'+
+    '<h2>'+ev.title+'</h2>'+
+    '<p>'+ev.desc+'</p>'+
+    choiceHTML+
+    '<br><button class="ev-skip" id="evskip">그냥 넘길게...</button>'+
+    '</div>';
+  document.body.appendChild(ov);
+
+  ev.choices.forEach(function(c,i){
+    document.getElementById('evc'+i).onclick = function(){
+      ov.remove();
+      log('⚡ 이벤트: '+ev.title,'event');
+      if(c.food) doFeed(c.food,false);
+      if(c.play) doPlay(c.play,false);
+    };
+  });
+  document.getElementById('evskip').onclick = function(){
+    ov.remove();
+    log('⚡ 이벤트를 넘겼다...','event');
+    G.growth = Math.max(0, G.growth-5);
+    updateBar();
+    checkEnding();
+  };
+}
+
+// ════════════════════════════════════════════════
+// 엔딩 판정
+// ════════════════════════════════════════════════
+function checkEnding(){
+  var n = G.key;
+  var g = G.growth;
+
+  // 히든 엔딩 조건 체크
+  var maraCount = (G.foodCount['마라탕']||0);
+  var noraeCount = (G.playCount['노래방가기']||0);
+  var gameCount  = (G.playCount['롤하기']||0)+(G.playCount['포켓몬유나이트']||0)+(G.playCount['좀보이드']||0);
+
+  // 마라탕 중독
+  if(maraCount>=10 && g>=100){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hidden_maratang';}));
+    return true;
+  }
+  // 노래방 전설
+  if(noraeCount>=8 && g>=100){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hidden_norae';}));
+    return true;
+  }
+  // 찐겜러
+  if(gameCount>=10 && g>=100){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hidden_game';}));
+    return true;
+  }
+  // 오운완
+  if(G.eventCount>=5 && g>=100){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hidden_oowoon';}));
+    return true;
+  }
+  // 감정 기복 서바이버
+  if(G.moodCount>=10 && g>=100){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hidden_mood';}));
+    return true;
+  }
+  // 취향 파괴자
+  if(G.disliked>=15 && g>=100){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hidden_hate';}));
+    return true;
+  }
+  // 신비의 발견
+  if(G.hiddenItems>=3 && g>=100){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hidden_secretfood';}));
+    return true;
+  }
+
+  // 퍼펙트
+  if(g>=100 && !G.isHard && G.disliked===0 && G.liked>=8){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='perfect';}));
+    return true;
+  }
+  // 하드 클리어
+  if(g>=100 && G.isHard){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hard_win';}));
+    return true;
+  }
+  // 해피
+  if(g>=100){
+    var ed = ENDINGS_DEF.find(function(e){return e.id==='happy';});
+    var msg = ed.msg.replace('{n}',n);
+    doEnding({emoji:ed.emoji,cls:ed.cls,title:ed.title,msg:n+'는 이제 완전히 행복해졌다! 🎊\n\n'+n+': "'+pick(G.char.happy)+'"\n\n함께한 시간이 정말 소중했어. 💕\n\n[ 성장도 100 달성 ]',id:ed.id,hidden:ed.hidden});
+    return true;
+  }
+  // 하드 최악
+  if(g<=0 && G.isHard && G.disliked>=5){
+    doEnding(ENDINGS_DEF.find(function(e){return e.id==='hard_bad';}));
+    return true;
+  }
+  // 배드
+  if(g<=0){
+    var bads = ['egg_back','lonely','runaway','burnout'];
+    // 추가 히든 조건
+    if(G.disliked>=15){
+      bads.push('hidden_hate');
+    }
+    var eid = pick(bads);
+    doEnding(ENDINGS_DEF.find(function(e){return e.id===eid;})||ENDINGS_DEF[0]);
+    return true;
+  }
+  return false;
+}
+
+function doEnding(data){
+  G.ended=true;
+  clearAllTimers();
+  unlockEnding(data.id);
+
+  setTimeout(function(){
+    document.getElementById('gameScreen').style.display='none';
+    document.getElementById('endingScreen').style.display='block';
+    document.getElementById('endEmoji').textContent = data.emoji;
+    var t = document.getElementById('endTitle');
+    t.className = 'end-title '+data.cls;
+    t.textContent = data.title;
+    document.getElementById('endMsg').textContent = data.msg;
+    var hb = document.getElementById('hiddenBadge');
+    hb.style.display = data.hidden ? 'block' : 'none';
+  }, 400);
+}
+
+// ════════════════════════════════════════════════
+// 하드모드 오버레이
+// ════════════════════════════════════════════════
+function showHardOverlay(onYes, onNo){
+  var ov = document.createElement('div');
+  ov.className = 'overlay';
+  ov.innerHTML =
+    '<div class="overlay-box">'+
+    '<span class="ov-ico">💀</span>'+
+    '<h2>⚠️ 하드모드 진입!</h2>'+
+    '<p>성장도 변화량이 증가합니다.<br>선택지가 늘어나고 더 까다로워집니다.<br>감정 기복 확률도 올라가요!<br>클리어 시 <b>특별 엔딩</b>이 기다려요!</p>'+
+    '<button class="ov-yes" id="ovYes">도전한다! 💪</button>'+
+    '<button class="ov-no"  id="ovNo">포기할게요 😅</button>'+
+    '</div>';
+  document.body.appendChild(ov);
+  document.getElementById('ovYes').onclick = function(){ ov.remove(); onYes(); };
+  document.getElementById('ovNo').onclick  = function(){ ov.remove(); onNo(); };
+}
+
+// ════════════════════════════════════════════════
+// 알 탭
+// ════════════════════════════════════════════════
+function eggTap(){
+  eggCnt++;
+  var el = document.getElementById('eggEl');
+  el.style.transform = 'rotate('+(eggCnt*22)+'deg) scale(1.18)';
+  setTimeout(function(){ el.style.transform=''; }, 240);
+  if(eggCnt>=7){ el.textContent='🐣'; setTimeout(function(){ el.textContent='🥚'; eggCnt=0; }, 800); }
+}
+
+// ════════════════════════════════════════════════
+// 타이머 정리
+// ════════════════════════════════════════════════
+function clearAllTimers(){
+  if(G.foodTimer)  { clearInterval(G.foodTimer);   G.foodTimer=null; }
+  if(G.playTimer)  { clearInterval(G.playTimer);   G.playTimer=null; }
+  if(G.statusTimer){ clearInterval(G.statusTimer); G.statusTimer=null; }
+}
+
+// ════════════════════════════════════════════════
+// 게임 시작
+// ════════════════════════════════════════════════
+function startGame(){
+  clearAllTimers();
+  loadAlbum();
+
+  var keys = Object.keys(CHARS);
+  G.key = keys[Math.floor(Math.random()*keys.length)];
+  G.char = CHARS[G.key];
+  G.growth = 10;
+  G.foodCD = 0; G.playCD = 0;
+  G.ended = false; G.isHard = false;
+  G.liked = 0; G.disliked = 0; G.turns = 0;
+  G.moodOn = false; G.moodCount = 0;
+  G.eventPts = 0; G.eventCount = 0;
+  G.hiddenItems = 0;
+  G.foodCount = {}; G.playCount = {};
+  eggCnt = 0;
+
+  var hard = (Math.random()<.1);
+
+  // 화면 전환
+  document.getElementById('startScreen').style.display  = 'none';
+  document.getElementById('endingScreen').style.display = 'none';
+  document.getElementById('albumScreen').style.display  = 'none';
+  document.getElementById('gameScreen').style.display   = 'block';
+
+  // UI 초기화
+  document.getElementById('logBox').innerHTML = '';
+  document.getElementById('foodGrid').innerHTML = '';
+  document.getElementById('playGrid').innerHTML = '';
+  document.getElementById('foodBadge').className = 'cd-badge';
+  document.getElementById('foodBadge').textContent = '준비 완료';
+  document.getElementById('playBadge').className = 'cd-badge';
+  document.getElementById('playBadge').textContent = '준비 완료';
+  document.getElementById('charEmoji').textContent = '🥚';
+  document.getElementById('charEmoji').style.animation = 'shake .4s ease infinite';
+  document.getElementById('charName').textContent = '';
+  document.getElementById('charMbti').textContent = '';
+  document.getElementById('charJob').textContent  = '';
+  document.getElementById('charStatus').textContent = '부화 중...';
+  document.getElementById('modeBadge').className = 'mode-badge';
+  document.getElementById('modeBadge').textContent = '일반모드';
+  document.getElementById('barFill').style.width = '0%';
+  document.getElementById('barLabel').textContent = '0 / 100';
+  document.getElementById('affinityBar').innerHTML = '';
+  document.getElementById('eventPts').textContent = '0 / 10';
+  document.getElementById('eventBtn').disabled = true;
+  document.getElementById('hiddenBadge').style.display = 'none';
+
+  log('🥚 알이 흔들리기 시작했다...');
+
+  // 1.8초 후 부화
+  setTimeout(function(){
+    var el = document.getElementById('charEmoji');
+    el.style.animation = 'float 2.5s ease-in-out infinite';
+    el.textContent = G.char.emoji;
+
+    document.getElementById('charName').textContent = G.key;
+    document.getElementById('charMbti').textContent = G.char.mbti;
+    document.getElementById('charJob').textContent  = G.char.job;
+
+    log('🐣 알이 부화했다! '+G.key+'이(가) 태어났어요!');
+    log(G.key+'의 성장도: '+G.growth);
+    log('직업: '+G.char.job+' / MBTI: '+G.char.mbti);
+    updateBar();
+    renderAffinityBar();
+
+    if(hard){
+      setTimeout(function(){
+        showHardOverlay(
+          function(){
+            G.isHard=true;
+            var mb = document.getElementById('modeBadge');
+            mb.className = 'mode-badge hard';
+            mb.textContent = '💀 하드모드';
+            log('💀 하드모드 진입! 변화량 증가, 선택지 증가!','hd');
+            updateBar();
+            renderButtons();
+            startStatusLoop();
+          },
+          function(){
+            renderButtons();
+            startStatusLoop();
+          }
+        );
+      }, 600);
+    } else {
+      renderButtons();
+      startStatusLoop();
+    }
+  }, 1800);
+}
+
+// ════════════════════════════════════════════════
+// 화면 전환
+// ════════════════════════════════════════════════
+function restartGame(){
+  clearAllTimers();
+  document.getElementById('endingScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display   = 'none';
+  document.getElementById('albumScreen').style.display  = 'none';
+  document.getElementById('startScreen').style.display  = 'block';
+}
+
+function showAlbum(){
+  loadAlbum();
+  document.getElementById('startScreen').style.display  = 'none';
+  document.getElementById('endingScreen').style.display = 'none';
+  document.getElementById('gameScreen').style.display   = 'none';
+  document.getElementById('albumScreen').style.display  = 'block';
+
+  var grid = document.getElementById('albumGrid');
+  grid.innerHTML = '';
+
+  if(unlockedAlbum.length===0){
+    var empty = document.createElement('div');
+    empty.className = 'album-empty';
+    empty.textContent = '아직 달성한 엔딩이 없어요! 게임을 시작해보세요 🥚';
+    grid.appendChild(empty);
+    return;
+  }
+
+  ENDINGS_DEF.forEach(function(ed){
+    var found = unlockedAlbum.indexOf(ed.id)>=0;
+    var card = document.createElement('div');
+    card.className = 'album-card';
+    if(found){
+      var titleCls = 'album-card-title'+(ed.hidden?' hidden-e':'');
+      var prefix = ed.hidden ? '✨ 히든엔딩!!! ✨ ' : '';
+      card.innerHTML =
+        '<div class="'+titleCls+'">'+prefix+ed.emoji+' '+ed.title+'</div>'+
+        '<div class="album-card-msg">'+ed.msg.replace(/\n/g,'<br>')+'</div>';
+    } else {
+      card.innerHTML =
+        '<div class="album-card-title" style="color:#ccc">🔒 ???</div>'+
+        '<div class="album-card-msg" style="color:#ddd">아직 달성하지 못한 엔딩입니다.</div>';
+    }
+    grid.appendChild(card);
+  });
+}
+
+function showStart(){
+  document.getElementById('albumScreen').style.display = 'none';
+  document.getElementById('startScreen').style.display = 'block';
+}
+
+// 초기화
+loadAlbum();
+</script>
+</body>
+</html>
