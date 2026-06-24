@@ -1,1642 +1,1219 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
-  <title>PlayMate 🛝</title>
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>코리요의 초대장 🦕</title>
+<style>
+:root{
+  --bg:#FAFBFF;--yellow:#FFD84D;--yellow-light:#FFF5C0;--yellow-soft:#FFFBE8;
+  --green-light:#E8F5E9;--pink-light:#FFE4EC;--pink:#FFB3C6;
+  --blue-light:#E8F4FF;--purple-light:#F0EBFF;--purple:#C9B3FF;
+  --orange-light:#FFF0E6;--orange:#FFCBA4;
+  --text-dark:#3A3560;--text-mid:#6B6591;--text-light:#A09CC0;
+  --border:#EAE8F5;--shadow:0 4px 20px rgba(58,53,96,.08);--shadow-h:0 8px 30px rgba(58,53,96,.15);
+  --r:20px;--r-sm:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(--bg);color:var(--text-dark);min-height:100vh;max-width:430px;margin:0 auto;overflow-x:hidden;}
+.screen{display:none;min-height:100vh;flex-direction:column;}
+.screen.active{display:flex;}
 
-    :root {
-      --primary: #FF8C69;
-      --primary-light: #FFD4C2;
-      --bg: #FFF9F5;
-      --card: #FFFFFF;
-      --pink: #FFB5C8;
-      --mint: #B5EAD7;
-      --yellow: #FFEAA7;
-      --blue: #B5D8F7;
-      --purple: #D4B5F7;
-      --gray: #F0EDE8;
-      --text: #3D2B1F;
-      --text-sub: #9B8579;
-      --red-dot: #FF6B6B;
-      --yellow-dot: #FFD93D;
-      --radius: 18px;
-      --shadow: 0 4px 16px rgba(255,140,105,0.10);
-    }
+/* SPLASH */
+#splashScreen{background:linear-gradient(160deg,#FFF9D0 0%,#E8F5FF 50%,#F0EBFF 100%);align-items:center;justify-content:center;flex-direction:column;gap:20px;position:relative;overflow:hidden;}
+.sp-circle{position:absolute;border-radius:50%;opacity:.12;animation:flt 6s ease-in-out infinite;}
+.sp-c1{width:220px;height:220px;background:var(--yellow);top:-60px;left:-70px;}
+.sp-c2{width:160px;height:160px;background:var(--pink);top:30%;right:-50px;animation-delay:2s;}
+.sp-c3{width:190px;height:190px;background:#B3D9FF;bottom:8%;left:-40px;animation-delay:4s;}
+@keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
+.sp-dino{width:140px;height:140px;background:var(--yellow);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:0 8px 30px rgba(255,216,77,.45);animation:pop .6s cubic-bezier(.34,1.56,.64,1) both;}
+@keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
+.sp-title{font-size:28px;font-weight:800;color:var(--text-dark);text-align:center;}
+.sp-title span{color:#5C4DDB;}
+.sp-sub{font-size:14px;color:var(--text-mid);}
+.sp-bubble{background:white;border-radius:18px;padding:14px 20px;box-shadow:var(--shadow);max-width:280px;font-size:14px;color:var(--text-dark);line-height:1.6;text-align:center;position:relative;z-index:1;animation:fup .5s .3s ease both;}
+@keyframes fup{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
+.sp-bubble::before{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid white;}
 
-    body {
-      font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      max-width: 430px;
-      margin: 0 auto;
-      min-height: 100vh;
-      position: relative;
-    }
+/* BUTTONS */
+.btn{border:none;cursor:pointer;font-family:inherit;border-radius:50px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
+.btn:active{transform:scale(.96);}
+.btn-p{background:linear-gradient(135deg,#5C4DDB,#8B5FBF);color:white;padding:15px 30px;font-size:16px;box-shadow:0 4px 20px rgba(92,77,219,.35);width:100%;}
+.btn-y{background:var(--yellow);color:var(--text-dark);padding:12px 24px;font-size:14px;}
+.btn-o{background:white;color:var(--text-mid);border:2px solid var(--border);padding:11px 22px;font-size:14px;}
+.btn-sm{padding:8px 14px;font-size:12px;}
 
-    /* ─── 상단 헤더 ─── */
-    .header {
-      background: var(--card);
-      padding: 16px 20px 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      box-shadow: 0 2px 12px rgba(255,140,105,0.08);
-    }
-    .header-logo {
-      font-size: 22px;
-      font-weight: 800;
-      color: var(--primary);
-      letter-spacing: -0.5px;
-    }
-    .header-logo span { color: #FFB347; }
-    .header-location {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 13px;
-      color: var(--text-sub);
-      background: var(--gray);
-      padding: 5px 10px;
-      border-radius: 20px;
-      cursor: pointer;
-    }
-    .header-icons {
-      display: flex;
-      gap: 14px;
-      font-size: 20px;
-    }
-    .header-icons span { cursor: pointer; }
+/* AUTH */
+.auth-sc{background:linear-gradient(160deg,#FFF9D0 0%,#E8F5FF 100%);padding:40px 24px 30px;flex-direction:column;}
+.auth-hd{text-align:center;margin-bottom:28px;}
+.auth-ico{font-size:52px;margin-bottom:8px;}
+.auth-title{font-size:22px;font-weight:800;color:var(--text-dark);}
+.auth-sub{font-size:13px;color:var(--text-mid);margin-top:4px;}
+.card{background:white;border-radius:var(--r);padding:24px;box-shadow:var(--shadow);flex:1;overflow-y:auto;}
+.fg{margin-bottom:16px;}
+.fl{font-size:12px;font-weight:700;color:var(--text-mid);margin-bottom:6px;display:block;}
+.fi{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:15px;font-family:inherit;color:var(--text-dark);outline:none;transition:border-color .2s;background:var(--bg);}
+.fi:focus{border-color:#5C4DDB;background:white;}
+.fi::placeholder{color:var(--text-light);}
+.fsel{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:15px;font-family:inherit;color:var(--text-dark);outline:none;background:var(--bg);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6591' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
 
-    /* ─── 탭바 ─── */
-    .tab-bar {
-      display: flex;
-      background: var(--card);
-      border-bottom: 1.5px solid #F5EDE8;
-      padding: 0 8px;
-      position: sticky;
-      top: 62px;
-      z-index: 99;
-    }
-    .tab-item {
-      flex: 1;
-      text-align: center;
-      padding: 12px 0 10px;
-      font-size: 13px;
-      color: var(--text-sub);
-      cursor: pointer;
-      border-bottom: 2.5px solid transparent;
-      transition: all 0.2s;
-      font-weight: 500;
-    }
-    .tab-item.active {
-      color: var(--primary);
-      border-bottom: 2.5px solid var(--primary);
-      font-weight: 700;
-    }
-    .tab-item .tab-icon { font-size: 18px; display: block; margin-bottom: 2px; }
+/* CHIPS - label/input 방식 (클릭 버그 수정) */
+.cg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+.ci{display:none;}
+.cl{display:inline-block;padding:9px 15px;border-radius:50px;font-size:13px;border:2px solid var(--border);background:white;cursor:pointer;transition:all .15s;color:var(--text-mid);font-weight:600;user-select:none;-webkit-tap-highlight-color:transparent;}
+.ci:checked+.cl{background:var(--yellow);border-color:var(--yellow);color:var(--text-dark);}
+/* 일반 칩 (필터용) */
+.chip{display:inline-block;padding:9px 15px;border-radius:50px;font-size:13px;border:2px solid var(--border);background:white;cursor:pointer;transition:all .15s;color:var(--text-mid);font-weight:600;user-select:none;white-space:nowrap;}
+.chip.sel{background:var(--yellow);border-color:var(--yellow);color:var(--text-dark);}
 
-    /* ─── 콘텐츠 영역 ─── */
-    .content {
-      padding: 16px 16px 90px;
-      display: none;
-    }
-    .content.active { display: block; }
+/* ONBOARD */
+.ob-prog{display:flex;gap:6px;margin-bottom:24px;}
+.ob-dot{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s;}
+.ob-dot.done{background:#5C4DDB;}
+.ob-step{display:none;}
+.ob-step.active{display:block;}
+.ob-title{font-size:20px;font-weight:800;color:var(--text-dark);margin-bottom:6px;line-height:1.3;}
+.ob-sub{font-size:13px;color:var(--text-mid);margin-bottom:20px;}
+.child-card{background:var(--yellow-soft);border-radius:var(--r);padding:16px;margin-bottom:12px;border:2px solid var(--yellow-light);position:relative;}
+.rm-child{position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-light);}
 
-    /* ─── 날씨 배너 ─── */
-    .weather-banner {
-      background: linear-gradient(135deg, #FFE8D6, #FFD4C2);
-      border-radius: var(--radius);
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
-    }
-    .weather-left { font-size: 13px; color: var(--text); }
-    .weather-left strong { font-size: 15px; display: block; margin-bottom: 2px; }
-    .weather-right { font-size: 28px; }
-    .weather-tags { display: flex; gap: 6px; margin-top: 6px; flex-wrap: wrap; }
-    .weather-tag {
-      font-size: 11px;
-      background: rgba(255,255,255,0.7);
-      padding: 3px 8px;
-      border-radius: 20px;
-      color: var(--text);
-    }
+/* MAIN */
+#mainApp{display:none;flex-direction:column;min-height:100vh;}
+#mainApp.active{display:flex;}
+.topbar{background:white;padding:16px 20px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(58,53,96,.06);display:flex;align-items:center;justify-content:space-between;}
+.tlogo{display:flex;align-items:center;gap:8px;}
+.tlogo-ico{font-size:28px;}
+.tlogo-txt{font-size:17px;font-weight:800;color:var(--text-dark);}
+.tacts{display:flex;gap:8px;align-items:center;}
+.nbtn{width:36px;height:36px;border-radius:50%;background:var(--yellow-soft);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;}
+.nbadge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#FF5757;border-radius:50%;font-size:9px;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;}
+.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--yellow),var(--orange));display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;}
+.content{flex:1;overflow-y:auto;padding-bottom:80px;}
 
-    /* ─── 섹션 타이틀 ─── */
-    .section-title {
-      font-size: 16px;
-      font-weight: 700;
-      color: var(--text);
-      margin-bottom: 12px;
-      display: flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .section-title .badge {
-      font-size: 11px;
-      background: var(--primary-light);
-      color: var(--primary);
-      padding: 2px 8px;
-      border-radius: 20px;
-      font-weight: 600;
-    }
+/* BOTTOM NAV */
+.botnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:white;border-top:1px solid var(--border);display:flex;z-index:200;padding:8px 0 env(safe-area-inset-bottom,8px);}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;transition:all .2s;position:relative;}
+.ni-ico{font-size:22px;transition:transform .2s;}
+.ni-lbl{font-size:10px;font-weight:600;color:var(--text-light);}
+.ni.active .ni-ico{transform:scale(1.15);}
+.ni.active .ni-lbl{color:#5C4DDB;font-weight:800;}
+.ni-dot{position:absolute;top:4px;right:16px;width:8px;height:8px;background:#FF5757;border-radius:50%;display:none;}
+.ni-dot.on{display:block;}
 
-    /* ─── 놀이터 카드 ─── */
-    .playground-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow);
-      border-left: 5px solid var(--gray);
-      transition: transform 0.15s;
-      cursor: pointer;
-    }
-    .playground-card:active { transform: scale(0.98); }
-    .playground-card.hot { border-left-color: var(--red-dot); }
-    .playground-card.warm { border-left-color: var(--yellow-dot); }
-    .playground-card.empty { border-left-color: #D9D0CA; }
+/* TABS */
+.tabc{display:none;}
+.tabc.active{display:block;}
 
-    .card-top {
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      margin-bottom: 8px;
-    }
-    .card-name { font-size: 15px; font-weight: 700; }
-    .card-status {
-      font-size: 11px;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-weight: 600;
-    }
-    .status-hot { background: #FFE5E5; color: #FF4B4B; }
-    .status-warm { background: #FFF8DC; color: #D4A017; }
-    .status-empty { background: var(--gray); color: var(--text-sub); }
+/* HOME */
+.hero{background:linear-gradient(135deg,#FFF9D0 0%,#E8F5FF 100%);padding:20px 20px 16px;}
+.hero-greet{font-size:13px;color:var(--text-mid);margin-bottom:4px;}
+.hero-title{font-size:20px;font-weight:800;color:var(--text-dark);line-height:1.3;}
+.hero-bubble{margin-top:14px;background:white;border-radius:16px;padding:12px 16px;box-shadow:0 3px 12px rgba(58,53,96,.08);display:flex;align-items:flex-start;gap:10px;}
+.hb-ico{font-size:30px;flex-shrink:0;margin-top:2px;}
+.hb-txt{font-size:13px;color:var(--text-dark);line-height:1.6;}
+.hb-txt strong{color:#5C4DDB;}
 
-    .card-users {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 8px;
-    }
-    .user-chip {
-      font-size: 12px;
-      background: var(--primary-light);
-      color: var(--text);
-      padding: 4px 10px;
-      border-radius: 20px;
-    }
-    .user-chip.friend { background: var(--mint); }
+/* SECTION */
+.sechd{padding:20px 20px 10px;display:flex;align-items:center;justify-content:space-between;}
+.sech-t{font-size:16px;font-weight:800;color:var(--text-dark);}
+.sech-m{font-size:12px;color:var(--text-light);cursor:pointer;}
 
-    .card-tags {
-      display: flex;
-      gap: 6px;
-      flex-wrap: wrap;
-      margin-bottom: 10px;
-    }
-    .card-tag {
-      font-size: 11px;
-      background: var(--gray);
-      color: var(--text-sub);
-      padding: 3px 8px;
-      border-radius: 20px;
-    }
+/* SCROLL CARDS */
+.escroll{padding:0 20px;display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px;}
+.escroll::-webkit-scrollbar{display:none;}
+.ecard{min-width:220px;background:white;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;flex-shrink:0;transition:all .2s;cursor:pointer;position:relative;}
+.ecard:active{transform:scale(.98);}
+.ecard-img{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:52px;}
+.age-badge{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.92);border-radius:50px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--text-dark);}
+.ecard-body{padding:12px 14px 14px;}
+.etag{display:inline-block;padding:3px 8px;border-radius:50px;font-size:10px;font-weight:700;margin-bottom:6px;}
+.t-art{background:var(--purple-light);color:#6B4FBF;}
+.t-sci{background:var(--blue-light);color:#2A6A9F;}
+.t-nat{background:var(--green-light);color:#4A8A4A;}
+.t-cul{background:var(--blue-light);color:#3A7ABF;}
+.t-his{background:var(--orange-light);color:#8A4A1A;}
+.t-edu{background:var(--green-light);color:#3A8A3A;}
+.t-free{background:var(--yellow-light);color:#8A6A00;}
+.ecard-title{font-size:14px;font-weight:700;color:var(--text-dark);line-height:1.4;margin-bottom:6px;}
+.ecard-info{font-size:11px;color:var(--text-mid);line-height:1.7;}
+.ecard-acts{display:flex;gap:6px;margin-top:10px;align-items:center;}
+.hbtn{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:white;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;flex-shrink:0;}
+.hbtn.on{background:var(--pink-light);border-color:var(--pink);}
+.hbtn:active{transform:scale(1.3);}
+.dbtn{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:white;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--text-light);}
+.gbtn{flex:1;background:var(--yellow);border:none;border-radius:50px;padding:8px 12px;font-size:11px;font-weight:700;color:var(--text-dark);cursor:pointer;transition:all .2s;font-family:inherit;}
 
-    .card-bottom {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .card-rating { font-size: 12px; color: var(--text-sub); }
-    .card-rating span { color: #FFB347; }
+/* LIST CARDS */
+.elcard{background:white;border-radius:var(--r);box-shadow:var(--shadow);margin:0 20px 12px;overflow:hidden;transition:all .2s;cursor:pointer;}
+.elcard:active{transform:scale(.99);}
+.elin{display:flex;}
+.el-ico{width:80px;min-height:80px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;}
+.el-body{padding:12px 14px 12px 0;flex:1;}
+.el-title{font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:4px;line-height:1.4;}
+.el-meta{font-size:11px;color:var(--text-mid);line-height:1.6;}
+.el-foot{display:flex;align-items:center;justify-content:space-between;padding:8px 14px;border-top:1px solid var(--border);background:var(--bg);}
+.hot-badge{background:linear-gradient(135deg,#FF5757,#FF8A57);color:white;font-size:10px;font-weight:800;padding:3px 8px;border-radius:50px;display:inline-block;margin-left:6px;animation:hpulse 2s infinite;}
+@keyframes hpulse{0%,100%{opacity:1}50%{opacity:.7}}
+.new-badge{background:#5C4DDB;color:white;font-size:10px;font-weight:800;padding:3px 8px;border-radius:50px;display:inline-block;margin-left:6px;}
+.src-tag{display:inline-flex;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:2px 8px;font-size:10px;color:var(--text-light);}
 
-    .btn-checkin {
-      flex: 1;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 12px;
-      padding: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      transition: background 0.2s;
-    }
-    .btn-checkin:active { background: #e07050; }
-    .btn-checkin.checked {
-      background: var(--mint);
-      color: #2D8A60;
-    }
+/* DIVIDER */
+.div8{height:8px;background:var(--bg);margin:4px 0;}
 
-    .alert-box {
-      background: linear-gradient(135deg, #FFE8D6, #FFDDD0);
-      border-radius: 12px;
-      padding: 10px 14px;
-      margin-bottom: 12px;
-      font-size: 13px;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      border: 1.5px solid var(--primary-light);
-    }
+/* FILTER */
+.fbar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 20px 4px;-ms-overflow-style:none;}
+.fbar::-webkit-scrollbar{display:none;}
+.rbtn{display:inline-flex;align-items:center;gap:6px;background:var(--yellow-light);border:none;border-radius:50px;padding:9px 18px;font-size:13px;font-weight:700;color:var(--text-dark);cursor:pointer;transition:all .2s;font-family:inherit;margin:0 20px 12px;}
+.rbtn:hover{background:var(--yellow);}
+.rbtn.loading{opacity:.6;pointer-events:none;}
+.ai-status{margin:0 20px 12px;padding:10px 14px;background:var(--purple-light);border-radius:var(--r-sm);font-size:12px;color:var(--text-mid);display:none;align-items:center;gap:6px;}
+.ai-status.on{display:flex;}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#5C4DDB;animation:blink 1.2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(92,77,219,.3);border-top-color:#5C4DDB;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    /* ─── 체크인 모달 ─── */
-    .modal-overlay {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.35);
-      z-index: 200;
-      align-items: flex-end;
-      justify-content: center;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-sheet {
-      background: var(--card);
-      border-radius: 24px 24px 0 0;
-      padding: 24px 20px 40px;
-      width: 100%;
-      max-width: 430px;
-      animation: slideUp 0.3s ease;
-    }
-    @keyframes slideUp {
-      from { transform: translateY(100%); }
-      to { transform: translateY(0); }
-    }
-    .modal-handle {
-      width: 40px; height: 4px;
-      background: var(--gray);
-      border-radius: 4px;
-      margin: 0 auto 20px;
-    }
-    .modal-title { font-size: 18px; font-weight: 800; margin-bottom: 6px; }
-    .modal-sub { font-size: 13px; color: var(--text-sub); margin-bottom: 20px; }
+/* WELFARE */
+.wcard{background:white;border-radius:var(--r);margin:0 20px 12px;padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;}
+.wcard:active{transform:scale(.99);}
+.wc-hd{display:flex;align-items:flex-start;gap:12px;}
+.wc-ico{width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.wc-title{font-size:14px;font-weight:700;color:var(--text-dark);line-height:1.4;flex:1;}
+.wc-meta{font-size:11px;color:var(--text-mid);margin-top:4px;}
+.wc-prev{font-size:12px;color:var(--text-mid);margin-top:8px;line-height:1.6;}
+.wc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
 
-    .modal-info-row {
-      display: flex;
-      justify-content: space-between;
-      background: var(--bg);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 16px;
-      font-size: 13px;
-    }
-    .modal-info-row span { color: var(--text-sub); }
-    .modal-info-row strong { color: var(--text); }
+/* CALENDAR */
+.cal-hd{background:white;padding:16px 20px;box-shadow:0 2px 8px rgba(58,53,96,.05);}
+.cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
+.cal-month{font-size:18px;font-weight:800;color:var(--text-dark);}
+.cal-nbtn{width:34px;height:34px;border-radius:50%;background:var(--bg);border:2px solid var(--border);cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;}
+.cal-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.cldn{text-align:center;font-size:11px;font-weight:700;color:var(--text-light);padding:4px 0;}
+.cldn:first-child{color:#E05A5A;}
+.cldn:last-child{color:#5C88DB;}
+.cldc{text-align:center;padding:6px 2px;border-radius:var(--r-sm);cursor:pointer;transition:all .15s;position:relative;font-size:13px;font-weight:600;color:var(--text-dark);min-height:38px;display:flex;flex-direction:column;align-items:center;}
+.cldc:hover{background:var(--yellow-light);}
+.cldc.today{background:var(--yellow);border-radius:50%;width:34px;margin:0 auto;}
+.cldc.hase::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;background:#5C4DDB;border-radius:50%;}
+.cldc.sun{color:#E05A5A;}
+.cldc.sat{color:#5C88DB;}
+.cal-evts{padding:16px 20px;}
+.ce-item{background:white;border-radius:var(--r-sm);padding:12px 16px;margin-bottom:8px;border-left:4px solid var(--yellow);box-shadow:0 2px 8px rgba(58,53,96,.06);cursor:pointer;}
+.ce-title{font-size:13px;font-weight:700;color:var(--text-dark);}
+.ce-meta{font-size:11px;color:var(--text-mid);margin-top:3px;}
 
-    .btn-full {
-      width: 100%;
-      background: var(--primary);
-      color: white;
-      border: none;
-      border-radius: 14px;
-      padding: 15px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      margin-bottom: 10px;
-    }
-    .btn-full.outline {
-      background: white;
-      color: var(--primary);
-      border: 2px solid var(--primary);
-    }
-    .btn-full.gray {
-      background: var(--gray);
-      color: var(--text-sub);
-    }
+/* PARTY */
+.party-hero{background:linear-gradient(135deg,#F0EBFF 0%,#FFE4EC 100%);padding:20px;text-align:center;}
+.pcard{background:white;border-radius:var(--r);margin:0 20px 12px;padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;}
+.pcard:active{transform:scale(.99);}
+.psbadge{display:inline-block;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;margin-bottom:8px;}
+.psg{background:var(--blue-light);color:#2A6A9F;}
+.psc{background:var(--green-light);color:#3A8A3A;}
+.progw{height:6px;border-radius:50px;background:var(--border);overflow:hidden;margin-top:8px;}
+.progf{height:100%;border-radius:50px;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);}
+.patts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.patt{background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:4px 10px;font-size:11px;color:var(--text-mid);}
 
-    /* ─── 리뷰/신고 화면 ─── */
-    .sub-screen {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--bg);
-      z-index: 300;
-      max-width: 430px;
-      margin: 0 auto;
-      overflow-y: auto;
-    }
-    .sub-screen.open { display: block; }
-    .sub-header {
-      background: var(--card);
-      padding: 16px 20px;
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      position: sticky;
-      top: 0;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-    }
-    .sub-header-back {
-      font-size: 22px;
-      cursor: pointer;
-      color: var(--primary);
-    }
-    .sub-header-title { font-size: 17px; font-weight: 700; }
-    .sub-content { padding: 20px 16px 40px; }
+/* MODAL */
+.mov{position:fixed;inset:0;background:rgba(30,25,70,.5);z-index:500;display:none;align-items:flex-end;backdrop-filter:blur(3px);}
+.mov.active{display:flex;animation:fov .2s ease;}
+@keyframes fov{from{opacity:0}to{opacity:1}}
+.msheet{background:white;border-radius:24px 24px 0 0;width:100%;max-height:92vh;overflow-y:auto;animation:slu .3s cubic-bezier(.34,1.2,.64,1);padding:16px 20px 50px;}
+@keyframes slu{from{transform:translateY(100%)}to{transform:translateY(0)}}
+.mhandle{width:40px;height:4px;background:var(--border);border-radius:2px;margin:0 auto 16px;}
+.mtitle{font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:4px;}
+.msub{font-size:13px;color:var(--text-mid);margin-bottom:16px;}
 
-    .star-row {
-      display: flex;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    .star {
-      font-size: 28px;
-      cursor: pointer;
-      transition: transform 0.1s;
-      filter: grayscale(1);
-    }
-    .star.active { filter: none; transform: scale(1.1); }
+/* INVITATION */
+.inv-ov{position:fixed;inset:0;background:rgba(30,25,70,.6);z-index:600;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.inv-ov.active{display:flex;animation:fov .2s ease;}
+.inv-card{background:white;border-radius:24px;padding:24px 20px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(30,25,70,.3);animation:ipop .4s cubic-bezier(.34,1.4,.64,1);position:relative;}
+@keyframes ipop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
+.inv-env{text-align:center;margin-bottom:16px;animation:envb 1s .3s ease-in-out infinite;}
+@keyframes envb{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.inv-title{font-size:18px;font-weight:800;text-align:center;color:var(--text-dark);margin-bottom:4px;}
+.inv-sub{font-size:12px;color:var(--text-mid);text-align:center;margin-bottom:16px;}
+.inv-box{background:var(--yellow-soft);border-radius:var(--r-sm);padding:14px;margin-bottom:14px;}
+.inv-ename{font-size:16px;font-weight:800;color:var(--text-dark);margin-bottom:6px;}
+.inv-ml{font-size:12px;color:var(--text-mid);line-height:1.9;}
+.inv-mi{display:flex;align-items:center;gap:6px;}
+.mdot{width:6px;height:6px;background:var(--yellow);border-radius:50%;flex-shrink:0;}
+.mdot.good{background:#A8D8A8;}
+.inv-atts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:16px;}
+.iatt{display:flex;flex-direction:column;align-items:center;gap:3px;background:var(--bg);border-radius:12px;padding:8px 12px;border:1px solid var(--border);}
+.inv-btns{display:flex;gap:8px;}
+.inv-yes{flex:2;background:linear-gradient(135deg,#5C4DDB,#8B5FBF);color:white;border:none;border-radius:50px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
+.inv-no{flex:1;background:var(--bg);color:var(--text-mid);border:2px solid var(--border);border-radius:50px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
 
-    .review-label {
-      font-size: 14px;
-      font-weight: 600;
-      margin-bottom: 8px;
-      margin-top: 16px;
-      color: var(--text);
-    }
-    .sub-star-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: var(--card);
-      border-radius: 12px;
-      padding: 12px 16px;
-      margin-bottom: 8px;
-    }
-    .sub-star-row span { font-size: 13px; color: var(--text); }
-    .mini-stars { display: flex; gap: 4px; }
-    .mini-star { font-size: 18px; cursor: pointer; filter: grayscale(1); }
-    .mini-star.active { filter: none; }
+/* DETAIL */
+.det-hero{height:180px;display:flex;align-items:center;justify-content:center;font-size:80px;border-radius:0;}
+.det-body{padding:20px;}
+.det-title{font-size:20px;font-weight:800;color:var(--text-dark);margin-bottom:8px;line-height:1.3;}
+.det-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
+.det-ic{font-size:16px;flex-shrink:0;margin-top:1px;}
+.det-tx{font-size:13px;color:var(--text-mid);line-height:1.5;}
+.det-desc{font-size:13px;color:var(--text-dark);line-height:1.8;margin:12px 0 20px;}
 
-    .tag-wrap { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
-    .tag-btn {
-      font-size: 12px;
-      background: var(--gray);
-      color: var(--text-sub);
-      border: 1.5px solid transparent;
-      padding: 6px 12px;
-      border-radius: 20px;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
-    .tag-btn.selected {
-      background: var(--primary-light);
-      color: var(--primary);
-      border-color: var(--primary);
-    }
+/* ADMIN */
+#adminScreen{background:#1A1730;min-height:100vh;padding:20px;display:none;flex-direction:column;overflow-y:auto;}
+#adminScreen.active{display:flex;}
+.adh{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
+.adtitle{color:white;font-size:20px;font-weight:800;}
+.adbadge{background:var(--yellow);color:var(--text-dark);padding:4px 12px;border-radius:50px;font-size:11px;font-weight:800;}
+.sg{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:20px;}
+.sc{background:rgba(255,255,255,.08);border-radius:var(--r);padding:16px;border:1px solid rgba(255,255,255,.12);}
+.sl{font-size:11px;color:rgba(255,255,255,.5);margin-bottom:4px;}
+.sv{font-size:24px;font-weight:800;color:white;}
+.scg{font-size:11px;color:#7DDF64;margin-top:4px;}
+.cc{background:rgba(255,255,255,.08);border-radius:var(--r);padding:16px;margin-bottom:16px;border:1px solid rgba(255,255,255,.12);}
+.ct{color:white;font-size:14px;font-weight:700;margin-bottom:16px;}
+.bch{display:flex;align-items:flex-end;gap:6px;height:100px;}
+.bw{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
+.br{width:100%;border-radius:6px 6px 0 0;transition:height .5s;}
+.bl{font-size:9px;color:rgba(255,255,255,.5);}
+.dc{display:flex;align-items:center;gap:16px;}
+.li{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
+.ld{width:10px;height:10px;border-radius:50%;flex-shrink:0;}
+.ll{font-size:11px;color:rgba(255,255,255,.7);}
+.lv{font-size:11px;color:white;font-weight:700;margin-left:auto;}
+.hb-item{margin-bottom:10px;}
+.hb-l{font-size:11px;color:rgba(255,255,255,.6);margin-bottom:4px;display:flex;justify-content:space-between;}
+.hb-t{height:8px;background:rgba(255,255,255,.1);border-radius:50px;overflow:hidden;}
+.hb-f{height:100%;border-radius:50px;}
+.spkl{height:50px;display:flex;align-items:flex-end;gap:3px;}
+.spkb{flex:1;border-radius:3px 3px 0 0;background:rgba(92,77,219,.6);min-height:4px;}
+.adtabs{display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;}
+.adtab{padding:8px 14px;border-radius:50px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap;background:rgba(255,255,255,.1);color:rgba(255,255,255,.6);border:1px solid rgba(255,255,255,.15);}
+.adtab.active{background:var(--yellow);color:var(--text-dark);border-color:var(--yellow);}
+.adtc{display:none;}
+.adtc.active{display:block;}
+.adsl{color:rgba(255,255,255,.6);font-size:12px;font-weight:700;margin-bottom:10px;text-transform:uppercase;letter-spacing:.5px;}
+.adinp{width:100%;padding:10px 14px;border:1px solid rgba(255,255,255,.15);border-radius:var(--r-sm);background:rgba(255,255,255,.08);color:white;font-size:13px;font-family:inherit;outline:none;margin-bottom:8px;}
+.adinp::placeholder{color:rgba(255,255,255,.3);}
+.adf{background:rgba(255,255,255,.06);border-radius:var(--r);padding:16px;border:1px solid rgba(255,255,255,.1);}
+.adpr{background:rgba(255,255,255,.06);border-radius:var(--r-sm);padding:12px;margin-bottom:8px;border:1px solid rgba(255,255,255,.08);display:flex;align-items:center;justify-content:space-between;}
+.adpri{flex:1;}
+.adprt{color:white;font-size:13px;font-weight:700;}
+.adprm{color:rgba(255,255,255,.5);font-size:11px;margin-top:2px;}
+.ppill{padding:3px 8px;border-radius:50px;font-size:10px;font-weight:700;}
+.ppa{background:rgba(125,223,100,.2);color:#7DDF64;}
+.ppw{background:rgba(255,216,77,.2);color:var(--yellow);}
+.pbw{background:rgba(255,255,255,.1);border-radius:50px;height:6px;margin-top:6px;overflow:hidden;}
+.pbf{height:100%;border-radius:50px;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);}
 
-    .input-area {
-      width: 100%;
-      background: var(--card);
-      border: 1.5px solid #EEE7E0;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 14px;
-      color: var(--text);
-      resize: none;
-      outline: none;
-      font-family: inherit;
-      margin-bottom: 4px;
-    }
-    .input-area:focus { border-color: var(--primary); }
+/* CHAT */
+.chat-area{padding:16px 20px;flex:1;overflow-y:auto;}
+.cmsg{margin-bottom:12px;display:flex;gap:8px;}
+.cmsg.mine{flex-direction:row-reverse;}
+.cav{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:var(--yellow-light);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.cbw{flex:1;}
+.cnm{font-size:10px;color:var(--text-light);margin-bottom:3px;}
+.cmsg.mine .cnm{text-align:right;}
+.ctxt{background:white;padding:10px 14px;border-radius:16px 16px 16px 4px;font-size:13px;color:var(--text-dark);max-width:240px;box-shadow:0 2px 6px rgba(58,53,96,.08);line-height:1.5;}
+.cmsg.mine .ctxt{background:#5C4DDB;color:white;border-radius:16px 16px 4px 16px;}
+.cbar{padding:12px 16px;background:white;border-top:1px solid var(--border);display:flex;gap:8px;}
+.cinp{flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:50px;font-size:14px;font-family:inherit;outline:none;}
+.csend{width:40px;height:40px;border-radius:50%;background:#5C4DDB;border:none;cursor:pointer;font-size:18px;color:white;display:flex;align-items:center;justify-content:center;}
 
-    .photo-add-btn {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--card);
-      border: 1.5px dashed var(--primary-light);
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 14px;
-      color: var(--text-sub);
-      cursor: pointer;
-      width: 100%;
-      margin-bottom: 20px;
-    }
+/* RESULT */
+.rpop{position:fixed;inset:0;background:rgba(30,25,70,.6);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;}
+.rpop.active{display:flex;animation:fov .2s ease;}
+.rcard{background:white;border-radius:24px;padding:32px 24px;text-align:center;max-width:300px;width:100%;animation:ipop .4s cubic-bezier(.34,1.4,.64,1);box-shadow:0 20px 60px rgba(30,25,70,.3);}
 
-    /* 신고 유형 카드 */
-    .report-type-card {
-      background: var(--card);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 10px;
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      box-shadow: var(--shadow);
-      transition: all 0.15s;
-    }
-    .report-type-card.selected {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-    .report-icon { font-size: 28px; }
-    .report-text-wrap .report-title { font-size: 14px; font-weight: 700; }
-    .report-text-wrap .report-desc { font-size: 12px; color: var(--text-sub); margin-top: 2px; }
-    .report-notice {
-      background: #FFF3F0;
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 12px;
-      color: #E05A3A;
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
+/* TOAST */
+.toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--text-dark);color:white;padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:800;white-space:nowrap;display:none;align-items:center;gap:6px;}
+.toast.show{display:flex;animation:tin .3s ease;}
+@keyframes tin{from{transform:translate(-50%,20px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
 
-    /* ─── 공지 탭 ─── */
-    .filter-scroll {
-      display: flex;
-      gap: 8px;
-      overflow-x: auto;
-      padding-bottom: 4px;
-      margin-bottom: 14px;
-      scrollbar-width: none;
-    }
-    .filter-scroll::-webkit-scrollbar { display: none; }
-    .filter-chip {
-      flex-shrink: 0;
-      font-size: 13px;
-      padding: 7px 14px;
-      border-radius: 20px;
-      background: var(--gray);
-      color: var(--text-sub);
-      cursor: pointer;
-      font-weight: 500;
-      transition: all 0.15s;
-    }
-    .filter-chip.active {
-      background: var(--primary);
-      color: white;
-      font-weight: 700;
-    }
-
-    .notice-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow);
-      cursor: pointer;
-      transition: transform 0.15s;
-    }
-    .notice-card:active { transform: scale(0.98); }
-    .notice-top {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      margin-bottom: 6px;
-    }
-    .notice-badge {
-      font-size: 10px;
-      padding: 3px 8px;
-      border-radius: 20px;
-      font-weight: 700;
-    }
-    .badge-urgent { background: #FFE5E5; color: #FF4B4B; }
-    .badge-new { background: var(--mint); color: #2D8A60; }
-    .badge-dday { background: var(--yellow); color: #8A6D00; }
-    .badge-normal { background: var(--gray); color: var(--text-sub); }
-    .notice-category {
-      font-size: 11px;
-      color: var(--text-sub);
-    }
-    .notice-title { font-size: 14px; font-weight: 700; margin-bottom: 4px; }
-    .notice-meta { font-size: 12px; color: var(--text-sub); }
-
-    /* ─── 캘린더 탭 ─── */
-    .calendar-wrap {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 16px;
-      box-shadow: var(--shadow);
-    }
-    .cal-header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 14px;
-    }
-    .cal-title { font-size: 16px; font-weight: 700; }
-    .cal-nav { font-size: 20px; cursor: pointer; color: var(--primary); padding: 0 8px; }
-    .cal-grid { display: grid; grid-template-columns: repeat(7,1fr); gap: 4px; }
-    .cal-day-label {
-      text-align: center;
-      font-size: 11px;
-      color: var(--text-sub);
-      padding-bottom: 6px;
-      font-weight: 600;
-    }
-    .cal-day-label:first-child { color: #FF6B6B; }
-    .cal-day-label:last-child { color: #6B9EFF; }
-    .cal-cell {
-      text-align: center;
-      font-size: 13px;
-      padding: 6px 0;
-      border-radius: 10px;
-      cursor: pointer;
-      position: relative;
-      transition: background 0.15s;
-    }
-    .cal-cell:hover { background: var(--gray); }
-    .cal-cell.today {
-      background: var(--primary);
-      color: white;
-      font-weight: 700;
-    }
-    .cal-cell.has-event::after {
-      content: '';
-      display: block;
-      width: 5px; height: 5px;
-      background: var(--primary);
-      border-radius: 50%;
-      margin: 2px auto 0;
-    }
-    .cal-cell.today.has-event::after { background: white; }
-
-    /* AI 추천 */
-    .ai-recommend-card {
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 12px;
-      box-shadow: var(--shadow);
-      position: relative;
-      overflow: hidden;
-    }
-    .ai-recommend-card.art {
-      background: linear-gradient(135deg, #FFE8F5, #F5D5FF);
-    }
-    .ai-recommend-card.car {
-      background: linear-gradient(135deg, #D5EEFF, #C8F0FF);
-    }
-    .ai-tag {
-      font-size: 10px;
-      background: rgba(255,255,255,0.8);
-      padding: 3px 8px;
-      border-radius: 20px;
-      font-weight: 700;
-      color: var(--text);
-      display: inline-block;
-      margin-bottom: 8px;
-    }
-    .ai-card-title { font-size: 15px; font-weight: 800; margin-bottom: 4px; }
-    .ai-card-sub { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; }
-    .ai-event-name { font-size: 14px; font-weight: 700; margin-bottom: 2px; }
-    .ai-event-info { font-size: 12px; color: var(--text-sub); margin-bottom: 10px; }
-    .btn-link {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      background: white;
-      color: var(--primary);
-      border: none;
-      border-radius: 10px;
-      padding: 8px 14px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-    }
-
-    .event-card {
-      background: var(--card);
-      border-radius: var(--radius);
-      padding: 16px;
-      margin-bottom: 10px;
-      box-shadow: var(--shadow);
-      cursor: pointer;
-      transition: transform 0.15s;
-    }
-    .event-card:active { transform: scale(0.98); }
-    .event-top {
-      display: flex;
-      gap: 12px;
-      align-items: flex-start;
-    }
-    .event-icon-wrap {
-      width: 48px; height: 48px;
-      border-radius: 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 24px;
-      flex-shrink: 0;
-    }
-    .event-icon-wrap.pink { background: #FFE8F5; }
-    .event-icon-wrap.green { background: var(--mint); }
-    .event-icon-wrap.blue { background: var(--blue); }
-    .event-info { flex: 1; }
-    .event-date { font-size: 12px; color: var(--primary); font-weight: 700; margin-bottom: 3px; }
-    .event-name { font-size: 14px; font-weight: 700; margin-bottom: 3px; }
-    .event-place { font-size: 12px; color: var(--text-sub); margin-bottom: 6px; }
-    .event-chips { display: flex; gap: 6px; flex-wrap: wrap; }
-    .event-chip {
-      font-size: 11px;
-      padding: 3px 8px;
-      border-radius: 20px;
-      background: var(--gray);
-      color: var(--text-sub);
-    }
-    .event-chip.free { background: #E8F5E9; color: #2D8A60; }
-    .event-link-btn {
-      margin-top: 10px;
-      width: 100%;
-      background: var(--bg);
-      border: 1.5px solid var(--primary-light);
-      color: var(--primary);
-      border-radius: 10px;
-      padding: 9px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
-    }
-
-    /* ─── 하단 네비 ─── */
-    .bottom-nav {
-      position: fixed;
-      bottom: 0;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 100%;
-      max-width: 430px;
-      background: var(--card);
-      border-top: 1.5px solid #F5EDE8;
-      display: flex;
-      z-index: 100;
-      padding-bottom: env(safe-area-inset-bottom);
-    }
-    .nav-item {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      padding: 10px 0 8px;
-      cursor: pointer;
-      transition: color 0.15s;
-      color: var(--text-sub);
-      font-size: 11px;
-      font-weight: 500;
-      gap: 3px;
-    }
-    .nav-item .nav-icon { font-size: 22px; }
-    .nav-item.active { color: var(--primary); font-weight: 700; }
-
-    /* 알림 뱃지 */
-    .notif-dot {
-      position: absolute;
-      top: -2px; right: -4px;
-      width: 8px; height: 8px;
-      background: var(--red-dot);
-      border-radius: 50%;
-    }
-    .nav-icon-wrap { position: relative; display: inline-block; }
-
-    /* 온보딩 */
-    .onboarding {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: var(--bg);
-      z-index: 500;
-      max-width: 430px;
-      margin: 0 auto;
-      overflow-y: auto;
-    }
-    .onboarding.open { display: block; }
-    .ob-content { padding: 40px 24px 40px; }
-    .ob-step { font-size: 12px; color: var(--text-sub); margin-bottom: 8px; }
-    .ob-emoji { font-size: 56px; margin-bottom: 16px; display: block; }
-    .ob-title { font-size: 22px; font-weight: 800; margin-bottom: 8px; line-height: 1.3; }
-    .ob-sub { font-size: 14px; color: var(--text-sub); margin-bottom: 32px; line-height: 1.6; }
-    .ob-input {
-      width: 100%;
-      background: var(--card);
-      border: 1.5px solid #EEE7E0;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 15px;
-      color: var(--text);
-      outline: none;
-      font-family: inherit;
-      margin-bottom: 12px;
-    }
-    .ob-input:focus { border-color: var(--primary); }
-    .ob-select-wrap { position: relative; margin-bottom: 12px; }
-    .ob-select {
-      width: 100%;
-      background: var(--card);
-      border: 1.5px solid #EEE7E0;
-      border-radius: 14px;
-      padding: 14px 16px;
-      font-size: 15px;
-      color: var(--text);
-      outline: none;
-      appearance: none;
-      font-family: inherit;
-    }
-    .ob-select:focus { border-color: var(--primary); }
-    .gender-row { display: flex; gap: 10px; margin-bottom: 12px; }
-    .gender-btn {
-      flex: 1;
-      background: var(--card);
-      border: 2px solid #EEE7E0;
-      border-radius: 14px;
-      padding: 14px;
-      font-size: 15px;
-      cursor: pointer;
-      text-align: center;
-      transition: all 0.15s;
-      font-family: inherit;
-      color: var(--text-sub);
-    }
-    .gender-btn.selected {
-      border-color: var(--primary);
-      background: var(--primary-light);
-      color: var(--primary);
-      font-weight: 700;
-    }
-    .interest-grid {
-      display: grid;
-      grid-template-columns: repeat(3,1fr);
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .interest-btn {
-      background: var(--card);
-      border: 2px solid #EEE7E0;
-      border-radius: 14px;
-      padding: 14px 8px;
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.15s;
-      font-family: inherit;
-    }
-    .interest-btn .int-icon { font-size: 24px; display: block; margin-bottom: 4px; }
-    .interest-btn .int-label { font-size: 12px; color: var(--text-sub); }
-    .interest-btn.selected {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-    .interest-btn.selected .int-label { color: var(--primary); font-weight: 700; }
-    .playground-check-list { margin-bottom: 12px; }
-    .pg-check-item {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-      background: var(--card);
-      border-radius: 14px;
-      padding: 14px 16px;
-      margin-bottom: 8px;
-      cursor: pointer;
-      border: 2px solid transparent;
-      transition: all 0.15s;
-    }
-    .pg-check-item.selected {
-      border-color: var(--primary);
-      background: var(--primary-light);
-    }
-    .pg-check-icon { font-size: 22px; }
-    .pg-check-name { font-size: 14px; font-weight: 600; flex: 1; }
-    .pg-check-dist { font-size: 12px; color: var(--text-sub); }
-    .pg-checkbox {
-      width: 22px; height: 22px;
-      border-radius: 50%;
-      border: 2px solid #DDD;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 12px;
-      transition: all 0.15s;
-    }
-    .pg-check-item.selected .pg-checkbox {
-      background: var(--primary);
-      border-color: var(--primary);
-      color: white;
-    }
-    .ob-notice {
-      background: var(--primary-light);
-      border-radius: 12px;
-      padding: 12px 14px;
-      font-size: 12px;
-      color: var(--text);
-      margin-bottom: 20px;
-      line-height: 1.6;
-    }
-    .ob-notice strong { color: var(--primary); }
-    .step-dots {
-      display: flex;
-      gap: 6px;
-      justify-content: center;
-      margin-bottom: 24px;
-    }
-    .step-dot {
-      width: 8px; height: 8px;
-      border-radius: 50%;
-      background: var(--gray);
-      transition: all 0.2s;
-    }
-    .step-dot.active { background: var(--primary); width: 20px; border-radius: 4px; }
-  </style>
+/* WELFARE KEYWORDS */
+.kwbar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 20px 12px;}
+.kwbar::-webkit-scrollbar{display:none;}
+.kwtag{padding:6px 12px;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;}
+</style>
 </head>
 <body>
 
-<!-- ════════════════════════════════════════
-     온보딩 (최초 1회)
-════════════════════════════════════════ -->
-<div class="onboarding open" id="onboarding">
-
-  <!-- 온보딩 1단계: 지역 인증 -->
-  <div id="ob-step1" class="ob-content">
-    <div class="step-dots">
-      <div class="step-dot active"></div>
-      <div class="step-dot"></div>
-      <div class="step-dot"></div>
-      <div class="step-dot"></div>
-    </div>
-    <span class="ob-emoji">📍</span>
-    <div class="ob-step">1단계 · 지역 인증</div>
-    <div class="ob-title">우리 동네를<br/>확인해요</div>
-    <div class="ob-sub">주민등록 주소지 기반으로 인증해요.<br/>내 동네 놀이터 현황만 볼 수 있어요.</div>
-    <div class="ob-notice">
-      🔒 <strong>당근마켓처럼</strong> 주민등록 주소지 읍·면·동 기준으로 인증돼요.<br/>
-      내 동네 + 인접 1개 동 범위의 놀이터만 표시됩니다.
-    </div>
-    <select class="ob-select" style="margin-bottom:12px">
-      <option>화성시 동탄2동</option>
-      <option>화성시 동탄1동</option>
-      <option>화성시 봉담읍</option>
-      <option>화성시 향남읍</option>
-      <option>화성시 남양읍</option>
-    </select>
-    <button class="btn-full" onclick="goObStep(2)">📱 휴대폰으로 인증하기</button>
+<!-- SPLASH -->
+<div id="splashScreen" class="screen active">
+  <div class="sp-circle sp-c1"></div><div class="sp-circle sp-c2"></div><div class="sp-circle sp-c3"></div>
+  <div style="z-index:1;text-align:center;">
+    <div class="sp-dino">🦕</div>
+    <div class="sp-title">코리요의 <span>초대장</span></div>
+    <div class="sp-sub">화성시 육아 문화 정보 플랫폼</div>
   </div>
-
-  <!-- 온보딩 2단계: 자녀 인증 -->
-  <div id="ob-step2" class="ob-content" style="display:none">
-    <div class="step-dots">
-      <div class="step-dot"></div>
-      <div class="step-dot active"></div>
-      <div class="step-dot"></div>
-      <div class="step-dot"></div>
-    </div>
-    <span class="ob-emoji">👶</span>
-    <div class="ob-step">2단계 · 자녀 인증</div>
-    <div class="ob-title">자녀가 있는<br/>부모님만 가입해요</div>
-    <div class="ob-sub">아이의 안전한 환경을 위해<br/>자녀 보유 인증이 필요해요.</div>
-    <div class="ob-notice">
-      아래 방법 중 하나로 인증해요.<br/>
-      <strong>① 건강보험 자녀 등록 확인</strong><br/>
-      <strong>② 아동수당 수급 인증</strong><br/>
-      <strong>③ 출생증명서 업로드</strong>
-    </div>
-    <button class="btn-full" onclick="goObStep(3)">✅ 건강보험으로 인증하기</button>
-    <button class="btn-full outline" onclick="goObStep(3)" style="margin-top:0">📄 출생증명서 업로드</button>
-  </div>
-
-  <!-- 온보딩 3단계: 아이 프로필 -->
-  <div id="ob-step3" class="ob-content" style="display:none">
-    <div class="step-dots">
-      <div class="step-dot"></div>
-      <div class="step-dot"></div>
-      <div class="step-dot active"></div>
-      <div class="step-dot"></div>
-    </div>
-    <span class="ob-emoji">🎨</span>
-    <div class="ob-step">3단계 · 아이 프로필</div>
-    <div class="ob-title">우리 아이를<br/>소개해주세요</div>
-    <div class="ob-sub">이름 대신 별명을 사용해요.<br/>관심사로 맞춤 행사를 추천해 드려요!</div>
-    <input class="ob-input" placeholder="아이 별명 (예: 콩이)" />
-    <select class="ob-select" style="margin-bottom:12px">
-      <option>1세</option><option>2세</option><option>3세</option>
-      <option>4세</option><option selected>5세</option><option>6세</option>
-      <option>7세</option><option>8세</option><option>9세</option>
-    </select>
-    <div class="gender-row">
-      <button class="gender-btn selected" onclick="selectGender(this)">👧 여아</button>
-      <button class="gender-btn" onclick="selectGender(this)">👦 남아</button>
-    </div>
-    <div class="review-label">관심사 태그 (최대 3개)</div>
-    <div class="interest-grid">
-      <button class="interest-btn selected" onclick="toggleInterest(this)">
-        <span class="int-icon">🎨</span><span class="int-label">미술</span>
-      </button>
-      <button class="interest-btn selected" onclick="toggleInterest(this)">
-        <span class="int-icon">🚗</span><span class="int-label">자동차</span>
-      </button>
-      <button class="interest-btn" onclick="toggleInterest(this)">
-        <span class="int-icon">🦕</span><span class="int-label">공룡</span>
-      </button>
-      <button class="interest-btn" onclick="toggleInterest(this)">
-        <span class="int-icon">🎵</span><span class="int-label">음악</span>
-      </button>
-      <button class="interest-btn" onclick="toggleInterest(this)">
-        <span class="int-icon">🌿</span><span class="int-label">자연</span>
-      </button>
-      <button class="interest-btn" onclick="toggleInterest(this)">
-        <span class="int-icon">📚</span><span class="int-label">독서</span>
-      </button>
-    </div>
-    <button class="btn-full" onclick="goObStep(4)">다음으로 →</button>
-  </div>
-
-  <!-- 온보딩 4단계: 놀이터 즐겨찾기 -->
-  <div id="ob-step4" class="ob-content" style="display:none">
-    <div class="step-dots">
-      <div class="step-dot"></div>
-      <div class="step-dot"></div>
-      <div class="step-dot"></div>
-      <div class="step-dot active"></div>
-    </div>
-    <span class="ob-emoji">🛝</span>
-    <div class="ob-step">4단계 · 즐겨찾기 놀이터</div>
-    <div class="ob-title">자주 가는 놀이터를<br/>골라주세요</div>
-    <div class="ob-sub">최대 5곳을 선택하면<br/>홈에서 바로 현황을 볼 수 있어요.</div>
-    <div class="playground-check-list">
-      <div class="pg-check-item selected" onclick="togglePg(this)">
-        <span class="pg-check-icon">🛝</span>
-        <span class="pg-check-name">동탄센트럴파크 놀이터</span>
-        <span class="pg-check-dist">도보 5분</span>
-        <div class="pg-checkbox">✓</div>
-      </div>
-      <div class="pg-check-item selected" onclick="togglePg(this)">
-        <span class="pg-check-icon">🛝</span>
-        <span class="pg-check-name">호수공원 어린이놀이터</span>
-        <span class="pg-check-dist">도보 8분</span>
-        <div class="pg-checkbox">✓</div>
-      </div>
-      <div class="pg-check-item" onclick="togglePg(this)">
-        <span class="pg-check-icon">🛝</span>
-        <span class="pg-check-name">반석산 어린이공원</span>
-        <span class="pg-check-dist">도보 12분</span>
-        <div class="pg-checkbox"></div>
-      </div>
-      <div class="pg-check-item" onclick="togglePg(this)">
-        <span class="pg-check-icon">🛝</span>
-        <span class="pg-check-name">청계공원 놀이터</span>
-        <span class="pg-check-dist">도보 15분</span>
-        <div class="pg-checkbox"></div>
-      </div>
-      <div class="pg-check-item" onclick="togglePg(this)">
-        <span class="pg-check-icon">🛝</span>
-        <span class="pg-check-name">솔빛공원 놀이터</span>
-        <span class="pg-check-dist">도보 18분</span>
-        <div class="pg-checkbox"></div>
-      </div>
-    </div>
-    <button class="btn-full" onclick="finishOnboarding()">🎉 시작하기!</button>
+  <div class="sp-bubble">안녕하세요 :) 코리요에요~<br>제가 <strong>특별한 초대장</strong>을 준비했는데<br>같이 열어봐요! 🎉</div>
+  <div style="z-index:1;text-align:center;margin-top:4px;">
+    <button class="btn btn-p" onclick="showLogin()" style="max-width:240px;">시작하기 🦕</button>
+    <div style="margin-top:14px;"><span style="font-size:13px;color:var(--text-light);cursor:pointer;" onclick="showLogin()">이미 계정이 있어요 → 로그인</span></div>
   </div>
 </div>
 
-<!-- ════════════════════════════════════════
-     메인 앱
-════════════════════════════════════════ -->
-<div id="main-app" style="display:none">
-
-  <!-- 헤더 -->
-  <div class="header">
-    <div class="header-logo">Play<span>Mate</span> 🛝</div>
-    <div class="header-location" onclick="alert('지역 변경은 재인증이 필요합니다.')">
-      📍 동탄2동 ▾
-    </div>
-    <div class="header-icons">
-      <span onclick="openNotif()">🔔</span>
-      <span onclick="alert('프로필 설정')">👤</span>
+<!-- LOGIN -->
+<div id="loginScreen" class="screen auth-sc">
+  <div class="auth-hd"><div class="auth-ico">🦕</div><div class="auth-title">다시 만났어요!</div><div class="auth-sub">코리요가 기다리고 있었어요 :)</div></div>
+  <div class="card">
+    <div class="fg"><label class="fl">아이디</label><input type="text" class="fi" id="loginId" placeholder="아이디를 입력하세요"></div>
+    <div class="fg"><label class="fl">비밀번호</label><input type="password" class="fi" id="loginPw" placeholder="비밀번호를 입력하세요" onkeypress="if(event.key==='Enter')doLogin()"></div>
+    <button class="btn btn-p" onclick="doLogin()" style="margin-top:4px;">로그인 🦕</button>
+    <div style="text-align:center;margin-top:16px;">
+      <span style="font-size:13px;color:var(--text-mid);">계정이 없으신가요? </span>
+      <span style="font-size:13px;color:#5C4DDB;font-weight:700;cursor:pointer;" onclick="showSignup()">회원가입</span>
     </div>
   </div>
+</div>
 
-  <!-- 탭바 -->
-  <div class="tab-bar">
-    <div class="tab-item active" onclick="switchTab('playground', this)">
-      <span class="tab-icon">🛝</span>놀이터
+<!-- SIGNUP -->
+<div id="signupScreen" class="screen auth-sc">
+  <div class="auth-hd"><div class="auth-ico">🦕</div><div class="auth-title">코리요 가족이 되어요!</div><div class="auth-sub">아이 정보를 알려주시면 딱 맞는 정보를 드릴게요</div></div>
+  <div class="card">
+    <div class="ob-prog"><div class="ob-dot done" id="d0"></div><div class="ob-dot" id="d1"></div><div class="ob-dot" id="d2"></div><div class="ob-dot" id="d3"></div><div class="ob-dot" id="d4"></div></div>
+    <!-- Step 0 -->
+    <div class="ob-step active" id="s0">
+      <div class="ob-title">📝 기본 정보</div><div class="ob-sub">계정을 만들어볼게요</div>
+      <div class="fg"><label class="fl">아이디</label><input type="text" class="fi" id="su_id" placeholder="아이디"></div>
+      <div class="fg"><label class="fl">비밀번호</label><input type="password" class="fi" id="su_pw" placeholder="비밀번호"></div>
+      <div class="fg"><label class="fl">닉네임 (예: 하랑맘, 민준아빠)</label><input type="text" class="fi" id="su_name" placeholder="닉네임"></div>
+      <button class="btn btn-p" onclick="nextStep(0)" style="margin-top:8px;">다음 →</button>
     </div>
-    <div class="tab-item" onclick="switchTab('notice', this)">
-      <span class="tab-icon">📢</span>공지
+    <!-- Step 1 -->
+    <div class="ob-step" id="s1">
+      <div class="ob-title">👧 자녀 정보</div><div class="ob-sub">자녀를 등록해주세요 (여러 명 가능!)</div>
+      <div id="childrenList"></div>
+      <button class="btn btn-o btn-sm" onclick="addChild()" style="width:100%;margin-bottom:16px;">+ 자녀 추가</button>
+      <button class="btn btn-p" onclick="nextStep(1)">다음 →</button>
+      <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:#5C4DDB;cursor:pointer;" onclick="prevStep()">← 이전</span></div>
     </div>
-    <div class="tab-item" onclick="switchTab('calendar', this)">
-      <span class="tab-icon">📅</span>캘린더
-    </div>
-  </div>
-
-  <!-- ── 놀이터 탭 ── -->
-  <div class="content active" id="tab-playground">
-
-    <!-- 날씨 배너 -->
-    <div class="weather-banner">
-      <div class="weather-left">
-        <strong>오늘 놀이터 날씨 👍</strong>
-        동탄2동 · 2026.06.19
-        <div class="weather-tags">
-          <span class="weather-tag">🌡️ 24°C</span>
-          <span class="weather-tag">💨 미세먼지 좋음</span>
-          <span class="weather-tag">☀️ 맑음</span>
+    <!-- Step 2: label+input 방식으로 체크박스 구현 (클릭 버그 완전 해결) -->
+    <div class="ob-step" id="s2">
+      <div class="ob-title">🎨 관심사 선택</div><div class="ob-sub">자녀가 좋아하는 활동을 선택해주세요 (여러 개 OK!)</div>
+      <div class="cg">
+        <input class="ci" type="checkbox" id="i_art" value="미술"><label class="cl" for="i_art">🎨 미술</label>
+        <input class="ci" type="checkbox" id="i_sci" value="과학"><label class="cl" for="i_sci">🔬 과학</label>
+        <input class="ci" type="checkbox" id="i_nat" value="자연"><label class="cl" for="i_nat">🌱 자연</label>
+        <input class="ci" type="checkbox" id="i_mus" value="음악"><label class="cl" for="i_mus">🎵 음악</label>
+        <input class="ci" type="checkbox" id="i_prf" value="공연"><label class="cl" for="i_prf">🎭 공연</label>
+        <input class="ci" type="checkbox" id="i_bk" value="독서"><label class="cl" for="i_bk">📚 독서</label>
+        <input class="ci" type="checkbox" id="i_sp" value="스포츠"><label class="cl" for="i_sp">⚽ 스포츠</label>
+        <input class="ci" type="checkbox" id="i_exp" value="체험"><label class="cl" for="i_exp">🏃 체험</label>
+        <input class="ci" type="checkbox" id="i_his" value="역사"><label class="cl" for="i_his">🏛️ 역사</label>
+        <input class="ci" type="checkbox" id="i_cook" value="요리"><label class="cl" for="i_cook">🍳 요리</label>
+        <input class="ci" type="checkbox" id="i_rob" value="로봇"><label class="cl" for="i_rob">🤖 로봇</label>
+        <input class="ci" type="checkbox" id="i_cft" value="공예"><label class="cl" for="i_cft">✂️ 공예</label>
+      </div>
+      <div style="margin-top:16px;"><label class="fl">자녀 성격</label>
+        <div class="cg">
+          <input class="ci" type="checkbox" id="p_act" value="활달"><label class="cl" for="p_act">😄 활달해요</label>
+          <input class="ci" type="checkbox" id="p_clm" value="차분"><label class="cl" for="p_clm">😊 차분해요</label>
+          <input class="ci" type="checkbox" id="p_cur" value="호기심"><label class="cl" for="p_cur">🧐 호기심 많아요</label>
+          <input class="ci" type="checkbox" id="p_ldr" value="리더"><label class="cl" for="p_ldr">👑 리더형이에요</label>
         </div>
       </div>
-      <div class="weather-right">☀️</div>
+      <button class="btn btn-p" onclick="nextStep(2)" style="margin-top:20px;">다음 →</button>
+      <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:#5C4DDB;cursor:pointer;" onclick="prevStep()">← 이전</span></div>
     </div>
-
-    <!-- 또래 알림 -->
-    <div class="alert-box">
-      🎉 <span><strong>동탄센트럴파크</strong>에 콩이(5세)와 또래 친구가 있어요!</span>
-    </div>
-
-    <!-- 내 놀이터 현황 -->
-    <div class="section-title">
-      내 놀이터 현황
-      <span class="badge">5곳</span>
-    </div>
-
-    <!-- 카드 1 - 또래 있음 -->
-    <div class="playground-card hot" onclick="openCheckinModal('동탄센트럴파크 놀이터')">
-      <div class="card-top">
-        <span class="card-name">🛝 동탄센트럴파크 놀이터</span>
-        <span class="card-status status-hot">또래 있음 🔴</span>
-      </div>
-      <div class="card-users">
-        <span class="user-chip">👧 5세 여아</span>
-        <span class="user-chip">👦 7세 남아 2명</span>
-        <span class="user-chip">👶 4세 여아</span>
-      </div>
-      <div class="card-tags">
-        <span class="card-tag">☀️ 그늘있음</span>
-        <span class="card-tag">🚻 화장실</span>
-        <span class="card-tag">🏖️ 모래놀이</span>
-        <span class="card-tag">🅿️ 주차가능</span>
-      </div>
-      <div class="card-bottom">
-        <span class="card-rating"><span>⭐</span> 4.2 · 리뷰 12개</span>
-        <button class="btn-checkin" onclick="event.stopPropagation(); openCheckinModal('동탄센트럴파크 놀이터')">📍 체크인</button>
-      </div>
-    </div>
-
-    <!-- 카드 2 - 이용자 있으나 또래 아님 -->
-    <div class="playground-card warm" onclick="openCheckinModal('호수공원 어린이놀이터')">
-      <div class="card-top">
-        <span class="card-name">🛝 호수공원 어린이놀이터</span>
-        <span class="card-status status-warm">이용중 🟡</span>
-      </div>
-      <div class="card-users">
-        <span class="user-chip">👦 8세 남아 2명</span>
-        <span class="user-chip">👧 9세 여아</span>
-      </div>
-      <div class="card-tags">
-        <span class="card-tag">🌳 그늘없음</span>
-        <span class="card-tag">🚻 화장실</span>
-      </div>
-      <div class="card-bottom">
-        <span class="card-rating"><span>⭐</span> 3.8 · 리뷰 7개</span>
-        <button class="btn-checkin" onclick="event.stopPropagation(); openCheckinModal('호수공원 어린이놀이터')">📍 체크인</button>
-      </div>
-    </div>
-
-    <!-- 카드 3 - 비어있음 -->
-    <div class="playground-card empty" onclick="openCheckinModal('반석산 어린이공원')">
-      <div class="card-top">
-        <span class="card-name">🛝 반석산 어린이공원</span>
-        <span class="card-status status-empty">비어있음 ⚫</span>
-      </div>
-      <div class="card-users">
-        <span style="font-size:13px; color:var(--text-sub)">현재 이용자가 없어요</span>
-      </div>
-      <div class="card-tags">
-        <span class="card-tag">☀️ 그늘있음</span>
-        <span class="card-tag">🏖️ 모래놀이</span>
-        <span class="card-tag">♿ 장애인접근</span>
-      </div>
-      <div class="card-bottom">
-        <span class="card-rating"><span>⭐</span> 4.5 · 리뷰 20개</span>
-        <button class="btn-checkin" onclick="event.stopPropagation(); openCheckinModal('반석산 어린이공원')">📍 체크인</button>
-      </div>
-    </div>
-
-    <!-- 카드 4 -->
-    <div class="playground-card empty" onclick="openCheckinModal('청계공원 놀이터')">
-      <div class="card-top">
-        <span class="card-name">🛝 청계공원 놀이터</span>
-        <span class="card-status status-empty">비어있음 ⚫</span>
-      </div>
-      <div class="card-users">
-        <span style="font-size:13px; color:var(--text-sub)">현재 이용자가 없어요</span>
-      </div>
-      <div class="card-tags">
-        <span class="card-tag">☀️ 그늘있음</span>
-        <span class="card-tag">🚻 화장실</span>
-      </div>
-      <div class="card-bottom">
-        <span class="card-rating"><span>⭐</span> 4.0 · 리뷰 5개</span>
-        <button class="btn-checkin" onclick="event.stopPropagation(); openCheckinModal('청계공원 놀이터')">📍 체크인</button>
-      </div>
-    </div>
-
-    <!-- 카드 5 -->
-    <div class="playground-card empty">
-      <div class="card-top">
-        <span class="card-name">🛝 솔빛공원 놀이터</span>
-        <span class="card-status status-empty">비어있음 ⚫</span>
-      </div>
-      <div class="card-users">
-        <span style="font-size:13px; color:var(--text-sub)">현재 이용자가 없어요</span>
-      </div>
-      <div class="card-tags">
-        <span class="card-tag">🌳 그늘없음</span>
-        <span class="card-tag">🚻 화장실</span>
-      </div>
-      <div class="card-bottom">
-        <span class="card-rating"><span>⭐</span> 3.5 · 리뷰 3개</span>
-        <button class="btn-checkin" onclick="openCheckinModal('솔빛공원 놀이터')">📍 체크인</button>
-      </div>
-    </div>
-
-  </div>
-
-  <!-- ── 공지 탭 ── -->
-  <div class="content" id="tab-notice">
-
-    <div class="filter-scroll">
-      <div class="filter-chip active" onclick="setFilter(this)">전체</div>
-      <div class="filter-chip" onclick="setFilter(this)">💰 복지</div>
-      <div class="filter-chip" onclick="setFilter(this)">🏥 건강</div>
-      <div class="filter-chip" onclick="setFilter(this)">🏫 교육</div>
-      <div class="filter-chip" onclick="setFilter(this)">🚨 안전</div>
-      <div class="filter-chip" onclick="setFilter(this)">📋 행정</div>
-    </div>
-
-    <div class="notice-card">
-      <div class="notice-top">
-        <span class="notice-badge badge-dday">D-3 마감임박</span>
-        <span class="notice-category">💰 복지</span>
-      </div>
-      <div class="notice-title">2026년 하반기 아동수당 신청 안내</div>
-      <div class="notice-meta">화성시청 · 2026.06.16</div>
-    </div>
-
-    <div class="notice-card">
-      <div class="notice-top">
-        <span class="notice-badge badge-new">NEW</span>
-        <span class="notice-category">🏥 건강</span>
-      </div>
-      <div class="notice-title">영유아 무료 구강검진 대상 확대 안내</div>
-      <div class="notice-meta">화성시 보건소 · 2026.06.15</div>
-    </div>
-
-    <div class="notice-card">
-      <div class="notice-top">
-        <span class="notice-badge badge-urgent">🚨 긴급</span>
-        <span class="notice-category">🚨 안전</span>
-      </div>
-      <div class="notice-title">○○브랜드 유아 완구 리콜 안내 — 즉시 확인 필요</div>
-      <div class="notice-meta">식품의약품안전처 · 2026.06.14</div>
-    </div>
-
-    <div class="notice-card">
-      <div class="notice-top">
-        <span class="notice-badge badge-normal">공지</span>
-        <span class="notice-category">🏫 교육</span>
-      </div>
-      <div class="notice-title">2027년 공립유치원 입학 모집 일정 공고</div>
-      <div class="notice-meta">화성시 교육지원청 · 2026.06.10</div>
-    </div>
-
-    <div class="notice-card">
-      <div class="notice-top">
-        <span class="notice-badge badge-normal">공지</span>
-        <span class="notice-category">💰 복지</span>
-      </div>
-      <div class="notice-title">2026년 육아휴직 급여 인상 변경 안내</div>
-      <div class="notice-meta">고용노동부 · 2026.06.08</div>
-    </div>
-
-    <div class="notice-card">
-      <div class="notice-top">
-        <span class="notice-badge badge-normal">공지</span>
-        <span class="notice-category">🏥 건강</span>
-      </div>
-      <div class="notice-title">2026년 하반기 영유아 무료 예방접종 일정</div>
-      <div class="notice-meta">질병관리청 · 2026.06.05</div>
-    </div>
-
-  </div>
-
-  <!-- ── 캘린더 탭 ── -->
-  <div class="content" id="tab-calendar">
-
-    <!-- AI 맞춤 추천 -->
-    <div class="section-title">
-      🤖 AI 맞춤 추천
-      <span class="badge">콩이(5세)</span>
-    </div>
-
-    <div class="ai-recommend-card art">
-      <span class="ai-tag">🎨 미술 관심 기반 추천</span>
-      <div class="ai-card-title">콩이가 미술관을 자주 방문했어요!</div>
-      <div class="ai-card-sub">방문 기록 3회 분석 → 미술 관련 행사 추천</div>
-      <div class="ai-event-name">화성시립미술관 어린이 체험전</div>
-      <div class="ai-event-info">7월 12일 · 4~7세 · 무료 · 화성시립미술관</div>
-      <button class="btn-link" onclick="alert('예매 페이지로 이동합니다.')">신청하기 🔗</button>
-    </div>
-
-    <div class="ai-recommend-card car">
-      <span class="ai-tag">🚗 자동차 관심 기반 추천</span>
-      <div class="ai-card-title">자동차를 좋아하는 콩이를 위해!</div>
-      <div class="ai-card-sub">관심사 태그 분석 → 자동차 관련 행사 추천</div>
-      <div class="ai-event-name">경기도 버스박물관 어린이 체험</div>
-      <div class="ai-event-info">7월 20일 · 5세 이상 · 3,000원 · 용인시</div>
-      <button class="btn-link" onclick="alert('예매 페이지로 이동합니다.')">예매하기 🔗</button>
-    </div>
-
-    <!-- 캘린더 -->
-    <div class="section-title" style="margin-top:8px">📅 전체 행사 캘린더</div>
-
-    <div class="calendar-wrap">
-      <div class="cal-header">
-        <span class="cal-nav" onclick="alert('이전 달')">‹</span>
-        <span class="cal-title">2026년 7월</span>
-        <span class="cal-nav" onclick="alert('다음 달')">›</span>
-      </div>
-      <div class="cal-grid">
-        <div class="cal-day-label">일</div><div class="cal-day-label">월</div>
-        <div class="cal-day-label">화</div><div class="cal-day-label">수</div>
-        <div class="cal-day-label">목</div><div class="cal-day-label">금</div>
-        <div class="cal-day-label">토</div>
-        <div class="cal-cell"></div><div class="cal-cell"></div>
-        <div class="cal-cell">1</div><div class="cal-cell">2</div>
-        <div class="cal-cell">3</div><div class="cal-cell">4</div><div class="cal-cell">5</div>
-        <div class="cal-cell">6</div><div class="cal-cell">7</div>
-        <div class="cal-cell">8</div><div class="cal-cell">9</div>
-        <div class="cal-cell">10</div><div class="cal-cell">11</div><div class="cal-cell">12 <br><span style="font-size:8px;color:var(--primary)">●</span></div>
-        <div class="cal-cell">13</div><div class="cal-cell">14</div>
-        <div class="cal-cell has-event">15</div><div class="cal-cell">16</div>
-        <div class="cal-cell">17</div><div class="cal-cell">18</div><div class="cal-cell">19</div>
-        <div class="cal-cell has-event">20</div><div class="cal-cell">21</div>
-        <div class="cal-cell">22</div><div class="cal-cell">23</div>
-        <div class="cal-cell">24</div><div class="cal-cell">25</div><div class="cal-cell has-event">26</div>
-        <div class="cal-cell">27</div><div class="cal-cell">28</div>
-        <div class="cal-cell">29</div><div class="cal-cell">30</div>
-        <div class="cal-cell">31</div>
-      </div>
-    </div>
-
-    <!-- 행사 카드 목록 -->
-    <div class="event-card">
-      <div class="event-top">
-        <div class="event-icon-wrap pink">🎭</div>
-        <div class="event-info">
-          <div class="event-date">7월 15일 (화)</div>
-          <div class="event-name">어린이 뮤지컬 〈꿈꾸는 별〉</div>
-          <div class="event-place">📍 동탄복합문화센터</div>
-          <div class="event-chips">
-            <span class="event-chip">5세 이상</span>
-            <span class="event-chip free">무료</span>
-          </div>
+    <!-- Step 3 -->
+    <div class="ob-step" id="s3">
+      <div class="ob-title">🎉 모임 선호도</div><div class="ob-sub">어떤 파티 스타일이 맞나요?</div>
+      <div class="fg"><label class="fl">선호 요일</label>
+        <div class="cg">
+          <input class="ci" type="checkbox" id="d_sat" value="토"><label class="cl" for="d_sat">토요일</label>
+          <input class="ci" type="checkbox" id="d_sun" value="일"><label class="cl" for="d_sun">일요일</label>
+          <input class="ci" type="checkbox" id="d_wk" value="평일"><label class="cl" for="d_wk">평일</label>
+          <input class="ci" type="checkbox" id="d_any" value="상관없음"><label class="cl" for="d_any">상관없어요</label>
         </div>
       </div>
-      <button class="event-link-btn" onclick="alert('예매 페이지로 이동합니다.')">🎟️ 예매 바로가기</button>
-    </div>
-
-    <div class="event-card">
-      <div class="event-top">
-        <div class="event-icon-wrap green">🌿</div>
-        <div class="event-info">
-          <div class="event-date">7월 19일 (토)</div>
-          <div class="event-name">여름 채소 수확 체험</div>
-          <div class="event-place">📍 화성시 농업기술센터</div>
-          <div class="event-chips">
-            <span class="event-chip">3세 이상</span>
-            <span class="event-chip">5,000원</span>
-          </div>
+      <div class="fg" style="margin-top:12px;"><label class="fl">선호 시간대</label>
+        <div class="cg">
+          <input class="ci" type="checkbox" id="t_am" value="오전"><label class="cl" for="t_am">오전(10~12시)</label>
+          <input class="ci" type="checkbox" id="t_pm1" value="오후초반"><label class="cl" for="t_pm1">오후초반(13~15시)</label>
+          <input class="ci" type="checkbox" id="t_pm2" value="오후후반"><label class="cl" for="t_pm2">오후후반(15~17시)</label>
         </div>
       </div>
-      <button class="event-link-btn" onclick="alert('신청 페이지로 이동합니다.')">📝 신청 바로가기</button>
-    </div>
-
-    <div class="event-card">
-      <div class="event-top">
-        <div class="event-icon-wrap blue">📚</div>
-        <div class="event-info">
-          <div class="event-date">7월 26일 (토)</div>
-          <div class="event-name">여름방학 독서교실</div>
-          <div class="event-place">📍 화성시립 동탄도서관</div>
-          <div class="event-chips">
-            <span class="event-chip">6~8세</span>
-            <span class="event-chip free">무료</span>
-          </div>
+      <div class="fg" style="margin-top:12px;"><label class="fl">모임 규모</label>
+        <div class="cg">
+          <input class="ci" type="checkbox" id="s_sm" value="소규모"><label class="cl" for="s_sm">🤝 소규모(2~3가족)</label>
+          <input class="ci" type="checkbox" id="s_md" value="중규모"><label class="cl" for="s_md">👪 중규모(4~5가족)</label>
+          <input class="ci" type="checkbox" id="s_lg" value="대규모"><label class="cl" for="s_lg">🎉 대규모(6+)</label>
         </div>
       </div>
-      <button class="event-link-btn" onclick="alert('신청 페이지로 이동합니다.')">📝 신청 바로가기</button>
+      <button class="btn btn-p" onclick="nextStep(3)" style="margin-top:20px;">다음 →</button>
+      <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:#5C4DDB;cursor:pointer;" onclick="prevStep()">← 이전</span></div>
     </div>
-
-    <button class="btn-full outline" style="margin-top:8px" onclick="alert('관심 시설을 추가할 수 있습니다.')">+ 관심 시설 추가</button>
-
-  </div>
-
-  <!-- 하단 네비 -->
-  <div class="bottom-nav">
-    <div class="nav-item active" onclick="switchTab('playground', this); switchNav(this)">
-      <span class="nav-icon">🛝</span>놀이터
+    <!-- Step 4 -->
+    <div class="ob-step" id="s4">
+      <div style="text-align:center;padding:20px 0;">
+        <div style="font-size:70px;margin-bottom:16px;">🎊</div>
+        <div class="ob-title" style="text-align:center;">환영해요!</div>
+        <div class="ob-sub" style="text-align:center;margin-bottom:24px;">코리요 가족이 되셨어요!<br>딱 맞는 정보들을 추천해드릴게요 :)</div>
+        <button class="btn btn-p" onclick="completeSignup()" style="margin:0 auto;max-width:240px;">코리요 시작하기 🦕</button>
+      </div>
     </div>
-    <div class="nav-item" onclick="switchTab('notice', this); switchNav(this)">
-      <div class="nav-icon-wrap">
-        <span class="nav-icon">📢</span>
-        <span class="notif-dot"></span>
-      </div>공지
-    </div>
-    <div class="nav-item" onclick="switchTab('calendar', this); switchNav(this)">
-      <span class="nav-icon">📅</span>캘린더
-    </div>
-    <div class="nav-item" onclick="alert('내 프로필 · 아이 관심사 설정')">
-      <span class="nav-icon">👤</span>내정보
-    </div>
-  </div>
-
-</div>
-
-<!-- ════════ 체크인 모달 ════════ -->
-<div class="modal-overlay" id="checkin-modal" onclick="closeModal('checkin-modal')">
-  <div class="modal-sheet" onclick="event.stopPropagation()">
-    <div class="modal-handle"></div>
-    <div class="modal-title" id="modal-pg-name">동탄센트럴파크 놀이터</div>
-    <div class="modal-sub">지금 여기서 놀아요! 체크인하면 다른 부모님들에게 알려져요 😊</div>
-    <div class="modal-info-row">
-      <span>⏱️ 자동 종료</span><strong>2시간 후 자동 체크아웃</strong>
-    </div>
-    <div class="modal-info-row">
-      <span>👶 콩이 정보 공개</span><strong>5세 여아 (별명 비공개)</strong>
-    </div>
-    <button class="btn-full" onclick="doCheckin()">📍 체크인하기</button>
-    <button class="btn-full outline" onclick="openReviewScreen()">✏️ 리뷰 작성하기</button>
-    <button class="btn-full gray" onclick="openReportScreen()">🚨 위험 요소 신고</button>
   </div>
 </div>
 
-<!-- ════════ 리뷰 작성 화면 ════════ -->
-<div class="sub-screen" id="review-screen">
-  <div class="sub-header">
-    <span class="sub-header-back" onclick="closeSubScreen('review-screen')">←</span>
-    <span class="sub-header-title">리뷰 작성</span>
+<!-- MAIN APP -->
+<div id="mainApp">
+  <div class="topbar">
+    <div class="tlogo"><span class="tlogo-ico">🦕</span><span class="tlogo-txt">코리요의 초대장</span></div>
+    <div class="tacts">
+      <button class="nbtn" onclick="showInvitation()">🔔<span class="nbadge" id="nbadge">1</span></button>
+      <div class="avatar" onclick="showToast('👩','마이페이지 준비 중이에요!')">👩</div>
+    </div>
   </div>
-  <div class="sub-content">
-
-    <div class="review-label">전체 별점</div>
-    <div class="star-row" id="main-stars">
-      <span class="star" onclick="setMainStar(1)">⭐</span>
-      <span class="star" onclick="setMainStar(2)">⭐</span>
-      <span class="star" onclick="setMainStar(3)">⭐</span>
-      <span class="star" onclick="setMainStar(4)">⭐</span>
-      <span class="star" onclick="setMainStar(5)">⭐</span>
+  <div class="content" id="contentArea">
+    <!-- HOME -->
+    <div class="tabc active" id="tab-home">
+      <div class="hero">
+        <div class="hero-greet" id="heroGreet">안녕하세요! 👋</div>
+        <div class="hero-title" id="heroTitle">오늘도 특별한 하루 만들어요 🌟</div>
+        <div class="hero-bubble">
+          <span class="hb-ico">🦕</span>
+          <div class="hb-txt" id="aiBubble">코리요가 딱 맞는 행사를 찾아오고 있어요... <span class="spinner"></span></div>
+        </div>
+      </div>
+      <div class="sechd">
+        <div class="sech-t">🌟 AI 맞춤 추천</div>
+        <button class="rbtn" id="rbtn" onclick="doAISearch()" style="margin:0;padding:6px 12px;font-size:11px;">🔄 새로고침</button>
+      </div>
+      <div class="escroll" id="recEvents"></div>
+      <div class="div8"></div>
+      <div class="sechd"><div class="sech-t">🔥 지금 인기 있어요</div><span class="sech-m" onclick="switchTab('events')">전체보기</span></div>
+      <div id="popEvents"></div>
+      <div class="div8"></div>
+      <div class="sechd"><div class="sech-t">📢 화성시 새 소식</div></div>
+      <div id="cityNews"></div>
+      <div style="height:20px;"></div>
     </div>
-
-    <div class="review-label">항목별 평가</div>
-    <div class="sub-star-row">
-      <span>청결도</span>
-      <div class="mini-stars">
-        <span class="mini-star" onclick="setMiniStar('clean',1)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('clean',2)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('clean',3)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('clean',4)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('clean',5)">⭐</span>
+    <!-- EVENTS -->
+    <div class="tabc" id="tab-events">
+      <div style="padding:16px 20px 10px;">
+        <div style="font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:12px;">🎪 전체 행사 <span style="font-size:13px;font-weight:400;color:var(--text-light);" id="evtCount"></span></div>
+        <div class="fbar" id="catFilter">
+          <span class="chip sel" onclick="filterCat(this,'all')">전체</span>
+          <span class="chip" onclick="filterCat(this,'미술')">🎨 미술</span>
+          <span class="chip" onclick="filterCat(this,'과학')">🔬 과학</span>
+          <span class="chip" onclick="filterCat(this,'자연')">🌱 자연</span>
+          <span class="chip" onclick="filterCat(this,'공연')">🎭 공연</span>
+          <span class="chip" onclick="filterCat(this,'역사')">🏛️ 역사</span>
+          <span class="chip" onclick="filterCat(this,'독서')">📚 독서</span>
+          <span class="chip" onclick="filterCat(this,'체험')">🏃 체험</span>
+          <span class="chip" onclick="filterCat(this,'무료')">🆓 무료</span>
+        </div>
+      </div>
+      <button class="rbtn" id="erbtn" onclick="doAISearch()">🤖 AI로 최신 행사 검색하기</button>
+      <div class="ai-status" id="aiStatus"><div class="ai-dot"></div><span id="aiTxt">AI가 최신 행사를 검색 중이에요...</span></div>
+      <div id="allEvts"></div>
+    </div>
+    <!-- CALENDAR -->
+    <div class="tabc" id="tab-calendar">
+      <div class="cal-hd">
+        <div class="cal-nav">
+          <button class="cal-nbtn" onclick="chgMonth(-1)">‹</button>
+          <div class="cal-month" id="calML">2026년 6월</div>
+          <button class="cal-nbtn" onclick="chgMonth(1)">›</button>
+        </div>
+        <div class="cal-grid" id="calGrid"></div>
+      </div>
+      <div class="cal-evts">
+        <div style="font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:12px;" id="calDL">6월의 행사</div>
+        <div id="calEvts"></div>
       </div>
     </div>
-    <div class="sub-star-row">
-      <span>안전도</span>
-      <div class="mini-stars">
-        <span class="mini-star" onclick="setMiniStar('safe',1)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('safe',2)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('safe',3)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('safe',4)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('safe',5)">⭐</span>
+    <!-- WELFARE -->
+    <div class="tabc" id="tab-welfare">
+      <div style="padding:16px 20px 8px;"><div style="font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:4px;">📋 육아 정책·복지</div><div style="font-size:13px;color:var(--text-mid);">꼭 알아야 할 정보를 모았어요</div></div>
+      <div class="kwbar">
+        <span class="kwtag" style="background:var(--yellow-light);color:#8A6A00;"># 아동수당</span>
+        <span class="kwtag" style="background:var(--pink-light);color:#8A2A4A;"># 구강검진</span>
+        <span class="kwtag" style="background:var(--blue-light);color:#2A4A8A;"># 육아휴직</span>
+        <span class="kwtag" style="background:var(--green-light);color:#2A6A2A;"># 무상급식</span>
+        <span class="kwtag" style="background:var(--purple-light);color:#4A2A8A;"># 돌봄교실</span>
+        <span class="kwtag" style="background:var(--orange-light);color:#6A2A00;"># 예방접종</span>
+      </div>
+      <div id="welfareList"></div>
+    </div>
+    <!-- PARTY -->
+    <div class="tabc" id="tab-party">
+      <div class="party-hero">
+        <div style="font-size:60px;margin-bottom:8px;">🎈</div>
+        <div style="font-size:18px;font-weight:800;color:var(--text-dark);">코리요 파티 매칭</div>
+        <div style="font-size:13px;color:var(--text-mid);margin-top:4px;">비슷한 또래 가족끼리 함께 만나요!</div>
+        <button class="btn btn-y btn-sm" style="margin-top:12px;" onclick="openModal('partyJoinModal')">파티 신청하기 🎉</button>
+      </div>
+      <div class="sechd" style="padding-top:16px;"><div class="sech-t">🎪 진행 중인 파티</div></div>
+      <div id="partyList"></div>
+    </div>
+  </div>
+  <div class="botnav">
+    <div class="ni active" onclick="switchTab('home')"><span class="ni-ico">🏠</span><span class="ni-lbl">홈</span></div>
+    <div class="ni" onclick="switchTab('events')"><span class="ni-ico">🎪</span><span class="ni-lbl">행사</span><div class="ni-dot on"></div></div>
+    <div class="ni" onclick="switchTab('calendar')"><span class="ni-ico">📅</span><span class="ni-lbl">캘린더</span></div>
+    <div class="ni" onclick="switchTab('welfare')"><span class="ni-ico">📋</span><span class="ni-lbl">정책</span></div>
+    <div class="ni" onclick="switchTab('party')"><span class="ni-ico">🎈</span><span class="ni-lbl">파티</span></div>
+  </div>
+</div>
+
+<!-- ADMIN -->
+<div id="adminScreen">
+  <div class="adh">
+    <div class="adtitle">🦕 관리자 대시보드</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <div class="adbadge">ADMIN</div>
+      <button class="btn btn-o btn-sm" onclick="showLogin()" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:white;font-size:11px;">로그아웃</button>
+    </div>
+  </div>
+  <div class="adtabs">
+    <span class="adtab active" onclick="swAdmTab(this,'adash')">📊 대시보드</span>
+    <span class="adtab" onclick="swAdmTab(this,'aparty')">🎈 파티현황</span>
+    <span class="adtab" onclick="swAdmTab(this,'aevent')">📝 이벤트 등록</span>
+    <span class="adtab" onclick="swAdmTab(this,'anotice')">📢 공지</span>
+  </div>
+  <!-- 대시보드 -->
+  <div class="adtc active" id="adash">
+    <div class="sg">
+      <div class="sc"><div class="sl">총 가입 학부모</div><div class="sv">1,247</div><div class="scg">↑ +38 이번주</div></div>
+      <div class="sc"><div class="sl">파티 성사율</div><div class="sv">74%</div><div class="scg">↑ +5% 전월</div></div>
+      <div class="sc"><div class="sl">행사 클릭(이번달)</div><div class="sv">8,912</div><div class="scg">↑ +12%</div></div>
+      <div class="sc"><div class="sl">AI추천→신청 전환율</div><div class="sv">32%</div><div class="scg">↑ +4%</div></div>
+      <div class="sc"><div class="sl">평균 체류시간</div><div class="sv">8.4분</div><div class="scg">↑ +1.2분</div></div>
+      <div class="sc"><div class="sl">재방문율</div><div class="sv">68%</div><div class="scg">↑ +3%</div></div>
+    </div>
+    <div class="cc"><div class="ct">📈 월별 신규 가입자</div><div class="bch" id="ch1"></div></div>
+    <div class="cc"><div class="ct">👶 아동 연령대 분포</div>
+      <div class="dc">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="20"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#FFD84D" stroke-width="20" stroke-dasharray="47.7 191.5" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#B3D9FF" stroke-width="20" stroke-dasharray="42.6 191.5" stroke-dashoffset="-47.7" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#A8D8A8" stroke-width="20" stroke-dasharray="38.3 191.5" stroke-dashoffset="-90.3" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#C9B3FF" stroke-width="20" stroke-dasharray="34 191.5" stroke-dashoffset="-128.6" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#FFCBA4" stroke-width="20" stroke-dasharray="28.9 191.5" stroke-dashoffset="-162.6" transform="rotate(-90 50 50)"/>
+          <text x="50" y="47" fill="white" font-size="11" font-weight="800" text-anchor="middle">연령</text>
+          <text x="50" y="59" fill="rgba(255,255,255,.6)" font-size="8" text-anchor="middle">분포</text>
+        </svg>
+        <div style="flex:1;">
+          <div class="li"><div class="ld" style="background:#FFD84D"></div><div class="ll">4~5세</div><div class="lv">25%</div></div>
+          <div class="li"><div class="ld" style="background:#B3D9FF"></div><div class="ll">6~7세</div><div class="lv">22%</div></div>
+          <div class="li"><div class="ld" style="background:#A8D8A8"></div><div class="ll">8~9세</div><div class="lv">20%</div></div>
+          <div class="li"><div class="ld" style="background:#C9B3FF"></div><div class="ll">10~11세</div><div class="lv">18%</div></div>
+          <div class="li"><div class="ld" style="background:#FFCBA4"></div><div class="ll">12세+</div><div class="lv">15%</div></div>
+        </div>
       </div>
     </div>
-    <div class="sub-star-row">
-      <span>시설 상태</span>
-      <div class="mini-stars">
-        <span class="mini-star" onclick="setMiniStar('facility',1)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('facility',2)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('facility',3)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('facility',4)">⭐</span>
-        <span class="mini-star" onclick="setMiniStar('facility',5)">⭐</span>
+    <div class="cc"><div class="ct">🏆 행사 클릭 순위 TOP5</div>
+      <div class="hb-item"><div class="hb-l"><span>건축놀이학교(화성어린이문화센터)</span><span>892</span></div><div class="hb-t"><div class="hb-f" style="width:89%;background:#FFD84D;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>국립과천과학관 여름방학체험</span><span>756</span></div><div class="hb-t"><div class="hb-f" style="width:75%;background:#B3D9FF;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>SODA뮤지엄 빛 아트</span><span>643</span></div><div class="hb-t"><div class="hb-f" style="width:64%;background:#C9B3FF;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>동탄도서관 독서교실</span><span>521</span></div><div class="hb-t"><div class="hb-f" style="width:52%;background:#A8D8A8;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>화성독립운동기념관 역사탐험</span><span>387</span></div><div class="hb-t"><div class="hb-f" style="width:38%;background:#FFCBA4;"></div></div></div>
+    </div>
+    <div class="cc"><div class="ct">📍 파티 인기 장소 TOP5</div>
+      <div class="hb-item"><div class="hb-l"><span>동탄센트럴파크</span><span>142건</span></div><div class="hb-t"><div class="hb-f" style="width:95%;background:#FFD84D;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>반석산어린이공원</span><span>98건</span></div><div class="hb-t"><div class="hb-f" style="width:65%;background:#B3D9FF;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>화성행궁 광장</span><span>76건</span></div><div class="hb-t"><div class="hb-f" style="width:51%;background:#A8D8A8;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>동탄호수공원</span><span>61건</span></div><div class="hb-t"><div class="hb-f" style="width:41%;background:#C9B3FF;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>병점근린공원</span><span>44건</span></div><div class="hb-t"><div class="hb-f" style="width:29%;background:#FFCBA4;"></div></div></div>
+    </div>
+    <div class="cc"><div class="ct">❌ 파티 취소·불참 원인</div>
+      <div class="dc">
+        <svg width="100" height="100" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="38" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="20"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#B3D9FF" stroke-width="20" stroke-dasharray="57.5 191.5" stroke-dashoffset="0" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#FFCBA4" stroke-width="20" stroke-dasharray="47.9 191.5" stroke-dashoffset="-57.5" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#C9B3FF" stroke-width="20" stroke-dasharray="38.3 191.5" stroke-dashoffset="-105.4" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#A8D8A8" stroke-width="20" stroke-dasharray="28.7 191.5" stroke-dashoffset="-143.7" transform="rotate(-90 50 50)"/>
+          <circle cx="50" cy="50" r="38" fill="none" stroke="#FFB3C6" stroke-width="20" stroke-dasharray="19.1 191.5" stroke-dashoffset="-172.4" transform="rotate(-90 50 50)"/>
+        </svg>
+        <div style="flex:1;">
+          <div class="li"><div class="ld" style="background:#B3D9FF"></div><div class="ll">날씨 악화</div><div class="lv">30%</div></div>
+          <div class="li"><div class="ld" style="background:#FFCBA4"></div><div class="ll">아이 컨디션</div><div class="lv">25%</div></div>
+          <div class="li"><div class="ld" style="background:#C9B3FF"></div><div class="ll">일정 변경</div><div class="lv">20%</div></div>
+          <div class="li"><div class="ld" style="background:#A8D8A8"></div><div class="ll">인원 미달</div><div class="lv">15%</div></div>
+          <div class="li"><div class="ld" style="background:#FFB3C6"></div><div class="ll">기타</div><div class="lv">10%</div></div>
+        </div>
       </div>
     </div>
-
-    <div class="review-label">태그 선택</div>
-    <div class="tag-wrap">
-      <button class="tag-btn" onclick="toggleTag(this)">그늘있음</button>
-      <button class="tag-btn" onclick="toggleTag(this)">화장실 깨끗</button>
-      <button class="tag-btn" onclick="toggleTag(this)">모래 신선</button>
-      <button class="tag-btn" onclick="toggleTag(this)">주차 편리</button>
-      <button class="tag-btn" onclick="toggleTag(this)">어린이 친화</button>
-      <button class="tag-btn" onclick="toggleTag(this)">조용함</button>
-      <button class="tag-btn" onclick="toggleTag(this)">관리 잘됨</button>
+    <div class="cc"><div class="ct">⏰ 시간대별 외출 패턴</div><div class="bch" id="ch2"></div></div>
+    <div class="cc"><div class="ct">🎨 관심사별 행사 수요</div><div class="bch" id="ch3"></div></div>
+    <div class="cc"><div class="ct">🗺️ 동별 이용 현황</div>
+      <div class="hb-item"><div class="hb-l"><span>동탄</span><span>38%</span></div><div class="hb-t"><div class="hb-f" style="width:95%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>봉담</span><span>22%</span></div><div class="hb-t"><div class="hb-f" style="width:55%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>향남</span><span>18%</span></div><div class="hb-t"><div class="hb-f" style="width:45%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>병점</span><span>14%</span></div><div class="hb-t"><div class="hb-f" style="width:35%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>기타</span><span>8%</span></div><div class="hb-t"><div class="hb-f" style="width:20%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
     </div>
-
-    <div class="review-label">한줄 리뷰</div>
-    <textarea class="input-area" rows="3" placeholder="놀이터 이용 후기를 자유롭게 남겨주세요 😊"></textarea>
-
-    <button class="photo-add-btn">
-      📷 사진 첨부하기 <span style="font-size:12px;margin-left:auto">선택사항</span>
-    </button>
-
-    <button class="btn-full" onclick="submitReview()">✅ 리뷰 등록하기</button>
+    <div class="sg">
+      <div class="sc"><div class="sl">공지 열람률</div><div class="sv">41%</div><div class="pbw"><div class="pbf" style="width:41%"></div></div></div>
+      <div class="sc"><div class="sl">파티 성사 건수</div><div class="sv">317건</div><div class="scg">↑ +28건 이번달</div></div>
+    </div>
+    <div class="cc"><div class="ct">🎉 파티 성사 트렌드</div><div class="spkl" id="ch4"></div></div>
+  </div>
+  <!-- 파티현황 -->
+  <div class="adtc" id="aparty"><div class="adsl">진행 중인 파티</div><div id="adPartyList"></div></div>
+  <!-- 이벤트 등록 -->
+  <div class="adtc" id="aevent">
+    <div class="adsl">새 이벤트 등록</div>
+    <div class="adf">
+      <input type="text" class="adinp" placeholder="이벤트 제목 *" id="ae_t">
+      <input type="text" class="adinp" placeholder="장소" id="ae_p">
+      <input type="text" class="adinp" placeholder="날짜 (예: 2026.07.15)" id="ae_d">
+      <input type="text" class="adinp" placeholder="대상 나이 (예: 5~8세)" id="ae_a">
+      <input type="text" class="adinp" placeholder="카테고리 (미술/과학/자연/공연/역사/체험)" id="ae_c">
+      <input type="text" class="adinp" placeholder="공식 링크 URL *" id="ae_u">
+      <textarea class="adinp" placeholder="행사 설명" rows="3" id="ae_desc" style="resize:none;"></textarea>
+      <button class="btn btn-y" onclick="adminAddEvt()" style="width:100%;margin-top:4px;">등록하기</button>
+    </div>
+  </div>
+  <!-- 공지 -->
+  <div class="adtc" id="anotice">
+    <div class="adsl">공지사항 등록</div>
+    <div class="adf">
+      <input type="text" class="adinp" placeholder="제목" id="an_t">
+      <textarea class="adinp" placeholder="내용" rows="4" id="an_b" style="resize:none;"></textarea>
+      <button class="btn btn-y" onclick="adminAddNotice()" style="width:100%;margin-top:4px;">등록</button>
+    </div>
+    <div style="margin-top:20px;"><div class="adsl">등록된 공지</div><div id="adNoticeList"></div></div>
   </div>
 </div>
 
-<!-- ════════ 위험 신고 화면 ════════ -->
-<div class="sub-screen" id="report-screen">
-  <div class="sub-header">
-    <span class="sub-header-back" onclick="closeSubScreen('report-screen')">←</span>
-    <span class="sub-header-title">위험 요소 신고</span>
-  </div>
-  <div class="sub-content">
-
-    <div class="review-label">신고 유형 선택</div>
-
-    <div class="report-type-card" onclick="selectReport(this)">
-      <span class="report-icon">🔩</span>
-      <div class="report-text-wrap">
-        <div class="report-title">시설 파손 · 노후</div>
-        <div class="report-desc">녹슨 철봉, 깨진 미끄럼틀, 볼트 돌출 등</div>
+<!-- INVITATION POPUP -->
+<div class="inv-ov" id="invOv">
+  <div class="inv-card">
+    <button style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);" onclick="closeInv()">✕</button>
+    <div class="inv-env"><div style="font-size:70px;">📨</div></div>
+    <div class="inv-title">초대장이 도착했어요!</div>
+    <div class="inv-sub">코리요가 특별한 파티에 초대해요 🎉</div>
+    <div class="inv-box">
+      <div class="inv-ename">🎨 동탄센트럴파크 토요일 오후 미술 파티</div>
+      <div class="inv-ml">
+        <div class="inv-mi"><span class="mdot good"></span> 하랑이(10세)와 비슷한 또래가 모여요</div>
+        <div class="inv-mi"><span class="mdot good"></span> 조용하고 편안한 모임 ✓ 일치</div>
+        <div class="inv-mi"><span class="mdot good"></span> 오후 2~4시 선호시간대 ✓ 일치</div>
+        <div class="inv-mi"><span class="mdot"></span> ☀️ 날씨도 최고예요! (27°C 맑음)</div>
       </div>
     </div>
-    <div class="report-type-card" onclick="selectReport(this)">
-      <span class="report-icon">🗑️</span>
-      <div class="report-text-wrap">
-        <div class="report-title">쓰레기 · 불결</div>
-        <div class="report-desc">유리조각, 담배꽁초, 오물, 악취 등</div>
-      </div>
+    <div style="font-size:12px;color:var(--text-mid);text-align:center;margin-bottom:10px;font-weight:700;">지금까지 모인 가족 👨‍👩‍👧</div>
+    <div class="inv-atts">
+      <div class="iatt"><span style="font-size:24px;">🐻</span><span style="font-size:10px;color:var(--text-mid);font-weight:600;">8세 여아</span></div>
+      <div class="iatt"><span style="font-size:24px;">🦊</span><span style="font-size:10px;color:var(--text-mid);font-weight:600;">6세 남아</span></div>
+      <div class="iatt"><span style="font-size:24px;">🐰</span><span style="font-size:10px;color:var(--text-mid);font-weight:600;">10세 여아</span></div>
+      <div class="iatt"><span style="font-size:24px;">🐥</span><span style="font-size:10px;color:var(--text-mid);font-weight:600;">9세 남아</span></div>
     </div>
-    <div class="report-type-card" onclick="selectReport(this)">
-      <span class="report-icon">⚠️</span>
-      <div class="report-text-wrap">
-        <div class="report-title">안전 위협 행동</div>
-        <div class="report-desc">위험한 놀이, 불량 청소년, 위협 행위 등</div>
-      </div>
+    <div class="inv-btns">
+      <button class="inv-yes" onclick="confirmParty()">참여할게요! 🎉</button>
+      <button class="inv-no" onclick="closeInv()">다음에요</button>
     </div>
-    <div class="report-type-card" onclick="selectReport(this)">
-      <span class="report-icon">🐕</span>
-      <div class="report-text-wrap">
-        <div class="report-title">동물 · 해충</div>
-        <div class="report-desc">유기견, 벌집, 해충, 뱀 등</div>
-      </div>
-    </div>
-    <div class="report-type-card" onclick="selectReport(this)">
-      <span class="report-icon">📝</span>
-      <div class="report-text-wrap">
-        <div class="report-title">기타 직접 입력</div>
-        <div class="report-desc">위에 해당하지 않는 신고 내용</div>
-      </div>
-    </div>
-
-    <div class="review-label">상세 내용</div>
-    <textarea class="input-area" rows="3" placeholder="구체적인 위험 상황을 입력해주세요"></textarea>
-
-    <button class="photo-add-btn">
-      📷 사진 첨부 (권장) <span style="font-size:12px;margin-left:auto">증거 자료</span>
-    </button>
-
-    <div class="report-notice">
-      📋 신고 내용은 <strong>화성시 공원관리부서</strong>로 자동 전달되며,<br/>
-      신고자 정보는 <strong>완전 익명</strong>으로 처리됩니다.
-    </div>
-
-    <button class="btn-full" style="background:#FF6B6B" onclick="submitReport()">🚨 신고하기</button>
   </div>
 </div>
+
+<!-- EVENT DETAIL MODAL -->
+<div class="mov" id="evtModal"><div class="msheet"><div class="mhandle"></div><div id="evtContent"></div></div></div>
+
+<!-- WELFARE DETAIL MODAL -->
+<div class="mov" id="wlfModal"><div class="msheet"><div class="mhandle"></div><div id="wlfContent"></div></div></div>
+
+<!-- PARTY JOIN MODAL -->
+<div class="mov" id="partyJoinModal">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">🎉 파티 신청하기</div>
+    <div class="msub">원하는 장소와 날짜를 선택해요</div>
+    <div class="fg"><label class="fl">원하는 장소</label>
+      <div class="cg">
+        <span class="chip" onclick="this.classList.toggle('sel')">동탄센트럴파크</span>
+        <span class="chip" onclick="this.classList.toggle('sel')">반석산어린이공원</span>
+        <span class="chip" onclick="this.classList.toggle('sel')">동탄호수공원</span>
+        <span class="chip" onclick="this.classList.toggle('sel')">화성행궁 광장</span>
+        <span class="chip" onclick="this.classList.toggle('sel')">병점근린공원</span>
+      </div>
+    </div>
+    <div class="fg" style="margin-top:12px;"><label class="fl">날짜</label><input type="date" class="fi" id="partyDate" value="2026-07-05"></div>
+    <div style="margin-top:16px;display:flex;gap:8px;">
+      <button class="btn btn-o" onclick="closeModal('partyJoinModal')" style="flex:1;">취소</button>
+      <button class="btn btn-p" onclick="submitParty()" style="flex:2;">파티 신청! 🎈</button>
+    </div>
+  </div>
+</div>
+
+<!-- CHAT MODAL -->
+<div class="mov" id="chatModal">
+  <div class="msheet" style="height:80vh;display:flex;flex-direction:column;padding:16px 0 0;">
+    <div style="padding:0 20px 12px;border-bottom:1px solid var(--border);">
+      <div class="mhandle" style="margin-bottom:12px;"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div class="mtitle" style="margin:0;">🎉 동탄 미술 파티 채팅방</div>
+        <button style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);" onclick="closeModal('chatModal')">✕</button>
+      </div>
+      <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">참여 5명 · 동탄센트럴파크 · 7월 5일 오후 3시</div>
+    </div>
+    <div class="chat-area" id="chatMsgs">
+      <div class="cmsg"><div class="cav">🦕</div><div class="cbw"><div class="cnm">코리요</div><div class="ctxt">안녕하세요! 파티 채팅방에 오신 걸 환영해요~ 🎉</div></div></div>
+      <div class="cmsg"><div class="cav">🐻</div><div class="cbw"><div class="cnm">하준맘</div><div class="ctxt">안녕하세요! 8살 아들 데리고 갑니다 😊</div></div></div>
+      <div class="cmsg"><div class="cav">🦊</div><div class="cbw"><div class="cnm">서연아빠</div><div class="ctxt">처음인데 잘 부탁드려요!</div></div></div>
+    </div>
+    <div class="cbar">
+      <input type="text" class="cinp" id="chatInp" placeholder="메시지..." onkeypress="if(event.key==='Enter')sendChat()">
+      <button class="csend" onclick="sendChat()">↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- RESULT POPUP -->
+<div class="rpop" id="resPop">
+  <div class="rcard">
+    <div style="font-size:80px;margin-bottom:12px;" id="resE">🎉</div>
+    <div style="font-size:20px;font-weight:800;color:var(--text-dark);margin-bottom:8px;" id="resT"></div>
+    <div style="font-size:13px;color:var(--text-mid);margin-bottom:20px;line-height:1.6;" id="resS"></div>
+    <button class="btn btn-p" style="margin:0 auto;max-width:200px;" onclick="closeRes()">확인!</button>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"><span id="tIco">✅</span><span id="tMsg"></span></div>
 
 <script>
-  // ── 온보딩 ──
-  function goObStep(step) {
-    for(let i=1;i<=4;i++){
-      const el = document.getElementById('ob-step'+i);
-      if(el) el.style.display = (i===step)?'block':'none';
+// ====== DATA ======
+const BASE_EVENTS = [
+  {id:1,title:'🏗️ 건축놀이학교',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🏗️',tag:'t-edu',isFree:false,price:'9,000원(화성시민)/13,000원(일반)',hot:true,clicks:892,ageMin:5,ageMax:13,desc:'나만의 집을 설계하고 미니 건축 모형을 만들어보는 창의 체험! 어린이 발달 수준에 맞춘 2단계 체험 교육.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['체험','공예']},
+  {id:2,title:'🦕 코리아케라톱스와 백악기 여행',place:'화성시어린이문화센터',date:'2026.02~10 상설',age:'4~10세',cat:'자연',emoji:'🦕',tag:'t-nat',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:412,ageMin:4,ageMax:10,desc:'화성에서 발견된 코리아케라톱스! 공룡의 왕국 백악기로 시간여행을 떠나봐요. 화석발굴 체험 포함.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['자연','체험']},
+  {id:3,title:'🤖 로보틱스연구소 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'과학',emoji:'🤖',tag:'t-sci',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:289,ageMin:5,ageMax:13,desc:'로봇공학자가 되어 로봇을 직접 조립하고 프로그래밍해봐요!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['로봇','과학']},
+  {id:4,title:'🎬 어린이방송국 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🎬',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:231,ageMin:5,ageMax:13,desc:'어린이 PD, 아나운서, 카메라 감독이 되어 직접 방송을 만들어봐요!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['체험']},
+  {id:5,title:'🌾 스마트농업연구소',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'자연',emoji:'🌾',tag:'t-nat',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:198,ageMin:5,ageMax:13,desc:'미래 농업 기술 체험! 식물이 자라는 원리를 배우고 직접 씨앗을 심어봐요.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['자연','체험']},
+  {id:6,title:'🍎 로컬푸드마켓&레스토랑',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🍎',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:176,ageMin:5,ageMax:13,desc:'화성 로컬푸드로 요리를 만들고 레스토랑에서 주문받는 요리사 체험!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['요리','체험']},
+  {id:7,title:'🎨 캐릭터디자인스쿨',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'미술',emoji:'🎨',tag:'t-art',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:267,ageMin:5,ageMax:13,desc:'나만의 캐릭터를 직접 디자인! 애니메이터, 웹툰 작가의 세계로 초대합니다.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['미술','공예']},
+  {id:8,title:'🦠 미생물의 세계 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'과학',emoji:'🦠',tag:'t-sci',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:213,ageMin:5,ageMax:13,desc:'눈에 보이지 않는 미생물의 세계를 탐험! 현미경으로 관찰하고 실험을 해봐요.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['과학','자연']},
+  {id:9,title:'🔬 탐이꿈이의 비밀실험실 여름방학',place:'국립어린이과학관 (서울)',date:'2026 여름방학',age:'초등학생',cat:'과학',emoji:'🔬',tag:'t-sci',isFree:false,price:'사전예매 필수',hot:true,clicks:756,ageMin:7,ageMax:13,desc:'한국로봇융합연구원과 함께하는 특별 실험 프로그램! 어린이 과학자가 되어 신나는 실험을 해봐요.',url:'https://www.csc.go.kr/',src:'국립어린이과학관 공식',interests:['과학','로봇']},
+  {id:10,title:'🔭 천체투영관 별자리 탐험',place:'국립과천과학관',date:'상시 운영',age:'6세 이상',cat:'과학',emoji:'🔭',tag:'t-sci',isFree:false,price:'2,000원(청소년/성인)',hot:false,clicks:445,ageMin:6,ageMax:99,desc:'돔 스크린에 펼쳐지는 웅장한 우주! 별자리와 행성의 세계를 체험해봐요. 방문 14일 전 온라인 예매.',url:'https://www.sciencecenter.go.kr/scipia/',src:'국립과천과학관 공식',interests:['과학']},
+  {id:11,title:'🚀 스페이스 아날로그 우주 체험',place:'국립과천과학관',date:'상시 운영',age:'초등5학년 이상',cat:'과학',emoji:'🚀',tag:'t-sci',isFree:false,price:'10,000원(체험)/2,000원(해설)',hot:false,clicks:312,ageMin:10,ageMax:99,desc:'우주탐사 시뮬레이션 체험! 실제 우주 환경과 유사한 공간에서 우주인이 되어봐요.',url:'https://www.sciencecenter.go.kr/scipia/',src:'국립과천과학관 공식',interests:['과학','체험']},
+  {id:12,title:'🌊 국립과천과학관 여름 물놀이',place:'국립과천과학관 야외',date:'2026 여름방학',age:'전 연령',cat:'자연',emoji:'🌊',tag:'t-nat',isFree:false,price:'입장료 포함',hot:true,clicks:489,ageMin:3,ageMax:99,desc:'뜨거운 여름! 야외 물놀이장에서 과학과 물놀이를 동시에 즐겨봐요.',url:'https://www.sciencecenter.go.kr',src:'국립과천과학관 공식',interests:['자연','체험']},
+  {id:13,title:'✨ SODA Museum 미디어 아트 전시',place:'SODA뮤지엄 (동탄)',date:'2026.06.01~12.31',age:'전 연령',cat:'미술',emoji:'🌈',tag:'t-art',isFree:false,price:'어린이 7,000원/성인 13,000원',hot:false,clicks:643,ageMin:0,ageMax:99,desc:'화성시 동탄의 미디어 아트 뮤지엄! 빛과 색채로 가득한 몰입형 예술 공간. 온 가족이 함께하는 특별한 예술 여행.',url:'https://soda.museum',src:'SODA Museum 공식',interests:['미술']},
+  {id:14,title:'📚 화성시 여름방학 독서교실',place:'화성동탄중앙/병점/태안도서관',date:'2026.07~08 (각 도서관별 상이)',age:'6~9세',cat:'독서',emoji:'📚',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:521,ageMin:6,ageMax:9,desc:'화성시 도서관 여름방학 독서교실! 책과 함께하는 다양한 활동으로 독서 습관을 길러요.',url:'https://www.hscitylib.or.kr',src:'화성시도서관 통합포털',interests:['독서']},
+  {id:15,title:'📖 그림책과 음악놀이',place:'화성시 봉담/삼괴도서관',date:'2026 하반기',age:'유아~초등',cat:'독서',emoji:'🎶',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:187,ageMin:4,ageMax:8,desc:'그림책을 읽고 음악과 함께 즐기는 독서문화 프로그램!',url:'https://www.hscitylib.or.kr',src:'화성시도서관 통합포털',interests:['독서','음악']},
+  {id:16,title:'🍳 푸드아트 동화요리 프로그램',place:'화성시 도서관',date:'2026 하반기',age:'유아~초등',cat:'체험',emoji:'🍳',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:145,ageMin:4,ageMax:9,desc:'동화 속 이야기로 맛있는 요리를 만들어봐요!',url:'https://www.hscitylib.or.kr',src:'화성시도서관 통합포털',interests:['독서','요리']},
+  {id:17,title:'🏯 수원화성박물관 역사 탐방',place:'수원화성박물관',date:'2026 상반기',age:'어린이·가족',cat:'역사',emoji:'🏯',tag:'t-his',isFree:false,price:'무료 (사전예약)',hot:false,clicks:298,ageMin:6,ageMax:13,desc:'수원화성 배경으로 역사 문화를 탐방! 전문 해설사와 함께하는 박물관 옆 역사 탐방 프로그램.',url:'https://smuseum.suwon.go.kr',src:'수원화성박물관 공식',interests:['역사','자연']},
+  {id:18,title:'🎭 수원광교박물관 어린이 아동극',place:'수원광교박물관',date:'2026.04,05,09 마지막주 수요일',age:'어린이',cat:'공연',emoji:'🎭',tag:'t-cul',isFree:true,price:'무료',hot:false,clicks:167,ageMin:4,ageMax:10,desc:'문화가 있는 날! 마지막주 수요일에 펼쳐지는 어린이 아동극.',url:'https://smuseum.suwon.go.kr',src:'수원시박물관 공식',interests:['공연']},
+  {id:19,title:'🏛️ 화성독립운동기념관 역사탐험대',place:'화성시독립운동기념관',date:'2026.07.12~08.23',age:'8~13세',cat:'역사',emoji:'🏛️',tag:'t-his',isFree:true,price:'무료',hot:false,clicks:387,ageMin:8,ageMax:13,desc:'화성 3.1운동의 역사를 배우는 체험 탐험대! 유물 관람과 퀴즈로 역사를 배워요.',url:'https://www.hscity.go.kr',src:'화성시청 공식',interests:['역사','체험']},
+  {id:20,title:'🎪 경기도어린이박물관 상설 체험',place:'경기도어린이박물관 (용인)',date:'화~일 10:00~18:00',age:'영유아~초등',cat:'체험',emoji:'🎪',tag:'t-edu',isFree:false,price:'사전예약 필수',hot:false,clicks:356,ageMin:2,ageMax:10,desc:'물놀이, 자연, 예술 등 종합 체험 공간. 1회차(10~13:30), 2회차(14~18시).',url:'https://gcm.ggcf.kr/',src:'경기도어린이박물관 공식',interests:['체험','자연']},
+  {id:21,title:'🎨 경기도미술관 어린이 아트워크샵',place:'경기도미술관 (안산)',date:'2026 하반기',age:'6~12세',cat:'미술',emoji:'🎨',tag:'t-art',isFree:false,price:'15,000원',hot:false,clicks:298,ageMin:6,ageMax:12,desc:'경기도미술관 어린이 전용 미술 워크샵! 다양한 재료로 나만의 작품을.',url:'https://gmoma.ggcf.kr/',src:'경기도미술관 공식',interests:['미술','공예']},
+  {id:22,title:'🏺 국립중앙박물관 어린이박물관',place:'국립중앙박물관 (서울)',date:'2026 운영 중',age:'영유아~초등',cat:'역사',emoji:'🏺',tag:'t-his',isFree:true,price:'무료 (사전예약 필수)',hot:false,clicks:445,ageMin:3,ageMax:12,desc:'역사와 문화를 체험하는 어린이 전용 박물관! QR 모바일 입장.',url:'https://www.museum.go.kr',src:'국립중앙박물관 공식',interests:['역사','체험']},
+  {id:23,title:'🦖 4차원 공룡 탈출 대작전',place:'국립어린이청소년도서관 (서울)',date:'2026 진행 중',age:'어린이',cat:'체험',emoji:'🦖',tag:'t-edu',isFree:true,price:'무료 (선착순)',hot:true,clicks:523,ageMin:5,ageMax:12,desc:'5면 실감형 체험동화구연! 공룡이 살아움직이는 실감 체험 공간 대탈출 어드벤처.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['체험','독서']},
+  {id:24,title:'🤖 도서관에서 만나는 로봇 친구',place:'국립어린이청소년도서관 (서울)',date:'2026 진행 중',age:'어린이',cat:'과학',emoji:'🤖',tag:'t-sci',isFree:true,price:'무료',hot:false,clicks:341,ageMin:6,ageMax:12,desc:'핑퐁로봇과 코딩로봇 체험! 도서관에서 만나는 신기한 로봇 친구들과 코딩을 배워봐요.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['로봇','과학']},
+  {id:25,title:'🎵 어린이 클래식 콘서트',place:'화성시어린이문화센터 공연장',date:'2026.07 (일정 공지 예정)',age:'3~8세',cat:'공연',emoji:'🎵',tag:'t-cul',isFree:false,price:'7,000~10,000원',hot:false,clicks:189,ageMin:3,ageMax:8,desc:'어린이를 위한 클래식 음악 공연! 귀여운 연주자들이 클래식 음악을 쉽게 들려드려요.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['음악','공연']},
+  {id:26,title:'🎭 가족뮤지컬 루루섬의 비밀',place:'화성시어린이문화센터 공연장',date:'2026.07.12~07.19',age:'4~8세',cat:'공연',emoji:'🎭',tag:'t-cul',isFree:false,price:'7,000원',hot:false,clicks:212,ageMin:4,ageMax:8,desc:'어린이들이 사랑하는 루루섬 뮤지컬! 신비로운 루루섬에서 일어나는 이야기.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['공연']},
+  {id:27,title:'🌿 화성시 자연탐험 생태교육',place:'화성 삼괴도서관/야외',date:'2026.07~08',age:'5~10세',cat:'자연',emoji:'🌿',tag:'t-nat',isFree:true,price:'무료',hot:false,clicks:234,ageMin:5,ageMax:10,desc:'화성시 자연 속에서 곤충, 식물, 생태를 탐험! 전문 강사와 함께하는 야외 자연체험.',url:'https://www.hscitylib.or.kr',src:'화성시도서관 통합포털',interests:['자연']},
+  {id:28,title:'🌟 화성형 아이키움터 놀이교실',place:'화성시 아이키움터(동탄/봉담/향남)',date:'2026 상시',age:'0~5세',cat:'체험',emoji:'🌟',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:234,ageMin:0,ageMax:5,desc:'화성시 특화 영유아 놀이교실! 엄마아빠 육아교실, 아기랑 놀이교실, 장난감 도서관 이용 가능.',url:'https://www.hscity.go.kr',src:'화성시청 공식',interests:['체험']},
+  {id:29,title:'🏃 화성시 가족사랑 스포츠 축제',place:'화성시 일대',date:'2026 하반기 (공지 예정)',age:'전 가족',cat:'체험',emoji:'🏃',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:198,ageMin:3,ageMax:99,desc:'화성시문화관광재단 주관 가족 스포츠 축제! 온 가족이 함께 즐기는 다양한 스포츠 체험.',url:'https://www.hcf.or.kr',src:'화성시문화관광재단',interests:['스포츠','체험']},
+  {id:30,title:'📱 이야기 코딩 삐오로봇',place:'국립어린이청소년도서관',date:'2026 진행 중',age:'유아',cat:'과학',emoji:'📱',tag:'t-sci',isFree:true,price:'무료',hot:false,clicks:178,ageMin:4,ageMax:7,desc:'귀여운 삐오로봇과 함께 책과 코딩을 동시에! 유아도 쉽게 배우는 스토리 코딩 체험.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['로봇','독서']}
+];
+
+let eventsDB=[...BASE_EVENTS];
+
+const WELFARE_DB=[
+  {id:'w1',ico:'👶',bg:'#FFF5C0',title:'2026년 아동수당 지급 대상 확대 안내',date:'2026.06.01',clicks:2341,hot:true,
+   prev:'2026년부터 아동수당 지급 대상이 만 8세 이하로 확대됩니다.',
+   detail:'📌 변경사항\n- 기존: 만 8세 미만 → 변경: 만 8세 이하\n- 지급금액: 월 10만원 (동일)\n\n📋 신청방법\n- 온라인: 복지로(bokjiro.go.kr)\n- 방문: 읍면동 주민센터\n\n💡 기존 수급자는 별도 신청 없이 자동 연장됩니다.',
+   url:'https://www.bokjiro.go.kr',sn:'복지로'},
+  {id:'w2',ico:'🦷',bg:'#E8F4FF',title:'영유아 구강검진 대상 나이 확대',date:'2026.05.15',clicks:1876,hot:true,
+   prev:'영유아 구강검진 지원 대상 확대 - 66~72개월(5차) 신규 추가',
+   detail:'📌 검진 가능 시기\n1차: 18~24개월\n2차: 30~36개월\n3차: 42~48개월\n4차: 54~60개월\n★ 신규 5차: 66~72개월\n\n💡 건강보험공단 발송 안내문 지참 후 지정 치과 방문',
+   url:'https://www.nhis.or.kr',sn:'국민건강보험'},
+  {id:'w3',ico:'📚',bg:'#E8F5E9',title:'화성시 초등 돌봄교실 2학기 신청 안내',date:'2026.06.10',clicks:1234,hot:false,
+   prev:'2026년 2학기 화성시 초등 돌봄교실 신청 기간: 2026.07.01~07.31',
+   detail:'📋 대상: 화성시 관내 초등 1~6학년\n🗓 신청: 2026.07.01~07.31\n✅ 우선배정: 맞벌이·한부모·다자녀(3명+) 가정\n\n📞 문의: 화성오산교육지원청 031-369-0000',
+   url:'https://www.goehs.kr',sn:'화성오산교육지원청'},
+  {id:'w4',ico:'🍱',bg:'#FFF0E6',title:'화성시 어린이 무상급식 전 학년 확대',date:'2026.03.01',clicks:987,hot:false,
+   prev:'2026년부터 화성시 초등학교 전 학년 무상급식 시행',
+   detail:'🍱 화성시 초등학교 1~6학년 전 학생 학교급식비 전액 지원\n\n✅ 별도 신청 불필요 - 자동 적용\n📞 문의: 화성시청 교육청소년과',
+   url:'https://www.hscity.go.kr',sn:'화성시청'},
+  {id:'w5',ico:'💉',bg:'#F0EBFF',title:'2026년 어린이 국가예방접종 안내',date:'2026.01.15',clicks:876,hot:false,
+   prev:'만 12세 이하 어린이 국가예방접종 무료 지원 종목 및 일정',
+   detail:'💉 무료 대상: 만 12세 이하\n주요 접종: 수두, MMR, 뇌수막염, 일본뇌염, 독감 등\n\n🏥 예방접종도우미(nip.kdca.go.kr)에서 지정 의료기관 확인\n온라인 예약 후 방문하세요',
+   url:'https://nip.kdca.go.kr',sn:'예방접종도우미'},
+  {id:'w6',ico:'🌟',bg:'#FFF9D0',title:'화성형 아이키움터 프로그램 안내',date:'2026.06.05',clicks:654,hot:false,
+   prev:'화성시 특화 보육 서비스 - 영유아 놀이교실, 육아상담, 장난감 도서관',
+   detail:'🌟 주요 프로그램\n- 엄마아빠 육아교실\n- 아기랑 놀이교실 (0~2세)\n- 장난감 도서관 이용\n- 부모 상담 서비스\n\n📍 동탄·봉담·향남 거점센터\n📞 문의: 031-369-0000',
+   url:'https://www.hscity.go.kr',sn:'화성시청'}
+];
+
+const PARTY_DB=[
+  {id:'p1',title:'🎨 동탄센트럴파크 미술 파티',place:'동탄센트럴파크',date:'2026.07.05 (토)',time:'오후 3시',status:'gathering',cur:4,max:5,ageR:'8~11세',atts:[{e:'🐻',a:'8세'},{e:'🦊',a:'6세'},{e:'🐰',a:'10세'},{e:'🐥',a:'9세'}]},
+  {id:'p2',title:'🌿 반석산 자연탐험 파티',place:'반석산어린이공원',date:'2026.07.12 (토)',time:'오전 10시',status:'confirmed',cur:3,max:3,ageR:'5~8세',atts:[{e:'🦁',a:'5세'},{e:'🐱',a:'7세'},{e:'🐨',a:'6세'}]},
+  {id:'p3',title:'🔬 동탄호수공원 과학 탐험대',place:'동탄호수공원',date:'2026.07.19 (일)',time:'오후 2시',status:'gathering',cur:2,max:5,ageR:'7~12세',atts:[{e:'🦅',a:'9세'},{e:'🦉',a:'11세'}]}
+];
+
+// ====== STATE ======
+const S={user:null,liked:new Set(),disliked:new Set(),confirmed:new Set(),tab:'home',calM:new Date(2026,5,1),calD:null,obStep:0,childCnt:0,notices:[{title:'6월 신규 행사 등록 완료',date:'2026.06.20'}]};
+
+// ====== SCREEN ======
+function showScreen(id){
+  document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
+  document.getElementById('mainApp').style.display='none';
+  document.getElementById('adminScreen').style.display='none';
+  if(id)document.getElementById(id)?.classList.add('active');
+}
+function showLogin(){showScreen('loginScreen');}
+function showSignup(){showScreen('signupScreen');initChildren();}
+function doLogin(){
+  const id=document.getElementById('loginId').value.trim();
+  const pw=document.getElementById('loginPw').value.trim();
+  if(!id||!pw){showToast('⚠️','아이디와 비밀번호를 입력해주세요');return;}
+  if(id==='admin'&&pw==='admin1234'){
+    S.user={id:'admin',name:'관리자',isAdmin:true};showAdmin();
+  } else if(id&&pw){
+    S.user={id,name:id+'맘',isAdmin:false,children:[{name:'하랑',age:10}],interests:['미술','과학']};showMain();
+  } else showToast('❌','아이디 또는 비밀번호를 확인해주세요');
+}
+function showMain(){
+  showScreen(null);
+  document.getElementById('mainApp').style.display='';
+  document.getElementById('mainApp').classList.add('active');
+  renderHome();renderEvts();renderWelfare();renderParty();
+  doAISearch();
+  setTimeout(showInv,3000);
+}
+function showAdmin(){
+  showScreen(null);
+  document.getElementById('adminScreen').style.display='';
+  document.getElementById('adminScreen').classList.add('active');
+  renderAdmCharts();renderAdmParty();renderAdmNotices();
+}
+
+// ====== SIGNUP ======
+function initChildren(){document.getElementById('childrenList').innerHTML='';S.childCnt=0;addChild();}
+function addChild(){
+  S.childCnt++;const n=S.childCnt;
+  const d=document.createElement('div');d.className='child-card';d.id='cc'+n;
+  d.innerHTML=`<button class="rm-child" onclick="document.getElementById('cc${n}').remove()">✕</button>
+    <div class="fg"><label class="fl">이름(별명)</label><input type="text" class="fi" placeholder="예) 하랑" id="cn${n}"></div>
+    <div style="display:flex;gap:10px;">
+      <div class="fg" style="flex:1"><label class="fl">나이</label><select class="fsel" id="ca${n}">${[...Array(13)].map((_,i)=>`<option value="${i+1}">${i+1}세</option>`).join('')}</select></div>
+      <div class="fg" style="flex:1"><label class="fl">성별</label><select class="fsel" id="cg${n}"><option value="여">여아</option><option value="남">남아</option></select></div>
+    </div>`;
+  document.getElementById('childrenList').appendChild(d);
+}
+function nextStep(cur){
+  if(cur===0){if(!document.getElementById('su_id').value.trim()||!document.getElementById('su_name').value.trim()){showToast('⚠️','아이디와 닉네임을 입력해주세요');return;}}
+  if(cur===1){
+    const kids=[];
+    for(let i=1;i<=S.childCnt;i++){const n=document.getElementById('cn'+i)?.value;const a=document.getElementById('ca'+i)?.value;const g=document.getElementById('cg'+i)?.value;if(n)kids.push({name:n,age:parseInt(a),gender:g});}
+    if(!kids.length){showToast('⚠️','자녀 정보를 입력해주세요');return;}
+    S._kids=kids;
+  }
+  if(cur===2){
+    const ints=[...document.querySelectorAll('.ci:checked')].filter(c=>['i_art','i_sci','i_nat','i_mus','i_prf','i_bk','i_sp','i_exp','i_his','i_cook','i_rob','i_cft'].includes(c.id)).map(c=>c.value);
+    if(!ints.length){showToast('⚠️','관심사를 1개 이상 선택해주세요');return;}
+    S._ints=ints;
+  }
+  goStep(cur+1);
+}
+function prevStep(){if(S.obStep>0)goStep(S.obStep-1);}
+function goStep(n){
+  document.querySelectorAll('.ob-step').forEach((s,i)=>s.classList.toggle('active',i===n));
+  document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('done',i<=n));
+  S.obStep=n;
+}
+function completeSignup(){
+  const child=S._kids?.[0]||{name:'아이',age:7};
+  S.user={id:document.getElementById('su_id').value||'user1',name:document.getElementById('su_name').value||'학부모',children:S._kids||[child],interests:S._ints||[]};
+  showToast('🎉',`${child.name}이와 코리요 파티 시작!`);setTimeout(showMain,500);
+}
+
+// ====== NAV ======
+function switchTab(t){
+  S.tab=t;
+  document.querySelectorAll('.tabc').forEach(c=>c.classList.remove('active'));
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('tab-'+t)?.classList.add('active');
+  const order=['home','events','calendar','welfare','party'];
+  document.querySelectorAll('.ni')[order.indexOf(t)]?.classList.add('active');
+  if(t==='calendar')renderCal();
+}
+
+// ====== AI SEARCH ======
+async function doAISearch(){
+  const rb=document.getElementById('rbtn'),eb=document.getElementById('erbtn'),st=document.getElementById('aiStatus'),bb=document.getElementById('aiBubble');
+  if(rb)rb.classList.add('loading');
+  if(eb){eb.classList.add('loading');eb.textContent='🔄 검색 중...';}
+  if(st)st.classList.add('on');
+  const child=S.user?.children?.[0];
+  const ints=(S.user?.interests||['미술','과학']).join(',');
+  const age=child?.age||8;const nm=child?.name||'아이';
+  const prompt=`당신은 화성시 육아 앱 코리요의 초대장 AI입니다. 코리요(귀여운 공룡) 캐릭터 말투("~에요","~해요","~거예요")로 답해주세요.
+아이 정보: ${nm}, ${age}세, 관심사: ${ints}
+아래 JSON만 응답하세요(마크다운 없이 순수 JSON):
+{"bubble":"홈 화면 코리요 말풍선 2문장 이모지포함","newEvents":[{"id":201,"title":"이벤트명 이모지포함","place":"장소","date":"날짜","age":"대상","cat":"미술또는과학또는자연또는공연또는역사또는독서또는체험","emoji":"이모지","isFree":true,"price":"가격","desc":"2~3줄설명","url":"실제공식URL","src":"출처명","interests":["관심사1"],"hot":false,"ageMin":숫자,"ageMax":숫자}]}
+경기도/화성시 인근 어린이 체험·전시·문화 행사 5개 추가. 실제 존재하는 공식 URL만 사용.`;
+  try{
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+    const data=await res.json();
+    const txt=(data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
+    const parsed=JSON.parse(txt);
+    if(parsed.bubble&&bb)bb.innerHTML=`<strong>${nm}이</strong>에게 딱 맞는 행사 찾았어요!<br>${parsed.bubble}`;
+    if(parsed.newEvents?.length){
+      let added=0;
+      parsed.newEvents.forEach((e,i)=>{
+        e.id=300+Math.floor(Math.random()*100)+i;
+        e.tag=c2t(e.cat);e.clicks=Math.floor(Math.random()*200)+50;
+        e.ageMin=e.ageMin||3;e.ageMax=e.ageMax||13;e._isNew=true;
+        if(!eventsDB.find(x=>x.title===e.title)){eventsDB.unshift(e);added++;}
+      });
+      if(added)showToast('🤖',`AI가 새 행사 ${added}개를 추가했어요!`);
     }
+  }catch(err){
+    if(bb)bb.innerHTML=`<strong>${nm}이</strong>를 위한 맞춤 행사를 준비했어요! 관심사에 딱 맞는 체험들이에요 🎨✨`;
+    showToast('📋','최신 정보를 불러왔어요');
+  }finally{
+    if(rb)rb.classList.remove('loading');
+    if(eb){eb.classList.remove('loading');eb.textContent='🤖 AI로 최신 행사 검색하기';}
+    if(st)st.classList.remove('on');
+    renderRecEvts();filterCat(null,document.querySelector('#catFilter .chip.sel')?._cat||'all');renderHome();
   }
-  function finishOnboarding(){
-    document.getElementById('onboarding').classList.remove('open');
-    document.getElementById('main-app').style.display='block';
-  }
-  function selectGender(btn){
-    btn.closest('.gender-row').querySelectorAll('.gender-btn').forEach(b=>b.classList.remove('selected'));
-    btn.classList.add('selected');
-  }
-  function toggleInterest(btn){
-    const grid = btn.closest('.interest-grid');
-    const selected = grid.querySelectorAll('.interest-btn.selected');
-    if(btn.classList.contains('selected')){
-      btn.classList.remove('selected');
-    } else {
-      if(selected.length>=3){ alert('관심사는 최대 3개까지 선택 가능해요!'); return; }
-      btn.classList.add('selected');
-    }
-  }
-  function togglePg(item){
-    const selected = document.querySelectorAll('.pg-check-item.selected');
-    if(item.classList.contains('selected')){
-      item.classList.remove('selected');
-      item.querySelector('.pg-checkbox').textContent='';
-    } else {
-      if(selected.length>=5){ alert('최대 5곳까지 선택 가능해요!'); return; }
-      item.classList.add('selected');
-      item.querySelector('.pg-checkbox').textContent='✓';
-    }
-  }
+}
+function c2t(cat){return{미술:'t-art',과학:'t-sci',자연:'t-nat',공연:'t-cul',역사:'t-his',독서:'t-edu',체험:'t-edu'}[cat]||'t-edu';}
 
-  // ── 탭 전환 ──
-  function switchTab(tabName, clickedTab){
-    document.querySelectorAll('.content').forEach(c=>c.classList.remove('active'));
-    document.querySelectorAll('.tab-item').forEach(t=>t.classList.remove('active'));
-    document.getElementById('tab-'+tabName).classList.add('active');
-    if(clickedTab && clickedTab.classList.contains('tab-item')) clickedTab.classList.add('active');
-  }
-  function switchNav(item){
-    document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-    item.classList.add('active');
-  }
+// ====== HOME ======
+function renderHome(){
+  const c=S.user?.children?.[0];
+  if(c){document.getElementById('heroGreet').textContent=`안녕하세요, ${S.user.name}님! 👋`;document.getElementById('heroTitle').innerHTML=`오늘도 <span style="color:#5C4DDB;">${c.name}이</span>와<br>특별한 하루 만들어요 🌟`;}
+  renderRecEvts();renderPopEvts();renderCityNews();
+}
+function renderRecEvts(){
+  const c=S.user?.children?.[0];const age=c?.age||8;const ints=S.user?.interests||[];
+  let list=eventsDB.filter(e=>!S.disliked.has(e.id)&&e.ageMin<=age&&e.ageMax>=age);
+  list.sort((a,b)=>{const am=(a.interests||[]).filter(i=>ints.includes(i)).length;const bm=(b.interests||[]).filter(i=>ints.includes(i)).length;return bm-am||b.clicks-a.clicks;});
+  document.getElementById('recEvents').innerHTML=list.slice(0,6).map(e=>sCard(e)).join('');
+}
+function sCard(e){
+  const lk=S.liked.has(e.id);
+  return `<div class="ecard" onclick="showEvt(${e.id})">
+    <div class="ecard-img" style="background:${cc(e.cat)}">${e.emoji}</div>
+    <div class="age-badge">${e.age}</div>
+    <div class="ecard-body">
+      <span class="etag ${e.tag}">${cl(e.cat)}</span>${e.isFree?'<span class="etag t-free" style="margin-left:3px">🆓 무료</span>':''}${e._isNew?'<span class="new-badge" style="margin-left:3px;font-size:9px">NEW</span>':''}
+      <div class="ecard-title">${e.title}</div>
+      <div class="ecard-info">📍 ${e.place}<br>📅 ${e.date}<br>💰 ${e.price}</div>
+      <div class="ecard-acts" onclick="event.stopPropagation()">
+        <button class="hbtn ${lk?'on':''}" onclick="toggleLike(${e.id},this)">${lk?'❤️':'🤍'}</button>
+        <button class="dbtn" onclick="dislike(${e.id})">👎</button>
+        <button class="gbtn" onclick="goUrl('${e.url}','${e.place}')">📎 바로가기</button>
+      </div>
+    </div>
+  </div>`;
+}
+function renderPopEvts(){
+  const list=[...eventsDB].filter(e=>!S.disliked.has(e.id)).sort((a,b)=>b.clicks-a.clicks).slice(0,5);
+  document.getElementById('popEvents').innerHTML=list.map(e=>`
+    <div class="elcard" onclick="showEvt(${e.id})">
+      <div class="elin"><div class="el-ico" style="background:${cc(e.cat)}">${e.emoji}</div>
+      <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}</div>
+      <div class="el-meta">📍 ${e.place} · 📅 ${e.date} · 👶 ${e.age}</div></div></div>
+      <div class="el-foot"><div style="font-size:11px;color:var(--text-light)">👁 ${e.clicks.toLocaleString()}회 · ${e.price}</div>
+      <button class="gbtn btn-sm" onclick="event.stopPropagation();goUrl('${e.url}','${e.place}')">바로가기</button></div>
+    </div>`).join('');
+}
+function renderCityNews(){
+  const news=[
+    {e:'🦕',t:'코리아케라톱스와 백악기 탐험 - 상설 전시 운영 중',p:'화성시어린이문화센터',u:'https://childrenjob.hscity.go.kr/index.do'},
+    {e:'📚',t:'화성시 전자책 여름방학 2배 대출 이벤트',p:'화성시도서관',u:'https://www.hscitylib.or.kr'},
+    {e:'🎭',t:'화성시문화관광재단 하반기 문화 캘린더 공개',p:'화성시문화관광재단',u:'https://www.hcf.or.kr'},
+    {e:'🏛️',t:'수원화성박물관 어린이·가족 역사 탐방 신청',p:'수원화성박물관',u:'https://smuseum.suwon.go.kr'}
+  ];
+  document.getElementById('cityNews').innerHTML=news.map(n=>`
+    <div class="elcard" onclick="goUrl('${n.u}','${n.p}')">
+      <div class="elin"><div class="el-ico" style="background:var(--yellow-light)">${n.e}</div>
+      <div class="el-body"><div class="el-title">${n.t}</div><div class="el-meta">📢 ${n.p}</div></div></div>
+      <div class="el-foot"><span></span><button class="gbtn btn-sm" onclick="event.stopPropagation();goUrl('${n.u}','${n.p}')">사이트 이동</button></div>
+    </div>`).join('');
+}
 
-  // ── 모달 ──
-  function openCheckinModal(name){
-    document.getElementById('modal-pg-name').textContent = name;
-    document.getElementById('checkin-modal').classList.add('open');
-  }
-  function closeModal(id){ document.getElementById(id).classList.remove('open'); }
-  function doCheckin(){
-    closeModal('checkin-modal');
-    alert('✅ 체크인 완료!
-2시간 후 자동으로 체크아웃됩니다.');
-  }
+// ====== EVENTS ======
+let _curCat='all';
+function renderEvts(){filterCat(null,'all');}
+function filterCat(el,cat){
+  _curCat=cat;
+  if(el){document.querySelectorAll('#catFilter .chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
+  let list=eventsDB.filter(e=>!S.disliked.has(e.id));
+  if(cat==='무료')list=list.filter(e=>e.isFree);
+  else if(cat!=='all')list=list.filter(e=>e.cat===cat);
+  list.sort((a,b)=>b.clicks-a.clicks);
+  const cnt=document.getElementById('evtCount');if(cnt)cnt.textContent=`총 ${list.length}개`;
+  document.getElementById('allEvts').innerHTML=list.map(e=>{
+    const lk=S.liked.has(e.id);
+    return `<div class="elcard">
+      <div class="elin" onclick="showEvt(${e.id})"><div class="el-ico" style="background:${cc(e.cat)};font-size:34px">${e.emoji}</div>
+      <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}</div>
+      <div class="el-meta">📍 ${e.place}<br>📅 ${e.date} · 👶 ${e.age}<br>💰 ${e.price}</div>
+      <div style="margin-top:4px"><span class="src-tag">📌 ${e.src||e.place}</span></div></div></div>
+      <div class="el-foot">
+        <div style="display:flex;gap:6px">
+          <button class="hbtn ${lk?'on':''}" onclick="toggleLike(${e.id},this)" style="width:28px;height:28px;font-size:14px">${lk?'❤️':'🤍'}</button>
+          <button class="dbtn" onclick="dislike(${e.id})" style="width:28px;height:28px;font-size:12px">👎</button>
+        </div>
+        <button class="gbtn" onclick="goUrl('${e.url}','${e.place}')">📎 바로가기</button>
+      </div>
+    </div>`;
+  }).join('')||'<div style="text-align:center;padding:40px;color:var(--text-light)">행사가 없어요</div>';
+}
 
-  // ── 서브화면 ──
-  function openReviewScreen(){
-    closeModal('checkin-modal');
-    document.getElementById('review-screen').classList.add('open');
-  }
-  function openReportScreen(){
-    closeModal('checkin-modal');
-    document.getElementById('report-screen').classList.add('open');
-  }
-  function closeSubScreen(id){ document.getElementById(id).classList.remove('open'); }
+// ====== EVENT DETAIL ======
+function showEvt(id){
+  const e=eventsDB.find(x=>x.id===id);if(!e)return;
+  const lk=S.liked.has(id),cf=S.confirmed.has(id);
+  document.getElementById('evtContent').innerHTML=`
+    <div class="det-hero" style="background:${cc(e.cat)}">${e.emoji}</div>
+    <div class="det-body">
+      <span class="etag ${e.tag}">${cl(e.cat)}</span>${e.isFree?'<span class="etag t-free" style="margin-left:6px">🆓 무료</span>':''}
+      <h2 class="det-title">${e.title}</h2>
+      <div class="det-row"><span class="det-ic">📍</span><span class="det-tx">${e.place}</span></div>
+      <div class="det-row"><span class="det-ic">📅</span><span class="det-tx">${e.date}</span></div>
+      <div class="det-row"><span class="det-ic">👶</span><span class="det-tx">대상: ${e.age}</span></div>
+      <div class="det-row"><span class="det-ic">💰</span><span class="det-tx">${e.price}</span></div>
+      <div class="det-row"><span class="det-ic">📌</span><span class="det-tx">출처: ${e.src||e.place}</span></div>
+      <p class="det-desc">${e.desc}</p>
+      <div style="display:flex;gap:10px;margin-bottom:12px">
+        <button class="btn btn-p" style="flex:2" onclick="goUrl('${e.url}','${e.place}')">📎 상세정보 / 예매 바로가기</button>
+        <button class="hbtn ${lk?'on':''}" onclick="toggleLike(${id},this)" style="width:48px;height:48px;font-size:20px">${lk?'❤️':'🤍'}</button>
+      </div>
+      <button style="width:100%;padding:14px;border-radius:50px;border:2px solid var(--border);background:${cf?'var(--green-light)':'white'};color:${cf?'#3A8A3A':'var(--text-mid)'};font-size:14px;font-weight:700;cursor:pointer;font-family:inherit" onclick="confirmEvt(${id})">${cf?'✅ 참여 확정됨!':'📌 이벤트 참여 확정하기'}</button>
+      <div style="margin-top:8px;text-align:center;font-size:11px;color:var(--text-light)">* 공식 사이트에서 정확한 정보를 확인하세요</div>
+    </div>`;
+  openModal('evtModal');
+}
+function confirmEvt(id){S.confirmed.add(id);closeModal('evtModal');showRes('📌','참여 확정!','캘린더에 일정이 추가됐어요!\n당일에 코리요 초대장을 보내드릴게요 🦕');renderCal();}
 
-  // ── 별점 ──
-  function setMainStar(n){
-    document.querySelectorAll('#main-stars .star').forEach((s,i)=>{
-      s.classList.toggle('active', i<n);
-    });
-  }
-  function setMiniStar(group, n){
-    const rows = document.querySelectorAll('.sub-star-row');
-    const map = {clean:0, safe:1, facility:2};
-    const stars = rows[map[group]].querySelectorAll('.mini-star');
-    stars.forEach((s,i)=>s.classList.toggle('active', i<n));
-  }
+// ====== WELFARE ======
+function renderWelfare(){
+  document.getElementById('welfareList').innerHTML=WELFARE_DB.map(w=>`
+    <div class="wcard" onclick="showWlf('${w.id}')">
+      <div class="wc-hd"><div class="wc-ico" style="background:${w.bg}">${w.ico}</div>
+      <div style="flex:1"><div class="wc-title">${w.hot?'<span class="hot-badge" style="font-size:9px">HOT</span> ':''}${w.title}</div>
+      <div class="wc-meta">📅 ${w.date}</div></div></div>
+      <div class="wc-prev">${w.prev}</div>
+      <div class="wc-foot"><span style="font-size:11px;color:var(--text-light)">👁 ${w.clicks.toLocaleString()}명이 봤어요</span><span style="font-size:12px;color:#5C4DDB;font-weight:700">자세히 보기 →</span></div>
+    </div>`).join('');
+}
+function showWlf(id){
+  const w=WELFARE_DB.find(x=>x.id===id);if(!w)return;
+  document.getElementById('wlfContent').innerHTML=`
+    <div style="padding-top:8px">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:12px"><div class="wc-ico" style="background:${w.bg}">${w.ico}</div>
+      <div><div style="font-size:16px;font-weight:800;color:var(--text-dark);line-height:1.3">${w.title}</div><div style="font-size:11px;color:var(--text-mid);margin-top:3px">📅 ${w.date}</div></div></div>
+      <div style="background:var(--bg);border-radius:var(--r-sm);padding:16px;font-size:13px;color:var(--text-dark);line-height:1.9;white-space:pre-line;margin-bottom:16px">${w.detail}</div>
+      <button class="btn btn-p" style="width:100%" onclick="window.open('${w.url}','_blank')">🔗 공식 사이트에서 확인하기</button>
+      <div style="margin-top:8px;text-align:center;font-size:11px;color:var(--text-light)">출처: ${w.sn} (${w.url})</div>
+    </div>`;
+  openModal('wlfModal');
+}
 
-  // ── 태그 ──
-  function toggleTag(btn){ btn.classList.toggle('selected'); }
-
-  // ── 신고 유형 ──
-  function selectReport(card){
-    document.querySelectorAll('.report-type-card').forEach(c=>c.classList.remove('selected'));
-    card.classList.add('selected');
+// ====== CALENDAR ======
+function renderCal(){
+  const y=S.calM.getFullYear(),m=S.calM.getMonth();
+  document.getElementById('calML').textContent=`${y}년 ${m+1}월`;
+  const fd=new Date(y,m,1).getDay(),dm=new Date(y,m+1,0).getDate(),td=new Date();
+  const edates=new Set();
+  eventsDB.forEach(e=>{
+    const ms=`${y}.${String(m+1).padStart(2,'0')}`;
+    if(e.date.includes(ms)){const r=e.date.match(/\.(\d{1,2})$/);if(r)edates.add(parseInt(r[1]));}
+    if(e.date.includes('상설')||e.date.includes('운영'))[5,10,15,20,25].forEach(d=>edates.add(d));
+  });
+  let h='';
+  ['일','월','화','수','목','금','토'].forEach(d=>h+=`<div class="cldn">${d}</div>`);
+  for(let i=0;i<fd;i++)h+='<div class="cldc" style="visibility:hidden"></div>';
+  for(let d=1;d<=dm;d++){
+    const dow=(fd+d-1)%7;
+    let cls='cldc'+(d===td.getDate()&&m===td.getMonth()&&y===td.getFullYear()?' today':'')+(edates.has(d)?' hase':'')+(dow===0?' sun':'')+(dow===6?' sat':'');
+    h+=`<div class="${cls}" onclick="selDay(${d})">${d}</div>`;
   }
+  document.getElementById('calGrid').innerHTML=h;
+  renderCalEvts(S.calD,m+1,y);
+}
+function selDay(d){S.calD=d;const m=S.calM.getMonth()+1;document.getElementById('calDL').textContent=`${m}월 ${d}일 행사`;renderCalEvts(d,m,S.calM.getFullYear());}
+function renderCalEvts(day,month,year){
+  const list=eventsDB.filter(e=>e.date.includes('상설')||e.date.includes('운영')||e.date.includes(`${year}.${String(month).padStart(2,'0')}`));
+  document.getElementById('calEvts').innerHTML=list.slice(0,8).map(e=>`
+    <div class="ce-item" onclick="showEvt(${e.id})">
+      <div class="ce-title">${e.emoji} ${e.title}</div>
+      <div class="ce-meta">📍 ${e.place} · 👶 ${e.age} · 💰 ${e.price}</div>
+    </div>`).join('')||'<div style="text-align:center;padding:24px;color:var(--text-light)">이 날 행사가 없어요 🦕</div>';
+}
+function chgMonth(d){S.calM.setMonth(S.calM.getMonth()+d);S.calD=null;document.getElementById('calDL').textContent=`${S.calM.getMonth()+1}월의 행사`;renderCal();}
 
-  // ── 필터 ──
-  function setFilter(chip){
-    document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('active'));
-    chip.classList.add('active');
-  }
+// ====== PARTY ======
+function renderParty(){
+  document.getElementById('partyList').innerHTML=PARTY_DB.map(p=>`
+    <div class="pcard" onclick="openModal('chatModal')">
+      <span class="psbadge ${p.status==='gathering'?'psg':'psc'}">${p.status==='gathering'?'🔍 모집 중':'✅ 성사'}</span>
+      <div style="font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:6px">${p.title}</div>
+      <div style="font-size:12px;color:var(--text-mid);line-height:1.7">📍 ${p.place}<br>📅 ${p.date} ${p.time}<br>👶 ${p.ageR} · 👨‍👩‍👧 ${p.cur}/${p.max}명</div>
+      <div class="progw"><div class="progf" style="width:${(p.cur/p.max)*100}%"></div></div>
+      <div class="patts">${p.atts.map(a=>`<div class="patt">${a.e} ${a.a}</div>`).join('')}</div>
+    </div>`).join('');
+}
+function submitParty(){closeModal('partyJoinModal');showRes('🎈','파티 신청 완료!','매칭이 완료되면\n코리요 초대장을 보내드릴게요! 🦕');}
 
-  // ── 제출 ──
-  function submitReview(){
-    closeSubScreen('review-screen');
-    alert('🎉 리뷰가 등록되었어요!
-다른 부모님들에게 큰 도움이 됩니다 😊');
-  }
-  function submitReport(){
-    closeSubScreen('report-screen');
-    alert('🚨 신고가 접수되었어요!
-화성시 공원관리부서에 전달됩니다.
-신고자 정보는 완전 익명으로 처리됩니다.');
-  }
+// ====== INVITATION ======
+function showInv(){document.getElementById('invOv').classList.add('active');document.getElementById('nbadge').style.display='none';}
+function closeInv(){document.getElementById('invOv').classList.remove('active');}
+function confirmParty(){closeInv();setTimeout(()=>{openModal('chatModal');showToast('🎉','파티 채팅방에 입장했어요!');},300);}
 
-  // ── 알림 ──
-  function openNotif(){
-    alert('🔔 새 알림
+// ====== CHAT ======
+function sendChat(){
+  const inp=document.getElementById('chatInp');const msg=inp.value.trim();if(!msg)return;
+  const a=document.getElementById('chatMsgs');
+  a.innerHTML+=`<div class="cmsg mine"><div class="cbw"><div class="cnm" style="text-align:right">나</div><div class="ctxt">${msg}</div></div></div>`;
+  inp.value='';a.scrollTop=a.scrollHeight;
+  const rs=['반갑습니다! 🎉','저희 아이도 기대해요 😊','날씨 좋으면 좋겠네요!','코리요 앱 너무 편해요!'];
+  const em=['🐻','🦊','🐰'];const nm=['하준맘','서연아빠','민서맘'];const i=Math.floor(Math.random()*3);
+  setTimeout(()=>{a.innerHTML+=`<div class="cmsg"><div class="cav">${em[i]}</div><div class="cbw"><div class="cnm">${nm[i]}</div><div class="ctxt">${rs[Math.floor(Math.random()*4)]}</div></div></div>`;a.scrollTop=a.scrollHeight;},1000);
+}
 
-🔴 동탄센트럴파크에 5세 친구가 나타났어요!
-🎨 미술관 체험전 신청 마감 D-3
-🚨 ○○완구 리콜 안내');
-  }
+// ====== LIKE/DISLIKE ======
+function toggleLike(id,btn){
+  if(S.liked.has(id)){S.liked.delete(id);btn.classList.remove('on');btn.textContent='🤍';showToast('💔','찜 목록에서 제거했어요');}
+  else{S.liked.add(id);btn.classList.add('on');btn.textContent='❤️';showToast('❤️','찜 목록에 추가했어요!');}
+}
+function dislike(id){S.disliked.add(id);showToast('👋','이 행사는 더 이상 보여드리지 않을게요');renderRecEvts();filterCat(null,_curCat);}
+function goUrl(url,name){showToast('🔗',`${name} 사이트로 이동해요`);setTimeout(()=>window.open(url,'_blank'),400);}
+
+// ====== MODAL ======
+function openModal(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden';}
+function closeModal(id){document.getElementById(id).classList.remove('active');document.body.style.overflow='';}
+document.querySelectorAll('.mov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
+
+// ====== RESULT ======
+function showRes(e,t,s){document.getElementById('resE').textContent=e;document.getElementById('resT').textContent=t;document.getElementById('resS').textContent=s;document.getElementById('resPop').classList.add('active');}
+function closeRes(){document.getElementById('resPop').classList.remove('active');}
+
+// ====== TOAST ======
+let _tt;
+function showToast(ico,msg){const t=document.getElementById('toast');document.getElementById('tIco').textContent=ico;document.getElementById('tMsg').textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2600);}
+
+// ====== ADMIN ======
+function swAdmTab(el,id){document.querySelectorAll('.adtab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.adtc').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById(id).classList.add('active');}
+function renderAdmCharts(){
+  const mv=['1월','2월','3월','4월','5월','6월'];const sv=[62,78,95,112,134,87];const mx=Math.max(...sv);
+  document.getElementById('ch1').innerHTML=mv.map((m,i)=>`<div class="bw"><div class="br" style="height:${(sv[i]/mx)*90}px;background:${i===5?'#FFD84D':'rgba(92,77,219,.6)'}"></div><div class="bl">${m}</div></div>`).join('');
+  const tl=['10시','11시','13시','14시','15시','16시'];const tv=[45,32,67,89,98,54];const mt=Math.max(...tv);
+  document.getElementById('ch2').innerHTML=tl.map((t,i)=>`<div class="bw"><div class="br" style="height:${(tv[i]/mt)*90}px;background:${i===4?'#FFD84D':'rgba(168,216,168,.8)'}"></div><div class="bl">${t}</div></div>`).join('');
+  const il=['미술','과학','자연','공연','체험','독서'];const iv=[82,78,65,54,91,47];const mi=Math.max(...iv);
+  document.getElementById('ch3').innerHTML=il.map((l,i)=>`<div class="bw"><div class="br" style="height:${(iv[i]/mi)*90}px;background:rgba(201,179,255,.8)"></div><div class="bl">${l}</div></div>`).join('');
+  const sp=[28,35,42,38,51,47,58,63,71,67,82,78];const ms=Math.max(...sp);
+  document.getElementById('ch4').innerHTML=sp.map((v,i)=>`<div class="spkb" style="height:${(v/ms)*46}px;opacity:${.4+i*.05}"></div>`).join('');
+}
+function renderAdmParty(){document.getElementById('adPartyList').innerHTML=PARTY_DB.map(p=>`<div class="adpr"><div class="adpri"><div class="adprt">${p.title}</div><div class="adprm">${p.place} · ${p.date} · ${p.cur}/${p.max}명</div><div class="pbw"><div class="pbf" style="width:${(p.cur/p.max)*100}%"></div></div></div><span class="ppill ${p.status==='confirmed'?'ppa':'ppw'}">${p.status==='gathering'?'모집중':'성사'}</span></div>`).join('');}
+function adminAddEvt(){
+  const t=document.getElementById('ae_t').value.trim();if(!t){alert('제목을 입력하세요');return;}
+  eventsDB.unshift({id:Date.now(),title:t,emoji:'📌',place:document.getElementById('ae_p').value||'화성시',date:document.getElementById('ae_d').value||'미정',age:document.getElementById('ae_a').value||'전연령',cat:document.getElementById('ae_c').value||'체험',tag:'t-edu',isFree:false,price:'확인 필요',hot:false,clicks:0,ageMin:0,ageMax:99,desc:document.getElementById('ae_desc').value||'',url:document.getElementById('ae_u').value||'#',src:'관리자 등록',interests:[]});
+  ['ae_t','ae_p','ae_d','ae_a','ae_c','ae_u','ae_desc'].forEach(i=>document.getElementById(i).value='');
+  alert('✅ 이벤트가 등록되었습니다!');
+}
+function renderAdmNotices(){document.getElementById('adNoticeList').innerHTML=S.notices.map(n=>`<div class="adpr"><div class="adpri"><div class="adprt">${n.title}</div><div class="adprm">${n.date||''}</div></div></div>`).join('');}
+function adminAddNotice(){const t=document.getElementById('an_t').value.trim();if(!t)return;S.notices.unshift({title:t,body:document.getElementById('an_b').value,date:new Date().toLocaleDateString('ko-KR')});document.getElementById('an_t').value='';document.getElementById('an_b').value='';renderAdmNotices();alert('등록되었습니다!');}
+
+// ====== HELPERS ======
+function cc(cat){return{미술:'#F0EBFF',과학:'#E8F4FF',자연:'#E8F5E9',공연:'#FFE4EC',역사:'#FFF0E6',독서:'#FFF9D0',체험:'#FFF5C0'}[cat]||'#F5F5FF';}
+function cl(cat){return{미술:'🎨 미술',과학:'🔬 과학',자연:'🌱 자연',공연:'🎭 공연',역사:'🏛️ 역사',독서:'📚 독서',체험:'🏃 체험'}[cat]||cat;}
 </script>
-
 </body>
 </html>
