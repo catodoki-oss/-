@@ -8,8 +8,7 @@
 :root{
   --bg:#FAFBFF;--yellow:#FFD84D;--yellow-light:#FFF5C0;--yellow-soft:#FFFBE8;
   --green-light:#E8F5E9;--pink-light:#FFE4EC;--pink:#FFB3C6;
-  --blue-light:#E8F4FF;--purple-light:#F0EBFF;--purple:#C9B3FF;
-  --orange-light:#FFF0E6;--orange:#FFCBA4;
+  --blue-light:#E8F4FF;--purple-light:#F0EBFF;--orange-light:#FFF0E6;--orange:#FFCBA4;
   --text-dark:#3A3560;--text-mid:#6B6591;--text-light:#A09CC0;
   --border:#EAE8F5;--shadow:0 4px 20px rgba(58,53,96,.08);--shadow-h:0 8px 30px rgba(58,53,96,.15);
   --r:20px;--r-sm:12px;
@@ -19,14 +18,16 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .screen{display:none;min-height:100vh;flex-direction:column;}
 .screen.active{display:flex;}
 
-/* SPLASH */
+/* === SPLASH === */
 #splashScreen{background:linear-gradient(160deg,#FFF9D0 0%,#E8F5FF 50%,#F0EBFF 100%);align-items:center;justify-content:center;flex-direction:column;gap:20px;position:relative;overflow:hidden;}
 .sp-circle{position:absolute;border-radius:50%;opacity:.12;animation:flt 6s ease-in-out infinite;}
 .sp-c1{width:220px;height:220px;background:var(--yellow);top:-60px;left:-70px;}
 .sp-c2{width:160px;height:160px;background:var(--pink);top:30%;right:-50px;animation-delay:2s;}
 .sp-c3{width:190px;height:190px;background:#B3D9FF;bottom:8%;left:-40px;animation-delay:4s;}
 @keyframes flt{0%,100%{transform:translateY(0)}50%{transform:translateY(-14px)}}
-.sp-dino{width:140px;height:140px;background:var(--yellow);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:0 8px 30px rgba(255,216,77,.45);animation:pop .6s cubic-bezier(.34,1.56,.64,1) both;}
+.sp-dino{width:140px;height:140px;border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:72px;box-shadow:0 8px 30px rgba(255,216,77,.45);animation:pop .6s cubic-bezier(.34,1.56,.64,1) both;overflow:hidden;background:var(--yellow);}
+.sp-dino img{width:100%;height:100%;object-fit:cover;}
+.sp-dino .fallback{font-size:72px;display:flex;align-items:center;justify-content:center;width:100%;height:100%;}
 @keyframes pop{from{transform:scale(.3);opacity:0}to{transform:scale(1);opacity:1}}
 .sp-title{font-size:28px;font-weight:800;color:var(--text-dark);text-align:center;}
 .sp-title span{color:#5C4DDB;}
@@ -35,15 +36,16 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 @keyframes fup{from{transform:translateY(20px);opacity:0}to{transform:translateY(0);opacity:1}}
 .sp-bubble::before{content:'';position:absolute;top:-8px;left:50%;transform:translateX(-50%);border-left:8px solid transparent;border-right:8px solid transparent;border-bottom:8px solid white;}
 
-/* BUTTONS */
+/* === BUTTONS === */
 .btn{border:none;cursor:pointer;font-family:inherit;border-radius:50px;font-weight:700;transition:all .2s;display:inline-flex;align-items:center;justify-content:center;gap:6px;}
 .btn:active{transform:scale(.96);}
 .btn-p{background:linear-gradient(135deg,#5C4DDB,#8B5FBF);color:white;padding:15px 30px;font-size:16px;box-shadow:0 4px 20px rgba(92,77,219,.35);width:100%;}
 .btn-y{background:var(--yellow);color:var(--text-dark);padding:12px 24px;font-size:14px;}
 .btn-o{background:white;color:var(--text-mid);border:2px solid var(--border);padding:11px 22px;font-size:14px;}
 .btn-sm{padding:8px 14px;font-size:12px;}
+.btn-ghost{background:transparent;border:none;cursor:pointer;font-family:inherit;padding:6px;color:var(--text-light);font-size:14px;}
 
-/* AUTH */
+/* === AUTH === */
 .auth-sc{background:linear-gradient(160deg,#FFF9D0 0%,#E8F5FF 100%);padding:40px 24px 30px;flex-direction:column;}
 .auth-hd{text-align:center;margin-bottom:28px;}
 .auth-ico{font-size:52px;margin-bottom:8px;}
@@ -55,18 +57,17 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .fi{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:15px;font-family:inherit;color:var(--text-dark);outline:none;transition:border-color .2s;background:var(--bg);}
 .fi:focus{border-color:#5C4DDB;background:white;}
 .fi::placeholder{color:var(--text-light);}
-.fsel{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:15px;font-family:inherit;color:var(--text-dark);outline:none;background:var(--bg);appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236B6591' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;}
+.fsel{width:100%;padding:14px 16px;border:2px solid var(--border);border-radius:var(--r-sm);font-size:15px;font-family:inherit;color:var(--text-dark);outline:none;background:var(--bg);appearance:none;}
 
-/* CHIPS - label/input 방식 (클릭 버그 수정) */
+/* === CHIPS (label+input 방식) === */
 .cg{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
 .ci{display:none;}
 .cl{display:inline-block;padding:9px 15px;border-radius:50px;font-size:13px;border:2px solid var(--border);background:white;cursor:pointer;transition:all .15s;color:var(--text-mid);font-weight:600;user-select:none;-webkit-tap-highlight-color:transparent;}
 .ci:checked+.cl{background:var(--yellow);border-color:var(--yellow);color:var(--text-dark);}
-/* 일반 칩 (필터용) */
-.chip{display:inline-block;padding:9px 15px;border-radius:50px;font-size:13px;border:2px solid var(--border);background:white;cursor:pointer;transition:all .15s;color:var(--text-mid);font-weight:600;user-select:none;white-space:nowrap;}
+.chip{display:inline-block;padding:9px 15px;border-radius:50px;font-size:13px;border:2px solid var(--border);background:white;cursor:pointer;transition:all .15s;color:var(--text-mid);font-weight:600;user-select:none;white-space:nowrap;-webkit-tap-highlight-color:transparent;}
 .chip.sel{background:var(--yellow);border-color:var(--yellow);color:var(--text-dark);}
 
-/* ONBOARD */
+/* === ONBOARD === */
 .ob-prog{display:flex;gap:6px;margin-bottom:24px;}
 .ob-dot{flex:1;height:4px;border-radius:2px;background:var(--border);transition:background .3s;}
 .ob-dot.done{background:#5C4DDB;}
@@ -77,20 +78,24 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .child-card{background:var(--yellow-soft);border-radius:var(--r);padding:16px;margin-bottom:12px;border:2px solid var(--yellow-light);position:relative;}
 .rm-child{position:absolute;top:10px;right:10px;background:none;border:none;cursor:pointer;font-size:18px;color:var(--text-light);}
 
-/* MAIN */
+/* === MAIN APP === */
 #mainApp{display:none;flex-direction:column;min-height:100vh;}
 #mainApp.active{display:flex;}
 .topbar{background:white;padding:16px 20px 12px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(58,53,96,.06);display:flex;align-items:center;justify-content:space-between;}
 .tlogo{display:flex;align-items:center;gap:8px;}
-.tlogo-ico{font-size:28px;}
+.tlogo-ico{width:32px;height:32px;border-radius:50%;overflow:hidden;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:18px;}
+.tlogo-ico img{width:100%;height:100%;object-fit:cover;}
 .tlogo-txt{font-size:17px;font-weight:800;color:var(--text-dark);}
 .tacts{display:flex;gap:8px;align-items:center;}
-.nbtn{width:36px;height:36px;border-radius:50%;background:var(--yellow-soft);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;}
+.nbtn{width:36px;height:36px;border-radius:50%;background:var(--yellow-soft);border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:18px;position:relative;transition:all .2s;}
+.nbtn:hover{background:var(--yellow-light);}
 .nbadge{position:absolute;top:-2px;right:-2px;width:16px;height:16px;background:#FF5757;border-radius:50%;font-size:9px;color:white;display:flex;align-items:center;justify-content:center;font-weight:800;}
-.avatar{width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--yellow),var(--orange));display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;}
+.avatar{width:36px;height:36px;border-radius:50%;overflow:hidden;background:linear-gradient(135deg,var(--yellow),var(--orange));display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;transition:all .2s;}
+.avatar:hover{transform:scale(1.05);}
+.avatar img{width:100%;height:100%;object-fit:cover;}
 .content{flex:1;overflow-y:auto;padding-bottom:80px;}
 
-/* BOTTOM NAV */
+/* === BOTTOM NAV === */
 .botnav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:430px;background:white;border-top:1px solid var(--border);display:flex;z-index:200;padding:8px 0 env(safe-area-inset-bottom,8px);}
 .ni{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 4px;cursor:pointer;transition:all .2s;position:relative;}
 .ni-ico{font-size:22px;transition:transform .2s;}
@@ -100,31 +105,45 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .ni-dot{position:absolute;top:4px;right:16px;width:8px;height:8px;background:#FF5757;border-radius:50%;display:none;}
 .ni-dot.on{display:block;}
 
-/* TABS */
+/* === TABS === */
 .tabc{display:none;}
 .tabc.active{display:block;}
 
-/* HOME */
-.hero{background:linear-gradient(135deg,#FFF9D0 0%,#E8F5FF 100%);padding:20px 20px 16px;}
+/* === 이미지 폴백 처리 === */
+.img-wrap{position:relative;overflow:hidden;display:flex;align-items:center;justify-content:center;}
+.img-wrap img{width:100%;height:100%;object-fit:cover;}
+.img-wrap .fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:52px;}
+
+/* === PC 드래그 스크롤 === */
+.drag-scroll{cursor:grab;user-select:none;}
+.drag-scroll.dragging{cursor:grabbing;}
+.drag-scroll::-webkit-scrollbar{display:none;}
+.drag-scroll{scrollbar-width:none;-ms-overflow-style:none;}
+
+/* === HOME === */
+.hero{background:linear-gradient(135deg,#FFF9D0 0%,#E8F5FF 100%);padding:20px 20px 16px;position:relative;}
+.hero-bg{position:absolute;right:0;top:0;width:120px;height:100%;opacity:.06;background:url('koriyo_main.png') no-repeat right center/contain;}
 .hero-greet{font-size:13px;color:var(--text-mid);margin-bottom:4px;}
 .hero-title{font-size:20px;font-weight:800;color:var(--text-dark);line-height:1.3;}
 .hero-bubble{margin-top:14px;background:white;border-radius:16px;padding:12px 16px;box-shadow:0 3px 12px rgba(58,53,96,.08);display:flex;align-items:flex-start;gap:10px;}
-.hb-ico{font-size:30px;flex-shrink:0;margin-top:2px;}
+.hb-ico{width:36px;height:36px;border-radius:50%;overflow:hidden;background:var(--yellow);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:20px;margin-top:2px;}
+.hb-ico img{width:100%;height:100%;object-fit:cover;}
 .hb-txt{font-size:13px;color:var(--text-dark);line-height:1.6;}
 .hb-txt strong{color:#5C4DDB;}
 
-/* SECTION */
+/* === SECTION === */
 .sechd{padding:20px 20px 10px;display:flex;align-items:center;justify-content:space-between;}
 .sech-t{font-size:16px;font-weight:800;color:var(--text-dark);}
 .sech-m{font-size:12px;color:var(--text-light);cursor:pointer;}
 
-/* SCROLL CARDS */
-.escroll{padding:0 20px;display:flex;gap:14px;overflow-x:auto;scrollbar-width:none;-ms-overflow-style:none;padding-bottom:4px;}
-.escroll::-webkit-scrollbar{display:none;}
-.ecard{min-width:220px;background:white;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;flex-shrink:0;transition:all .2s;cursor:pointer;position:relative;}
-.ecard:active{transform:scale(.98);}
-.ecard-img{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:52px;}
-.age-badge{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.92);border-radius:50px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--text-dark);}
+/* === SCROLL CARDS (드래그 스크롤 포함) === */
+.escroll{padding:0 20px;display:flex;gap:14px;overflow-x:auto;padding-bottom:8px;}
+.ecard{min-width:220px;background:white;border-radius:var(--r);box-shadow:var(--shadow);overflow:hidden;flex-shrink:0;transition:box-shadow .2s;cursor:pointer;position:relative;}
+.ecard:hover{box-shadow:var(--shadow-h);}
+.ecard-img{width:100%;height:120px;display:flex;align-items:center;justify-content:center;font-size:52px;position:relative;overflow:hidden;}
+.ecard-img img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.ecard-img .eico{position:relative;z-index:1;font-size:52px;}
+.age-badge{position:absolute;top:8px;left:8px;background:rgba(255,255,255,.92);border-radius:50px;padding:3px 8px;font-size:10px;font-weight:700;color:var(--text-dark);z-index:2;}
 .ecard-body{padding:12px 14px 14px;}
 .etag{display:inline-block;padding:3px 8px;border-radius:50px;font-size:10px;font-weight:700;margin-bottom:6px;}
 .t-art{background:var(--purple-light);color:#6B4FBF;}
@@ -143,11 +162,13 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .dbtn{width:32px;height:32px;border-radius:50%;border:2px solid var(--border);background:white;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;color:var(--text-light);}
 .gbtn{flex:1;background:var(--yellow);border:none;border-radius:50px;padding:8px 12px;font-size:11px;font-weight:700;color:var(--text-dark);cursor:pointer;transition:all .2s;font-family:inherit;}
 
-/* LIST CARDS */
+/* === LIST CARDS === */
 .elcard{background:white;border-radius:var(--r);box-shadow:var(--shadow);margin:0 20px 12px;overflow:hidden;transition:all .2s;cursor:pointer;}
 .elcard:active{transform:scale(.99);}
 .elin{display:flex;}
-.el-ico{width:80px;min-height:80px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;}
+.el-ico{width:80px;min-height:80px;display:flex;align-items:center;justify-content:center;font-size:36px;flex-shrink:0;position:relative;overflow:hidden;}
+.el-ico img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.el-ico .eico{position:relative;z-index:1;}
 .el-body{padding:12px 14px 12px 0;flex:1;}
 .el-title{font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:4px;line-height:1.4;}
 .el-meta{font-size:11px;color:var(--text-mid);line-height:1.6;}
@@ -157,10 +178,9 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .new-badge{background:#5C4DDB;color:white;font-size:10px;font-weight:800;padding:3px 8px;border-radius:50px;display:inline-block;margin-left:6px;}
 .src-tag{display:inline-flex;align-items:center;gap:4px;background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:2px 8px;font-size:10px;color:var(--text-light);}
 
-/* DIVIDER */
 .div8{height:8px;background:var(--bg);margin:4px 0;}
 
-/* FILTER */
+/* === FILTER / REFRESH === */
 .fbar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 20px 4px;-ms-overflow-style:none;}
 .fbar::-webkit-scrollbar{display:none;}
 .rbtn{display:inline-flex;align-items:center;gap:6px;background:var(--yellow-light);border:none;border-radius:50px;padding:9px 18px;font-size:13px;font-weight:700;color:var(--text-dark);cursor:pointer;transition:all .2s;font-family:inherit;margin:0 20px 12px;}
@@ -173,7 +193,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .spinner{display:inline-block;width:14px;height:14px;border:2px solid rgba(92,77,219,.3);border-top-color:#5C4DDB;border-radius:50%;animation:spin .6s linear infinite;vertical-align:middle;}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* WELFARE */
+/* === WELFARE === */
 .wcard{background:white;border-radius:var(--r);margin:0 20px 12px;padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;}
 .wcard:active{transform:scale(.99);}
 .wc-hd{display:flex;align-items:flex-start;gap:12px;}
@@ -183,7 +203,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .wc-prev{font-size:12px;color:var(--text-mid);margin-top:8px;line-height:1.6;}
 .wc-foot{display:flex;align-items:center;justify-content:space-between;margin-top:10px;}
 
-/* CALENDAR */
+/* === CALENDAR === */
 .cal-hd{background:white;padding:16px 20px;box-shadow:0 2px 8px rgba(58,53,96,.05);}
 .cal-nav{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;}
 .cal-month{font-size:18px;font-weight:800;color:var(--text-dark);}
@@ -196,26 +216,42 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .cldc:hover{background:var(--yellow-light);}
 .cldc.today{background:var(--yellow);border-radius:50%;width:34px;margin:0 auto;}
 .cldc.hase::after{content:'';position:absolute;bottom:3px;left:50%;transform:translateX(-50%);width:5px;height:5px;background:#5C4DDB;border-radius:50%;}
+.cldc.conf-day{color:#5C4DDB;font-weight:800;}
+.cldc.conf-day::before{content:'⭐';font-size:7px;position:absolute;top:1px;right:2px;}
 .cldc.sun{color:#E05A5A;}
 .cldc.sat{color:#5C88DB;}
-.cal-evts{padding:16px 20px;}
+.cal-evts-area{padding:16px 20px;}
 .ce-item{background:white;border-radius:var(--r-sm);padding:12px 16px;margin-bottom:8px;border-left:4px solid var(--yellow);box-shadow:0 2px 8px rgba(58,53,96,.06);cursor:pointer;}
 .ce-title{font-size:13px;font-weight:700;color:var(--text-dark);}
 .ce-meta{font-size:11px;color:var(--text-mid);margin-top:3px;}
 
-/* PARTY */
+/* === PARTY === */
 .party-hero{background:linear-gradient(135deg,#F0EBFF 0%,#FFE4EC 100%);padding:20px;text-align:center;}
+.party-hero-img{width:80px;height:80px;margin:0 auto 8px;border-radius:50%;overflow:hidden;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:44px;}
+.party-hero-img img{width:100%;height:100%;object-fit:cover;}
 .pcard{background:white;border-radius:var(--r);margin:0 20px 12px;padding:16px;box-shadow:var(--shadow);cursor:pointer;transition:all .2s;}
 .pcard:active{transform:scale(.99);}
 .psbadge{display:inline-block;padding:4px 10px;border-radius:50px;font-size:11px;font-weight:700;margin-bottom:8px;}
 .psg{background:var(--blue-light);color:#2A6A9F;}
 .psc{background:var(--green-light);color:#3A8A3A;}
+.pse{background:#FFE4E4;color:#C04040;}
 .progw{height:6px;border-radius:50px;background:var(--border);overflow:hidden;margin-top:8px;}
 .progf{height:100%;border-radius:50px;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);}
 .patts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap;}
 .patt{background:var(--bg);border:1px solid var(--border);border-radius:50px;padding:4px 10px;font-size:11px;color:var(--text-mid);}
 
-/* MODAL */
+/* === 파티 성사/실패 팝업 === */
+.party-result-pop{position:fixed;inset:0;background:rgba(30,25,70,.6);z-index:900;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
+.party-result-pop.active{display:flex;animation:fov .2s ease;}
+.pr-card{background:white;border-radius:24px;padding:0;max-width:320px;width:100%;animation:ipop .4s cubic-bezier(.34,1.4,.64,1);box-shadow:0 20px 60px rgba(30,25,70,.3);overflow:hidden;}
+.pr-img-area{height:180px;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;}
+.pr-img-area img{width:100%;height:100%;object-fit:cover;}
+.pr-img-area .pr-emoji{font-size:80px;position:absolute;}
+.pr-body{padding:20px 24px 24px;text-align:center;}
+.pr-title{font-size:22px;font-weight:800;color:var(--text-dark);margin-bottom:8px;}
+.pr-sub{font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:20px;}
+
+/* === MODAL === */
 .mov{position:fixed;inset:0;background:rgba(30,25,70,.5);z-index:500;display:none;align-items:flex-end;backdrop-filter:blur(3px);}
 .mov.active{display:flex;animation:fov .2s ease;}
 @keyframes fov{from{opacity:0}to{opacity:1}}
@@ -225,13 +261,23 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .mtitle{font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:4px;}
 .msub{font-size:13px;color:var(--text-mid);margin-bottom:16px;}
 
-/* INVITATION */
+/* === 캘린더 날짜 팝업 === */
+.cal-day-pop{position:fixed;inset:0;background:rgba(30,25,70,.5);z-index:600;display:none;align-items:flex-end;backdrop-filter:blur(3px);}
+.cal-day-pop.active{display:flex;animation:fov .2s ease;}
+.cdp-sheet{background:white;border-radius:24px 24px 0 0;width:100%;max-height:75vh;overflow-y:auto;animation:slu .3s cubic-bezier(.34,1.2,.64,1);padding:16px 20px 40px;}
+.cdp-evt{background:white;border-radius:var(--r-sm);padding:14px;margin-bottom:10px;box-shadow:var(--shadow);border-left:4px solid var(--yellow);}
+.cdp-evt-title{font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:4px;}
+.cdp-evt-meta{font-size:12px;color:var(--text-mid);line-height:1.6;}
+
+/* === INVITATION === */
 .inv-ov{position:fixed;inset:0;background:rgba(30,25,70,.6);z-index:600;display:none;align-items:center;justify-content:center;padding:20px;backdrop-filter:blur(4px);}
 .inv-ov.active{display:flex;animation:fov .2s ease;}
 .inv-card{background:white;border-radius:24px;padding:24px 20px;width:100%;max-width:360px;box-shadow:0 20px 60px rgba(30,25,70,.3);animation:ipop .4s cubic-bezier(.34,1.4,.64,1);position:relative;}
 @keyframes ipop{from{transform:scale(.7);opacity:0}to{transform:scale(1);opacity:1}}
 .inv-env{text-align:center;margin-bottom:16px;animation:envb 1s .3s ease-in-out infinite;}
 @keyframes envb{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+.inv-env-img{width:100px;height:80px;margin:0 auto;display:flex;align-items:center;justify-content:center;font-size:70px;}
+.inv-env-img img{width:100%;height:100%;object-fit:contain;}
 .inv-title{font-size:18px;font-weight:800;text-align:center;color:var(--text-dark);margin-bottom:4px;}
 .inv-sub{font-size:12px;color:var(--text-mid);text-align:center;margin-bottom:16px;}
 .inv-box{background:var(--yellow-soft);border-radius:var(--r-sm);padding:14px;margin-bottom:14px;}
@@ -246,8 +292,64 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .inv-yes{flex:2;background:linear-gradient(135deg,#5C4DDB,#8B5FBF);color:white;border:none;border-radius:50px;padding:14px;font-size:14px;font-weight:800;cursor:pointer;font-family:inherit;}
 .inv-no{flex:1;background:var(--bg);color:var(--text-mid);border:2px solid var(--border);border-radius:50px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;font-family:inherit;}
 
-/* DETAIL */
-.det-hero{height:180px;display:flex;align-items:center;justify-content:center;font-size:80px;border-radius:0;}
+/* === 알림 패널 === */
+.notif-panel{position:fixed;top:0;right:0;width:100%;max-width:430px;left:50%;transform:translateX(-50%);background:white;border-radius:0 0 20px 20px;box-shadow:0 8px 30px rgba(58,53,96,.15);z-index:400;max-height:80vh;overflow-y:auto;display:none;animation:slideDown .3s ease;}
+.notif-panel.active{display:block;}
+@keyframes slideDown{from{transform:translateX(-50%) translateY(-100%)}to{transform:translateX(-50%) translateY(0)}}
+.notif-hd{padding:16px 20px 12px;display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid var(--border);}
+.notif-title{font-size:16px;font-weight:800;color:var(--text-dark);}
+.notif-item{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;gap:12px;align-items:flex-start;cursor:pointer;transition:background .15s;}
+.notif-item:hover{background:var(--bg);}
+.notif-item.unread{background:var(--yellow-soft);}
+.notif-ico{width:40px;height:40px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:20px;flex-shrink:0;}
+.notif-text{flex:1;}
+.notif-msg{font-size:13px;font-weight:600;color:var(--text-dark);line-height:1.4;}
+.notif-time{font-size:11px;color:var(--text-light);margin-top:3px;}
+
+/* === 마이페이지 === */
+.mypage-sc{position:fixed;inset:0;background:var(--bg);z-index:450;display:none;flex-direction:column;max-width:430px;left:50%;transform:translateX(-50%);overflow-y:auto;}
+.mypage-sc.active{display:flex;}
+.mypage-hd{background:linear-gradient(135deg,#5C4DDB,#8B5FBF);padding:50px 20px 30px;text-align:center;position:relative;}
+.mypage-back{position:absolute;top:16px;left:16px;background:rgba(255,255,255,.2);border:none;border-radius:50%;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;color:white;}
+.mypage-avatar{width:80px;height:80px;border-radius:50%;margin:0 auto 12px;border:3px solid white;overflow:hidden;background:var(--yellow);display:flex;align-items:center;justify-content:center;font-size:40px;}
+.mypage-avatar img{width:100%;height:100%;object-fit:cover;}
+.mypage-name{font-size:20px;font-weight:800;color:white;}
+.mypage-code{background:rgba(255,255,255,.2);border-radius:50px;padding:4px 14px;font-size:12px;color:rgba(255,255,255,.9);margin-top:6px;display:inline-block;cursor:pointer;}
+.mypage-body{padding:20px;}
+.mypage-sec{background:white;border-radius:var(--r);margin-bottom:16px;overflow:hidden;box-shadow:var(--shadow);}
+.mypage-sec-title{padding:14px 16px;font-size:13px;font-weight:700;color:var(--text-mid);border-bottom:1px solid var(--border);background:var(--bg);}
+.mypage-row{padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.mypage-row:last-child{border-bottom:none;}
+.mypage-row:hover{background:var(--bg);}
+.mypage-row-ico{font-size:20px;width:32px;text-align:center;}
+.mypage-row-label{flex:1;font-size:14px;font-weight:600;color:var(--text-dark);}
+.mypage-row-value{font-size:12px;color:var(--text-light);}
+.mypage-row-arr{font-size:16px;color:var(--text-light);}
+.friend-card{padding:14px 16px;display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--border);}
+.friend-card:last-child{border-bottom:none;}
+.friend-av{width:40px;height:40px;border-radius:50%;background:var(--yellow-light);display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.friend-info{flex:1;}
+.friend-name{font-size:14px;font-weight:700;color:var(--text-dark);}
+.friend-sub{font-size:11px;color:var(--text-light);margin-top:2px;}
+.friend-btn{padding:6px 14px;border-radius:50px;font-size:12px;font-weight:700;border:none;cursor:pointer;font-family:inherit;}
+.fb-accept{background:var(--green-light);color:#3A8A3A;}
+.fb-msg{background:var(--blue-light);color:#2A6A9F;}
+.fb-del{background:#FFE4E4;color:#C04040;}
+
+/* === 쪽지 === */
+.msg-item{padding:14px 16px;border-bottom:1px solid var(--border);cursor:pointer;transition:background .15s;}
+.msg-item:hover{background:var(--bg);}
+.msg-item.unread{background:var(--yellow-soft);}
+.msg-item-hd{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
+.msg-from{font-size:13px;font-weight:700;color:var(--text-dark);}
+.msg-time{font-size:11px;color:var(--text-light);}
+.msg-preview{font-size:12px;color:var(--text-mid);}
+.unread-dot{width:8px;height:8px;background:#FF5757;border-radius:50%;flex-shrink:0;}
+
+/* === DETAIL === */
+.det-hero{height:180px;display:flex;align-items:center;justify-content:center;font-size:80px;position:relative;overflow:hidden;}
+.det-hero img{width:100%;height:100%;object-fit:cover;position:absolute;inset:0;}
+.det-hero .det-eco{position:relative;z-index:1;font-size:80px;}
 .det-body{padding:20px;}
 .det-title{font-size:20px;font-weight:800;color:var(--text-dark);margin-bottom:8px;line-height:1.3;}
 .det-row{display:flex;gap:10px;margin-bottom:8px;align-items:flex-start;}
@@ -255,7 +357,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .det-tx{font-size:13px;color:var(--text-mid);line-height:1.5;}
 .det-desc{font-size:13px;color:var(--text-dark);line-height:1.8;margin:12px 0 20px;}
 
-/* ADMIN */
+/* === ADMIN === */
 #adminScreen{background:#1A1730;min-height:100vh;padding:20px;display:none;flex-direction:column;overflow-y:auto;}
 #adminScreen.active{display:flex;}
 .adh{display:flex;align-items:center;justify-content:space-between;margin-bottom:20px;}
@@ -270,7 +372,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .ct{color:white;font-size:14px;font-weight:700;margin-bottom:16px;}
 .bch{display:flex;align-items:flex-end;gap:6px;height:100px;}
 .bw{flex:1;display:flex;flex-direction:column;align-items:center;gap:4px;}
-.br{width:100%;border-radius:6px 6px 0 0;transition:height .5s;}
+.br{width:100%;border-radius:6px 6px 0 0;}
 .bl{font-size:9px;color:rgba(255,255,255,.5);}
 .dc{display:flex;align-items:center;gap:16px;}
 .li{display:flex;align-items:center;gap:6px;margin-bottom:6px;}
@@ -299,14 +401,19 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .ppill{padding:3px 8px;border-radius:50px;font-size:10px;font-weight:700;}
 .ppa{background:rgba(125,223,100,.2);color:#7DDF64;}
 .ppw{background:rgba(255,216,77,.2);color:var(--yellow);}
+.ppe{background:rgba(255,100,100,.2);color:#FF6464;}
 .pbw{background:rgba(255,255,255,.1);border-radius:50px;height:6px;margin-top:6px;overflow:hidden;}
 .pbf{height:100%;border-radius:50px;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);}
+.adm-party-actions{display:flex;gap:6px;margin-top:8px;}
+.adm-btn-confirm{padding:5px 12px;border-radius:50px;font-size:11px;font-weight:700;border:none;cursor:pointer;font-family:inherit;background:rgba(125,223,100,.2);color:#7DDF64;}
+.adm-btn-cancel{padding:5px 12px;border-radius:50px;font-size:11px;font-weight:700;border:none;cursor:pointer;font-family:inherit;background:rgba(255,100,100,.2);color:#FF6464;}
 
-/* CHAT */
+/* === CHAT === */
 .chat-area{padding:16px 20px;flex:1;overflow-y:auto;}
 .cmsg{margin-bottom:12px;display:flex;gap:8px;}
 .cmsg.mine{flex-direction:row-reverse;}
-.cav{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:var(--yellow-light);display:flex;align-items:center;justify-content:center;font-size:16px;}
+.cav{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:var(--yellow-light);display:flex;align-items:center;justify-content:center;font-size:16px;overflow:hidden;}
+.cav img{width:100%;height:100%;object-fit:cover;}
 .cbw{flex:1;}
 .cnm{font-size:10px;color:var(--text-light);margin-bottom:3px;}
 .cmsg.mine .cnm{text-align:right;}
@@ -316,29 +423,56 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 .cinp{flex:1;padding:10px 14px;border:2px solid var(--border);border-radius:50px;font-size:14px;font-family:inherit;outline:none;}
 .csend{width:40px;height:40px;border-radius:50%;background:#5C4DDB;border:none;cursor:pointer;font-size:18px;color:white;display:flex;align-items:center;justify-content:center;}
 
-/* RESULT */
-.rpop{position:fixed;inset:0;background:rgba(30,25,70,.6);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;}
-.rpop.active{display:flex;animation:fov .2s ease;}
-.rcard{background:white;border-radius:24px;padding:32px 24px;text-align:center;max-width:300px;width:100%;animation:ipop .4s cubic-bezier(.34,1.4,.64,1);box-shadow:0 20px 60px rgba(30,25,70,.3);}
+/* === FIREBASE STATUS === */
+.fb-status{position:fixed;bottom:90px;right:20px;background:var(--text-dark);color:white;padding:8px 14px;border-radius:50px;font-size:11px;font-weight:700;z-index:300;display:none;align-items:center;gap:6px;}
+.fb-status.show{display:flex;}
+.fb-dot{width:8px;height:8px;border-radius:50%;background:#7DDF64;}
+.fb-dot.red{background:#FF5757;}
 
-/* TOAST */
+/* === TOAST === */
 .toast{position:fixed;bottom:90px;left:50%;transform:translateX(-50%);background:var(--text-dark);color:white;padding:12px 20px;border-radius:50px;font-size:13px;font-weight:700;z-index:800;white-space:nowrap;display:none;align-items:center;gap:6px;}
 .toast.show{display:flex;animation:tin .3s ease;}
 @keyframes tin{from{transform:translate(-50%,20px);opacity:0}to{transform:translate(-50%,0);opacity:1}}
 
-/* WELFARE KEYWORDS */
+/* === RESULT POPUP === */
+.rpop{position:fixed;inset:0;background:rgba(30,25,70,.6);z-index:700;display:none;align-items:center;justify-content:center;padding:20px;}
+.rpop.active{display:flex;animation:fov .2s ease;}
+.rcard{background:white;border-radius:24px;padding:32px 24px;text-align:center;max-width:300px;width:100%;animation:ipop .4s cubic-bezier(.34,1.4,.64,1);box-shadow:0 20px 60px rgba(30,25,70,.3);}
+
+/* === WELFARE KEYWORDS === */
 .kwbar{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:0 20px 12px;}
 .kwbar::-webkit-scrollbar{display:none;}
 .kwtag{padding:6px 12px;border-radius:50px;font-size:12px;font-weight:700;white-space:nowrap;}
+
+/* === 쪽지 작성 팝업 === */
+.msg-compose{position:fixed;inset:0;background:rgba(30,25,70,.5);z-index:700;display:none;align-items:flex-end;backdrop-filter:blur(3px);}
+.msg-compose.active{display:flex;animation:fov .2s ease;}
+.msg-compose-sheet{background:white;border-radius:24px 24px 0 0;width:100%;padding:20px 20px 40px;animation:slu .3s ease;}
 </style>
+
 </head>
 <body>
+
+<!-- 모듈 로딩 전 전체 화면 오버레이 -->
+<div id="_loadingOv" style="position:fixed;inset:0;background:linear-gradient(160deg,#FFF9D0,#E8F5FF);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:16px;">
+  <div style="width:90px;height:90px;background:#FFD84D;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:50px;box-shadow:0 6px 24px rgba(255,216,77,.5);animation:popIn .6s cubic-bezier(.34,1.56,.64,1) both;">🦕</div>
+  <div style="font-size:20px;font-weight:800;color:#3A3560;">코리요의 초대장</div>
+  <div style="display:flex;gap:6px;align-items:center;">
+    <div style="width:8px;height:8px;background:#5C4DDB;border-radius:50%;animation:ldot .9s ease-in-out infinite;"></div>
+    <div style="width:8px;height:8px;background:#5C4DDB;border-radius:50%;animation:ldot .9s .2s ease-in-out infinite;"></div>
+    <div style="width:8px;height:8px;background:#5C4DDB;border-radius:50%;animation:ldot .9s .4s ease-in-out infinite;"></div>
+  </div>
+  <div style="font-size:13px;color:#A09CC0;">잠시만 기다려주세요 :)</div>
+</div>
+<style>
+@keyframes ldot{0%,100%{transform:translateY(0);opacity:.4}50%{transform:translateY(-6px);opacity:1}}
+</style>
 
 <!-- SPLASH -->
 <div id="splashScreen" class="screen active">
   <div class="sp-circle sp-c1"></div><div class="sp-circle sp-c2"></div><div class="sp-circle sp-c3"></div>
   <div style="z-index:1;text-align:center;">
-    <div class="sp-dino">🦕</div>
+    <div class="sp-dino"><img src="koriyo_main.png" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="fallback" style="display:none">🦕</span></div>
     <div class="sp-title">코리요의 <span>초대장</span></div>
     <div class="sp-sub">화성시 육아 문화 정보 플랫폼</div>
   </div>
@@ -353,8 +487,8 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 <div id="loginScreen" class="screen auth-sc">
   <div class="auth-hd"><div class="auth-ico">🦕</div><div class="auth-title">다시 만났어요!</div><div class="auth-sub">코리요가 기다리고 있었어요 :)</div></div>
   <div class="card">
-    <div class="fg"><label class="fl">아이디</label><input type="text" class="fi" id="loginId" placeholder="아이디를 입력하세요"></div>
-    <div class="fg"><label class="fl">비밀번호</label><input type="password" class="fi" id="loginPw" placeholder="비밀번호를 입력하세요" onkeypress="if(event.key==='Enter')doLogin()"></div>
+    <div class="fg"><label class="fl">아이디</label><input type="text" class="fi" id="loginId" placeholder="아이디"></div>
+    <div class="fg"><label class="fl">비밀번호</label><input type="password" class="fi" id="loginPw" placeholder="비밀번호" onkeypress="if(event.key==='Enter')doLogin()"></div>
     <button class="btn btn-p" onclick="doLogin()" style="margin-top:4px;">로그인 🦕</button>
     <div style="text-align:center;margin-top:16px;">
       <span style="font-size:13px;color:var(--text-mid);">계정이 없으신가요? </span>
@@ -368,15 +502,13 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
   <div class="auth-hd"><div class="auth-ico">🦕</div><div class="auth-title">코리요 가족이 되어요!</div><div class="auth-sub">아이 정보를 알려주시면 딱 맞는 정보를 드릴게요</div></div>
   <div class="card">
     <div class="ob-prog"><div class="ob-dot done" id="d0"></div><div class="ob-dot" id="d1"></div><div class="ob-dot" id="d2"></div><div class="ob-dot" id="d3"></div><div class="ob-dot" id="d4"></div></div>
-    <!-- Step 0 -->
     <div class="ob-step active" id="s0">
       <div class="ob-title">📝 기본 정보</div><div class="ob-sub">계정을 만들어볼게요</div>
       <div class="fg"><label class="fl">아이디</label><input type="text" class="fi" id="su_id" placeholder="아이디"></div>
       <div class="fg"><label class="fl">비밀번호</label><input type="password" class="fi" id="su_pw" placeholder="비밀번호"></div>
-      <div class="fg"><label class="fl">닉네임 (예: 하랑맘, 민준아빠)</label><input type="text" class="fi" id="su_name" placeholder="닉네임"></div>
+      <div class="fg"><label class="fl">닉네임 (예: 하랑맘)</label><input type="text" class="fi" id="su_name" placeholder="닉네임"></div>
       <button class="btn btn-p" onclick="nextStep(0)" style="margin-top:8px;">다음 →</button>
     </div>
-    <!-- Step 1 -->
     <div class="ob-step" id="s1">
       <div class="ob-title">👧 자녀 정보</div><div class="ob-sub">자녀를 등록해주세요 (여러 명 가능!)</div>
       <div id="childrenList"></div>
@@ -384,9 +516,8 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
       <button class="btn btn-p" onclick="nextStep(1)">다음 →</button>
       <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:#5C4DDB;cursor:pointer;" onclick="prevStep()">← 이전</span></div>
     </div>
-    <!-- Step 2: label+input 방식으로 체크박스 구현 (클릭 버그 완전 해결) -->
     <div class="ob-step" id="s2">
-      <div class="ob-title">🎨 관심사 선택</div><div class="ob-sub">자녀가 좋아하는 활동을 선택해주세요 (여러 개 OK!)</div>
+      <div class="ob-title">🎨 관심사 선택</div><div class="ob-sub">자녀가 좋아하는 활동 (여러 개 OK!)</div>
       <div class="cg">
         <input class="ci" type="checkbox" id="i_art" value="미술"><label class="cl" for="i_art">🎨 미술</label>
         <input class="ci" type="checkbox" id="i_sci" value="과학"><label class="cl" for="i_sci">🔬 과학</label>
@@ -412,7 +543,6 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
       <button class="btn btn-p" onclick="nextStep(2)" style="margin-top:20px;">다음 →</button>
       <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:#5C4DDB;cursor:pointer;" onclick="prevStep()">← 이전</span></div>
     </div>
-    <!-- Step 3 -->
     <div class="ob-step" id="s3">
       <div class="ob-title">🎉 모임 선호도</div><div class="ob-sub">어떤 파티 스타일이 맞나요?</div>
       <div class="fg"><label class="fl">선호 요일</label>
@@ -440,7 +570,6 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
       <button class="btn btn-p" onclick="nextStep(3)" style="margin-top:20px;">다음 →</button>
       <div style="text-align:center;margin-top:12px;"><span style="font-size:13px;color:#5C4DDB;cursor:pointer;" onclick="prevStep()">← 이전</span></div>
     </div>
-    <!-- Step 4 -->
     <div class="ob-step" id="s4">
       <div style="text-align:center;padding:20px 0;">
         <div style="font-size:70px;margin-bottom:16px;">🎊</div>
@@ -455,20 +584,34 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
 <!-- MAIN APP -->
 <div id="mainApp">
   <div class="topbar">
-    <div class="tlogo"><span class="tlogo-ico">🦕</span><span class="tlogo-txt">코리요의 초대장</span></div>
+    <div class="tlogo">
+      <div class="tlogo-ico"><img src="koriyo_main.png" onerror="this.style.display='none';this.parentElement.textContent='🦕'"></div>
+      <span class="tlogo-txt">코리요의 초대장</span>
+    </div>
     <div class="tacts">
-      <button class="nbtn" onclick="showInvitation()">🔔<span class="nbadge" id="nbadge">1</span></button>
-      <div class="avatar" onclick="showToast('👩','마이페이지 준비 중이에요!')">👩</div>
+      <button class="nbtn" id="notifBtn" onclick="toggleNotifPanel()">🔔<span class="nbadge" id="nbadge">3</span></button>
+      <div class="avatar" onclick="showMyPage()"><img src="koriyo_wave.png" onerror="this.style.display='none';this.parentElement.innerHTML='👩'"></div>
     </div>
   </div>
+
+  <!-- 알림 패널 -->
+  <div class="notif-panel" id="notifPanel">
+    <div class="notif-hd">
+      <div class="notif-title">🔔 알림</div>
+      <button class="btn-ghost" onclick="toggleNotifPanel()">✕</button>
+    </div>
+    <div id="notifList"></div>
+  </div>
+
   <div class="content" id="contentArea">
     <!-- HOME -->
     <div class="tabc active" id="tab-home">
       <div class="hero">
+        <div class="hero-bg"></div>
         <div class="hero-greet" id="heroGreet">안녕하세요! 👋</div>
         <div class="hero-title" id="heroTitle">오늘도 특별한 하루 만들어요 🌟</div>
         <div class="hero-bubble">
-          <span class="hb-ico">🦕</span>
+          <div class="hb-ico"><img src="koriyo_recommend.png" onerror="this.style.display='none';this.parentElement.innerHTML='🦕'"></div>
           <div class="hb-txt" id="aiBubble">코리요가 딱 맞는 행사를 찾아오고 있어요... <span class="spinner"></span></div>
         </div>
       </div>
@@ -476,7 +619,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
         <div class="sech-t">🌟 AI 맞춤 추천</div>
         <button class="rbtn" id="rbtn" onclick="doAISearch()" style="margin:0;padding:6px 12px;font-size:11px;">🔄 새로고침</button>
       </div>
-      <div class="escroll" id="recEvents"></div>
+      <div class="escroll drag-scroll" id="recEvents"></div>
       <div class="div8"></div>
       <div class="sechd"><div class="sech-t">🔥 지금 인기 있어요</div><span class="sech-m" onclick="switchTab('events')">전체보기</span></div>
       <div id="popEvents"></div>
@@ -485,6 +628,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
       <div id="cityNews"></div>
       <div style="height:20px;"></div>
     </div>
+
     <!-- EVENTS -->
     <div class="tabc" id="tab-events">
       <div style="padding:16px 20px 10px;">
@@ -505,6 +649,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
       <div class="ai-status" id="aiStatus"><div class="ai-dot"></div><span id="aiTxt">AI가 최신 행사를 검색 중이에요...</span></div>
       <div id="allEvts"></div>
     </div>
+
     <!-- CALENDAR -->
     <div class="tabc" id="tab-calendar">
       <div class="cal-hd">
@@ -515,11 +660,12 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
         </div>
         <div class="cal-grid" id="calGrid"></div>
       </div>
-      <div class="cal-evts">
-        <div style="font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:12px;" id="calDL">6월의 행사</div>
+      <div class="cal-evts-area">
+        <div style="font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:12px;" id="calDL">날짜를 클릭하면 행사가 보여요 📅</div>
         <div id="calEvts"></div>
       </div>
     </div>
+
     <!-- WELFARE -->
     <div class="tabc" id="tab-welfare">
       <div style="padding:16px 20px 8px;"><div style="font-size:18px;font-weight:800;color:var(--text-dark);margin-bottom:4px;">📋 육아 정책·복지</div><div style="font-size:13px;color:var(--text-mid);">꼭 알아야 할 정보를 모았어요</div></div>
@@ -533,18 +679,23 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
       </div>
       <div id="welfareList"></div>
     </div>
+
     <!-- PARTY -->
     <div class="tabc" id="tab-party">
       <div class="party-hero">
-        <div style="font-size:60px;margin-bottom:8px;">🎈</div>
+        <div class="party-hero-img"><img src="koriyo_wave.png" onerror="this.style.display='none';this.parentElement.innerHTML='🎈'"></div>
         <div style="font-size:18px;font-weight:800;color:var(--text-dark);">코리요 파티 매칭</div>
         <div style="font-size:13px;color:var(--text-mid);margin-top:4px;">비슷한 또래 가족끼리 함께 만나요!</div>
         <button class="btn btn-y btn-sm" style="margin-top:12px;" onclick="openModal('partyJoinModal')">파티 신청하기 🎉</button>
       </div>
-      <div class="sechd" style="padding-top:16px;"><div class="sech-t">🎪 진행 중인 파티</div></div>
+      <div style="padding:12px 20px 0;display:flex;gap:8px;">
+        <button class="rbtn" style="margin:0;flex:1;" onclick="loadParties()">🔄 파티 목록 새로고침</button>
+      </div>
+      <div class="sechd" style="padding-top:12px;"><div class="sech-t">🎪 진행 중인 파티</div><span id="partyFbStatus" style="font-size:11px;color:var(--text-light);"></span></div>
       <div id="partyList"></div>
     </div>
   </div>
+
   <div class="botnav">
     <div class="ni active" onclick="switchTab('home')"><span class="ni-ico">🏠</span><span class="ni-lbl">홈</span></div>
     <div class="ni" onclick="switchTab('events')"><span class="ni-ico">🎪</span><span class="ni-lbl">행사</span><div class="ni-dot on"></div></div>
@@ -554,30 +705,63 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
   </div>
 </div>
 
+<!-- 마이페이지 -->
+<div class="mypage-sc" id="myPageSc">
+  <div class="mypage-hd">
+    <button class="mypage-back" onclick="closeMyPage()">←</button>
+    <div class="mypage-avatar"><img src="koriyo_wave.png" onerror="this.style.display='none';this.parentElement.innerHTML='👩'"></div>
+    <div class="mypage-name" id="mypageName">하랑맘</div>
+    <div class="mypage-code" id="mypageCode" onclick="copyFriendCode()">👤 내 친구코드: KORIYO-XXXX (탭하여 복사)</div>
+  </div>
+  <div class="mypage-body">
+    <!-- 친구 관련 -->
+    <div class="mypage-sec">
+      <div class="mypage-sec-title">👥 친구</div>
+      <div class="mypage-row" onclick="showAddFriend()"><span class="mypage-row-ico">➕</span><span class="mypage-row-label">친구 추가하기</span><span class="mypage-row-arr">›</span></div>
+      <div class="mypage-row" onclick="showFriendRequests()"><span class="mypage-row-ico">📩</span><span class="mypage-row-label">받은 친구 요청</span><span class="mypage-row-value" id="friendReqCount"></span><span class="mypage-row-arr">›</span></div>
+      <div class="mypage-row" onclick="showFriendList()"><span class="mypage-row-ico">⭐</span><span class="mypage-row-label">내 친구 목록</span><span class="mypage-row-value" id="friendCount"></span><span class="mypage-row-arr">›</span></div>
+    </div>
+    <!-- 쪽지 -->
+    <div class="mypage-sec">
+      <div class="mypage-sec-title">💌 쪽지함</div>
+      <div class="mypage-row" onclick="showMessages()"><span class="mypage-row-ico">📬</span><span class="mypage-row-label">받은 쪽지</span><span class="mypage-row-value" id="msgCount"></span><span class="mypage-row-arr">›</span></div>
+      <div class="mypage-row" onclick="showSentMessages()"><span class="mypage-row-ico">📤</span><span class="mypage-row-label">보낸 쪽지</span><span class="mypage-row-arr">›</span></div>
+    </div>
+    <!-- 내 활동 -->
+    <div class="mypage-sec">
+      <div class="mypage-sec-title">📋 내 활동</div>
+      <div class="mypage-row" onclick="showLikedEvents()"><span class="mypage-row-ico">❤️</span><span class="mypage-row-label">찜한 행사</span><span class="mypage-row-value" id="likedCount"></span><span class="mypage-row-arr">›</span></div>
+      <div class="mypage-row" onclick="showConfirmedEvents()"><span class="mypage-row-ico">📌</span><span class="mypage-row-label">참여 확정 행사</span><span class="mypage-row-value" id="confirmedCount"></span><span class="mypage-row-arr">›</span></div>
+      <div class="mypage-row" onclick="showMyParties()"><span class="mypage-row-ico">🎈</span><span class="mypage-row-label">내가 신청한 파티</span><span class="mypage-row-arr">›</span></div>
+    </div>
+    <!-- 설정 -->
+    <div class="mypage-sec">
+      <div class="mypage-sec-title">⚙️ 설정</div>
+      <div class="mypage-row" onclick="showLogin()"><span class="mypage-row-ico">🚪</span><span class="mypage-row-label">로그아웃</span><span class="mypage-row-arr">›</span></div>
+    </div>
+  </div>
+</div>
+
 <!-- ADMIN -->
 <div id="adminScreen">
   <div class="adh">
     <div class="adtitle">🦕 관리자 대시보드</div>
-    <div style="display:flex;gap:8px;align-items:center;">
-      <div class="adbadge">ADMIN</div>
-      <button class="btn btn-o btn-sm" onclick="showLogin()" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:white;font-size:11px;">로그아웃</button>
-    </div>
+    <div style="display:flex;gap:8px;align-items:center;"><div class="adbadge">ADMIN</div><button class="btn btn-o btn-sm" onclick="showLogin()" style="background:rgba(255,255,255,.1);border-color:rgba(255,255,255,.2);color:white;font-size:11px;">로그아웃</button></div>
   </div>
   <div class="adtabs">
     <span class="adtab active" onclick="swAdmTab(this,'adash')">📊 대시보드</span>
-    <span class="adtab" onclick="swAdmTab(this,'aparty')">🎈 파티현황</span>
+    <span class="adtab" onclick="swAdmTab(this,'aparty')">🎈 파티관리</span>
     <span class="adtab" onclick="swAdmTab(this,'aevent')">📝 이벤트 등록</span>
     <span class="adtab" onclick="swAdmTab(this,'anotice')">📢 공지</span>
   </div>
-  <!-- 대시보드 -->
   <div class="adtc active" id="adash">
     <div class="sg">
-      <div class="sc"><div class="sl">총 가입 학부모</div><div class="sv">1,247</div><div class="scg">↑ +38 이번주</div></div>
-      <div class="sc"><div class="sl">파티 성사율</div><div class="sv">74%</div><div class="scg">↑ +5% 전월</div></div>
-      <div class="sc"><div class="sl">행사 클릭(이번달)</div><div class="sv">8,912</div><div class="scg">↑ +12%</div></div>
-      <div class="sc"><div class="sl">AI추천→신청 전환율</div><div class="sv">32%</div><div class="scg">↑ +4%</div></div>
-      <div class="sc"><div class="sl">평균 체류시간</div><div class="sv">8.4분</div><div class="scg">↑ +1.2분</div></div>
-      <div class="sc"><div class="sl">재방문율</div><div class="sv">68%</div><div class="scg">↑ +3%</div></div>
+      <div class="sc"><div class="sl">총 가입 학부모</div><div class="sv" id="ad_users">-</div><div class="scg" id="ad_users_sub">Firebase 연동 중</div></div>
+      <div class="sc"><div class="sl">파티 성사율</div><div class="sv" id="ad_rate">-</div><div class="scg" id="ad_rate_sub">집계 중</div></div>
+      <div class="sc"><div class="sl">총 파티 수</div><div class="sv" id="ad_parties">-</div><div class="scg">Firebase 실시간</div></div>
+      <div class="sc"><div class="sl">성사된 파티</div><div class="sv" id="ad_confirmed">-</div><div class="scg">Firebase 실시간</div></div>
+      <div class="sc"><div class="sl">모집중 파티</div><div class="sv" id="ad_gathering">-</div><div class="scg">Firebase 실시간</div></div>
+      <div class="sc"><div class="sl">취소된 파티</div><div class="sv" id="ad_cancelled">-</div><div class="scg">Firebase 실시간</div></div>
     </div>
     <div class="cc"><div class="ct">📈 월별 신규 가입자</div><div class="bch" id="ch1"></div></div>
     <div class="cc"><div class="ct">👶 아동 연령대 분포</div>
@@ -601,19 +785,13 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
         </div>
       </div>
     </div>
-    <div class="cc"><div class="ct">🏆 행사 클릭 순위 TOP5</div>
-      <div class="hb-item"><div class="hb-l"><span>건축놀이학교(화성어린이문화센터)</span><span>892</span></div><div class="hb-t"><div class="hb-f" style="width:89%;background:#FFD84D;"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>국립과천과학관 여름방학체험</span><span>756</span></div><div class="hb-t"><div class="hb-f" style="width:75%;background:#B3D9FF;"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>SODA뮤지엄 빛 아트</span><span>643</span></div><div class="hb-t"><div class="hb-f" style="width:64%;background:#C9B3FF;"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>동탄도서관 독서교실</span><span>521</span></div><div class="hb-t"><div class="hb-f" style="width:52%;background:#A8D8A8;"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>화성독립운동기념관 역사탐험</span><span>387</span></div><div class="hb-t"><div class="hb-f" style="width:38%;background:#FFCBA4;"></div></div></div>
-    </div>
+    <div class="cc"><div class="ct">⏰ 시간대별 외출 패턴</div><div class="bch" id="ch2"></div></div>
     <div class="cc"><div class="ct">📍 파티 인기 장소 TOP5</div>
-      <div class="hb-item"><div class="hb-l"><span>동탄센트럴파크</span><span>142건</span></div><div class="hb-t"><div class="hb-f" style="width:95%;background:#FFD84D;"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>반석산어린이공원</span><span>98건</span></div><div class="hb-t"><div class="hb-f" style="width:65%;background:#B3D9FF;"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>화성행궁 광장</span><span>76건</span></div><div class="hb-t"><div class="hb-f" style="width:51%;background:#A8D8A8;"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>동탄호수공원</span><span>61건</span></div><div class="hb-t"><div class="hb-f" style="width:41%;background:#C9B3FF;"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>병점근린공원</span><span>44건</span></div><div class="hb-t"><div class="hb-f" style="width:29%;background:#FFCBA4;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>동탄센트럴파크</span><span id="place1">-</span></div><div class="hb-t"><div class="hb-f" id="place1bar" style="width:0%;background:#FFD84D;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>반석산어린이공원</span><span id="place2">-</span></div><div class="hb-t"><div class="hb-f" id="place2bar" style="width:0%;background:#B3D9FF;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>동탄호수공원</span><span id="place3">-</span></div><div class="hb-t"><div class="hb-f" id="place3bar" style="width:0%;background:#A8D8A8;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>화성행궁 광장</span><span id="place4">-</span></div><div class="hb-t"><div class="hb-f" id="place4bar" style="width:0%;background:#C9B3FF;"></div></div></div>
+      <div class="hb-item"><div class="hb-l"><span>병점근린공원</span><span id="place5">-</span></div><div class="hb-t"><div class="hb-f" id="place5bar" style="width:0%;background:#FFCBA4;"></div></div></div>
     </div>
     <div class="cc"><div class="ct">❌ 파티 취소·불참 원인</div>
       <div class="dc">
@@ -634,38 +812,26 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
         </div>
       </div>
     </div>
-    <div class="cc"><div class="ct">⏰ 시간대별 외출 패턴</div><div class="bch" id="ch2"></div></div>
-    <div class="cc"><div class="ct">🎨 관심사별 행사 수요</div><div class="bch" id="ch3"></div></div>
-    <div class="cc"><div class="ct">🗺️ 동별 이용 현황</div>
-      <div class="hb-item"><div class="hb-l"><span>동탄</span><span>38%</span></div><div class="hb-t"><div class="hb-f" style="width:95%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>봉담</span><span>22%</span></div><div class="hb-t"><div class="hb-f" style="width:55%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>향남</span><span>18%</span></div><div class="hb-t"><div class="hb-f" style="width:45%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>병점</span><span>14%</span></div><div class="hb-t"><div class="hb-f" style="width:35%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
-      <div class="hb-item"><div class="hb-l"><span>기타</span><span>8%</span></div><div class="hb-t"><div class="hb-f" style="width:20%;background:linear-gradient(90deg,#5C4DDB,#8B5FBF);"></div></div></div>
-    </div>
-    <div class="sg">
-      <div class="sc"><div class="sl">공지 열람률</div><div class="sv">41%</div><div class="pbw"><div class="pbf" style="width:41%"></div></div></div>
-      <div class="sc"><div class="sl">파티 성사 건수</div><div class="sv">317건</div><div class="scg">↑ +28건 이번달</div></div>
-    </div>
     <div class="cc"><div class="ct">🎉 파티 성사 트렌드</div><div class="spkl" id="ch4"></div></div>
   </div>
-  <!-- 파티현황 -->
-  <div class="adtc" id="aparty"><div class="adsl">진행 중인 파티</div><div id="adPartyList"></div></div>
-  <!-- 이벤트 등록 -->
+  <div class="adtc" id="aparty">
+    <div class="adsl">Firebase 실시간 파티 현황</div>
+    <button class="btn btn-y btn-sm" onclick="loadAdminParties()" style="margin-bottom:12px;width:100%">🔄 Firebase 새로고침</button>
+    <div id="adPartyList"><div style="color:rgba(255,255,255,.4);font-size:13px;padding:20px;text-align:center;">파티 목록을 불러오는 중...</div></div>
+  </div>
   <div class="adtc" id="aevent">
     <div class="adsl">새 이벤트 등록</div>
     <div class="adf">
       <input type="text" class="adinp" placeholder="이벤트 제목 *" id="ae_t">
       <input type="text" class="adinp" placeholder="장소" id="ae_p">
-      <input type="text" class="adinp" placeholder="날짜 (예: 2026.07.15)" id="ae_d">
-      <input type="text" class="adinp" placeholder="대상 나이 (예: 5~8세)" id="ae_a">
+      <input type="text" class="adinp" placeholder="날짜" id="ae_d">
+      <input type="text" class="adinp" placeholder="대상 나이" id="ae_a">
       <input type="text" class="adinp" placeholder="카테고리 (미술/과학/자연/공연/역사/체험)" id="ae_c">
-      <input type="text" class="adinp" placeholder="공식 링크 URL *" id="ae_u">
+      <input type="text" class="adinp" placeholder="공식 링크 URL" id="ae_u">
       <textarea class="adinp" placeholder="행사 설명" rows="3" id="ae_desc" style="resize:none;"></textarea>
       <button class="btn btn-y" onclick="adminAddEvt()" style="width:100%;margin-top:4px;">등록하기</button>
     </div>
   </div>
-  <!-- 공지 -->
   <div class="adtc" id="anotice">
     <div class="adsl">공지사항 등록</div>
     <div class="adf">
@@ -677,16 +843,29 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
   </div>
 </div>
 
+<!-- 캘린더 날짜 팝업 -->
+<div class="cal-day-pop" id="calDayPop">
+  <div class="cdp-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle" id="cdpTitle">📅 이날의 행사</div>
+    <div class="msub" id="cdpSub"></div>
+    <div id="cdpList"></div>
+    <button class="btn btn-o" onclick="closeModal('calDayPop')" style="width:100%;margin-top:12px;">닫기</button>
+  </div>
+</div>
+
 <!-- INVITATION POPUP -->
 <div class="inv-ov" id="invOv">
   <div class="inv-card">
     <button style="position:absolute;top:12px;right:16px;background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);" onclick="closeInv()">✕</button>
-    <div class="inv-env"><div style="font-size:70px;">📨</div></div>
+    <div class="inv-env">
+      <div class="inv-env-img"><img src="invitation.png" onerror="this.style.display='none';this.parentElement.innerHTML='📨'"></div>
+    </div>
     <div class="inv-title">초대장이 도착했어요!</div>
     <div class="inv-sub">코리요가 특별한 파티에 초대해요 🎉</div>
     <div class="inv-box">
-      <div class="inv-ename">🎨 동탄센트럴파크 토요일 오후 미술 파티</div>
-      <div class="inv-ml">
+      <div class="inv-ename" id="invEventName">🎨 동탄센트럴파크 토요일 오후 미술 파티</div>
+      <div class="inv-ml" id="invMatchList">
         <div class="inv-mi"><span class="mdot good"></span> 하랑이(10세)와 비슷한 또래가 모여요</div>
         <div class="inv-mi"><span class="mdot good"></span> 조용하고 편안한 모임 ✓ 일치</div>
         <div class="inv-mi"><span class="mdot good"></span> 오후 2~4시 선호시간대 ✓ 일치</div>
@@ -694,11 +873,10 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
       </div>
     </div>
     <div style="font-size:12px;color:var(--text-mid);text-align:center;margin-bottom:10px;font-weight:700;">지금까지 모인 가족 👨‍👩‍👧</div>
-    <div class="inv-atts">
+    <div class="inv-atts" id="invAtts">
       <div class="iatt"><span style="font-size:24px;">🐻</span><span style="font-size:10px;color:var(--text-mid);font-weight:600;">8세 여아</span></div>
       <div class="iatt"><span style="font-size:24px;">🦊</span><span style="font-size:10px;color:var(--text-mid);font-weight:600;">6세 남아</span></div>
       <div class="iatt"><span style="font-size:24px;">🐰</span><span style="font-size:10px;color:var(--text-mid);font-weight:600;">10세 여아</span></div>
-      <div class="iatt"><span style="font-size:24px;">🐥</span><span style="font-size:10px;color:var(--text-mid);font-weight:600;">9세 남아</span></div>
     </div>
     <div class="inv-btns">
       <button class="inv-yes" onclick="confirmParty()">참여할게요! 🎉</button>
@@ -707,10 +885,42 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
   </div>
 </div>
 
+<!-- 파티 성사 팝업 -->
+<div class="party-result-pop" id="partySuccessPop">
+  <div class="pr-card">
+    <div class="pr-img-area" style="background:linear-gradient(135deg,#A8D8A8,#5C4DDB);">
+      <img src="party_confirmed.png" onerror="this.style.display='none'">
+      <div class="pr-emoji">🎉</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-title">파티가 성사됐어요!</div>
+      <div class="pr-sub" id="partySuccessMsg">동탄센트럴파크에서 만나요! 🎈<br>채팅방에서 서로 인사 나눠봐요.</div>
+      <div style="display:flex;gap:8px;">
+        <button class="btn btn-p" style="flex:2;" onclick="closePartyPop();openModal('chatModal')">채팅방 입장 💬</button>
+        <button class="btn btn-o" style="flex:1;" onclick="closePartyPop()">확인</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 파티 취소 팝업 -->
+<div class="party-result-pop" id="partyCancelPop">
+  <div class="pr-card">
+    <div class="pr-img-area" style="background:linear-gradient(135deg,#FFE4E4,#FFCBA4);">
+      <img src="party_canceled.png" onerror="this.style.display='none'">
+      <div class="pr-emoji">😢</div>
+    </div>
+    <div class="pr-body">
+      <div class="pr-title">파티가 취소됐어요..</div>
+      <div class="pr-sub" id="partyCancelMsg">인원이 부족하거나 날씨 문제로<br>파티가 취소되었어요. 다음 기회에 만나요! 🦕</div>
+      <button class="btn btn-p" onclick="closePartyPop()" style="width:100%;">확인</button>
+    </div>
+  </div>
+</div>
+
 <!-- EVENT DETAIL MODAL -->
 <div class="mov" id="evtModal"><div class="msheet"><div class="mhandle"></div><div id="evtContent"></div></div></div>
-
-<!-- WELFARE DETAIL MODAL -->
+<!-- WELFARE MODAL -->
 <div class="mov" id="wlfModal"><div class="msheet"><div class="mhandle"></div><div id="wlfContent"></div></div></div>
 
 <!-- PARTY JOIN MODAL -->
@@ -718,20 +928,32 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
   <div class="msheet">
     <div class="mhandle"></div>
     <div class="mtitle">🎉 파티 신청하기</div>
-    <div class="msub">원하는 장소와 날짜를 선택해요</div>
-    <div class="fg"><label class="fl">원하는 장소</label>
-      <div class="cg">
-        <span class="chip" onclick="this.classList.toggle('sel')">동탄센트럴파크</span>
-        <span class="chip" onclick="this.classList.toggle('sel')">반석산어린이공원</span>
-        <span class="chip" onclick="this.classList.toggle('sel')">동탄호수공원</span>
-        <span class="chip" onclick="this.classList.toggle('sel')">화성행궁 광장</span>
-        <span class="chip" onclick="this.classList.toggle('sel')">병점근린공원</span>
+    <div class="msub">Firebase에 실시간으로 등록돼요!</div>
+    <div class="fg"><label class="fl">파티 제목</label><input type="text" class="fi" id="pj_title" placeholder="예) 동탄 토요일 미술 파티"></div>
+    <div class="fg"><label class="fl">장소</label>
+      <div class="cg" id="pj_place_chips">
+        <span class="chip" onclick="selPlaceChip(this)">동탄센트럴파크</span>
+        <span class="chip" onclick="selPlaceChip(this)">반석산어린이공원</span>
+        <span class="chip" onclick="selPlaceChip(this)">동탄호수공원</span>
+        <span class="chip" onclick="selPlaceChip(this)">화성행궁 광장</span>
+        <span class="chip" onclick="selPlaceChip(this)">병점근린공원</span>
       </div>
     </div>
-    <div class="fg" style="margin-top:12px;"><label class="fl">날짜</label><input type="date" class="fi" id="partyDate" value="2026-07-05"></div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <div class="fg" style="flex:1;"><label class="fl">날짜</label><input type="date" class="fi" id="pj_date" value="2026-07-05"></div>
+      <div class="fg" style="flex:1;"><label class="fl">시간</label><input type="time" class="fi" id="pj_time" value="15:00"></div>
+    </div>
+    <div class="fg"><label class="fl">대상 연령</label><input type="text" class="fi" id="pj_age" placeholder="예) 7~10세"></div>
+    <div class="fg"><label class="fl">최대 인원</label>
+      <div class="cg">
+        <span class="chip" onclick="selMaxChip(this)" data-v="3">3가족</span>
+        <span class="chip sel" onclick="selMaxChip(this)" data-v="5">5가족</span>
+        <span class="chip" onclick="selMaxChip(this)" data-v="8">8가족</span>
+      </div>
+    </div>
     <div style="margin-top:16px;display:flex;gap:8px;">
       <button class="btn btn-o" onclick="closeModal('partyJoinModal')" style="flex:1;">취소</button>
-      <button class="btn btn-p" onclick="submitParty()" style="flex:2;">파티 신청! 🎈</button>
+      <button class="btn btn-p" onclick="submitParty()" style="flex:2;" id="partySubmitBtn">파티 신청! 🎈</button>
     </div>
   </div>
 </div>
@@ -742,19 +964,45 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
     <div style="padding:0 20px 12px;border-bottom:1px solid var(--border);">
       <div class="mhandle" style="margin-bottom:12px;"></div>
       <div style="display:flex;align-items:center;justify-content:space-between;">
-        <div class="mtitle" style="margin:0;">🎉 동탄 미술 파티 채팅방</div>
+        <div class="mtitle" style="margin:0;" id="chatTitle">🎉 파티 채팅방</div>
         <button style="background:none;border:none;font-size:20px;cursor:pointer;color:var(--text-light);" onclick="closeModal('chatModal')">✕</button>
       </div>
-      <div style="font-size:12px;color:var(--text-mid);margin-top:4px;">참여 5명 · 동탄센트럴파크 · 7월 5일 오후 3시</div>
+      <div style="font-size:12px;color:var(--text-mid);margin-top:4px;" id="chatSubTitle">파티 채팅방입니다</div>
     </div>
     <div class="chat-area" id="chatMsgs">
-      <div class="cmsg"><div class="cav">🦕</div><div class="cbw"><div class="cnm">코리요</div><div class="ctxt">안녕하세요! 파티 채팅방에 오신 걸 환영해요~ 🎉</div></div></div>
-      <div class="cmsg"><div class="cav">🐻</div><div class="cbw"><div class="cnm">하준맘</div><div class="ctxt">안녕하세요! 8살 아들 데리고 갑니다 😊</div></div></div>
-      <div class="cmsg"><div class="cav">🦊</div><div class="cbw"><div class="cnm">서연아빠</div><div class="ctxt">처음인데 잘 부탁드려요!</div></div></div>
+      <div class="cmsg"><div class="cav">🦕</div><div class="cbw"><div class="cnm">코리요</div><div class="ctxt">안녕하세요! 파티 채팅방에 오신 걸 환영해요~ 🎉 서로 인사 나눠봐요!</div></div></div>
     </div>
     <div class="cbar">
       <input type="text" class="cinp" id="chatInp" placeholder="메시지..." onkeypress="if(event.key==='Enter')sendChat()">
       <button class="csend" onclick="sendChat()">↑</button>
+    </div>
+  </div>
+</div>
+
+<!-- 친구 추가 모달 -->
+<div class="mov" id="addFriendModal">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">➕ 친구 추가하기</div>
+    <div class="msub">파티에서 만난 분의 친구코드를 입력하세요</div>
+    <div class="fg"><label class="fl">친구코드</label><input type="text" class="fi" id="friendCodeInput" placeholder="예) KORIYO-AB12" style="text-transform:uppercase;"></div>
+    <div style="margin-top:8px;display:flex;gap:8px;">
+      <button class="btn btn-o" onclick="closeModal('addFriendModal')" style="flex:1;">취소</button>
+      <button class="btn btn-p" onclick="sendFriendRequest()" style="flex:2;">친구 요청 보내기</button>
+    </div>
+  </div>
+</div>
+
+<!-- 쪽지 작성 -->
+<div class="msg-compose" id="msgComposeModal">
+  <div class="msg-compose-sheet">
+    <div class="mhandle"></div>
+    <div class="mtitle">💌 쪽지 보내기</div>
+    <div class="msub" id="msgToLabel">받는 분: </div>
+    <div class="fg"><label class="fl">내용</label><textarea class="fi" id="msgBody" placeholder="쪽지 내용을 입력하세요..." rows="4" style="resize:none;"></textarea></div>
+    <div style="display:flex;gap:8px;">
+      <button class="btn btn-o" onclick="closeModal('msgComposeModal')" style="flex:1;">취소</button>
+      <button class="btn btn-p" onclick="sendMessage()" style="flex:2;">전송 💌</button>
     </div>
   </div>
 </div>
@@ -769,121 +1017,241 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
   </div>
 </div>
 
+<!-- FB STATUS -->
+<div class="fb-status" id="fbStatus"><div class="fb-dot" id="fbDot"></div><span id="fbStatusTxt">Firebase 연결 중...</span></div>
+
 <!-- TOAST -->
 <div class="toast" id="toast"><span id="tIco">✅</span><span id="tMsg"></span></div>
 
+<!-- 모듈 로딩 전 fallback: 전역 함수 임시 등록 -->
 <script>
-// ====== DATA ======
+// module 로딩 완료 전까지 클릭 방지용 임시 함수
+['showLogin','showSignup','doLogin','showMain','showAdmin','switchTab',
+ 'nextStep','prevStep','completeSignup','addChild','toggleNotifPanel',
+ 'doAISearch','filterCat','showEvt','confirmEvt','showWlf','selCalDay',
+ 'chgMonth','loadParties','submitParty','joinParty','openChatForParty',
+ 'sendChat','showInv','closeInv','confirmParty','showMyPage','closeMyPage',
+ 'copyFriendCode','showAddFriend','sendFriendRequest','showFriendRequests',
+ 'acceptFriend','rejectFriend','showFriendList','showMessages','readMsg',
+ 'showSentMessages','startMsg','sendMessage','showLikedEvents','showConfirmedEvents',
+ 'showMyParties','toggleLike','dislike','goUrl','openModal','closeModal',
+ 'showRes','closeRes','showToast','swAdmTab','loadAdminParties','renderAdmCharts',
+ 'adminAddEvt','renderAdmNotices','adminAddNotice','adminCancelParty',
+ 'adminConfirmParty','closePartyPop','selPlaceChip','selMaxChip','clickNotif',
+ 'initChildren','sendFriendRequest'
+].forEach(fn => {
+  window[fn] = window[fn] || function() {
+    console.warn(fn + ' called before module loaded, retrying...');
+    setTimeout(() => { if(window[fn] && window[fn]._ready) window[fn](...arguments); }, 300);
+  };
+});
+</script>
+
+<script type="module">
+// ============================================================
+// FIREBASE 초기화
+// ============================================================
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getFirestore, collection, addDoc, getDocs, doc, updateDoc, deleteDoc,
+         onSnapshot, query, orderBy, serverTimestamp, getDoc, setDoc, where
+       } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword,
+         signOut, onAuthStateChanged
+       } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBoUTp3xNvMX6UFS_j18I_tGZiP-SehYMA",
+  authDomain: "koriyo-4f919.firebaseapp.com",
+  projectId: "koriyo-4f919",
+  storageBucket: "koriyo-4f919.firebasestorage.app",
+  messagingSenderId: "356597600601",
+  appId: "1:356597600601:web:edcb1ea925d9bb6384bc48"
+};
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const auth = getAuth(app);
+
+// Firebase 연결 상태 표시
+function setFbStatus(ok, msg) {
+  const st = document.getElementById('fbStatus');
+  const dot = document.getElementById('fbDot');
+  const txt = document.getElementById('fbStatusTxt');
+  st.classList.add('show');
+  dot.className = 'fb-dot' + (ok ? '' : ' red');
+  txt.textContent = msg;
+  setTimeout(() => st.classList.remove('show'), 3000);
+}
+
+// ============================================================
+// 이벤트 DB (30개)
+// ============================================================
 const BASE_EVENTS = [
-  {id:1,title:'🏗️ 건축놀이학교',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🏗️',tag:'t-edu',isFree:false,price:'9,000원(화성시민)/13,000원(일반)',hot:true,clicks:892,ageMin:5,ageMax:13,desc:'나만의 집을 설계하고 미니 건축 모형을 만들어보는 창의 체험! 어린이 발달 수준에 맞춘 2단계 체험 교육.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['체험','공예']},
-  {id:2,title:'🦕 코리아케라톱스와 백악기 여행',place:'화성시어린이문화센터',date:'2026.02~10 상설',age:'4~10세',cat:'자연',emoji:'🦕',tag:'t-nat',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:412,ageMin:4,ageMax:10,desc:'화성에서 발견된 코리아케라톱스! 공룡의 왕국 백악기로 시간여행을 떠나봐요. 화석발굴 체험 포함.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['자연','체험']},
-  {id:3,title:'🤖 로보틱스연구소 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'과학',emoji:'🤖',tag:'t-sci',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:289,ageMin:5,ageMax:13,desc:'로봇공학자가 되어 로봇을 직접 조립하고 프로그래밍해봐요!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['로봇','과학']},
-  {id:4,title:'🎬 어린이방송국 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🎬',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:231,ageMin:5,ageMax:13,desc:'어린이 PD, 아나운서, 카메라 감독이 되어 직접 방송을 만들어봐요!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['체험']},
-  {id:5,title:'🌾 스마트농업연구소',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'자연',emoji:'🌾',tag:'t-nat',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:198,ageMin:5,ageMax:13,desc:'미래 농업 기술 체험! 식물이 자라는 원리를 배우고 직접 씨앗을 심어봐요.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['자연','체험']},
-  {id:6,title:'🍎 로컬푸드마켓&레스토랑',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🍎',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:176,ageMin:5,ageMax:13,desc:'화성 로컬푸드로 요리를 만들고 레스토랑에서 주문받는 요리사 체험!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['요리','체험']},
-  {id:7,title:'🎨 캐릭터디자인스쿨',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'미술',emoji:'🎨',tag:'t-art',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:267,ageMin:5,ageMax:13,desc:'나만의 캐릭터를 직접 디자인! 애니메이터, 웹툰 작가의 세계로 초대합니다.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['미술','공예']},
-  {id:8,title:'🦠 미생물의 세계 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'과학',emoji:'🦠',tag:'t-sci',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:213,ageMin:5,ageMax:13,desc:'눈에 보이지 않는 미생물의 세계를 탐험! 현미경으로 관찰하고 실험을 해봐요.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['과학','자연']},
-  {id:9,title:'🔬 탐이꿈이의 비밀실험실 여름방학',place:'국립어린이과학관 (서울)',date:'2026 여름방학',age:'초등학생',cat:'과학',emoji:'🔬',tag:'t-sci',isFree:false,price:'사전예매 필수',hot:true,clicks:756,ageMin:7,ageMax:13,desc:'한국로봇융합연구원과 함께하는 특별 실험 프로그램! 어린이 과학자가 되어 신나는 실험을 해봐요.',url:'https://www.csc.go.kr/',src:'국립어린이과학관 공식',interests:['과학','로봇']},
-  {id:10,title:'🔭 천체투영관 별자리 탐험',place:'국립과천과학관',date:'상시 운영',age:'6세 이상',cat:'과학',emoji:'🔭',tag:'t-sci',isFree:false,price:'2,000원(청소년/성인)',hot:false,clicks:445,ageMin:6,ageMax:99,desc:'돔 스크린에 펼쳐지는 웅장한 우주! 별자리와 행성의 세계를 체험해봐요. 방문 14일 전 온라인 예매.',url:'https://www.sciencecenter.go.kr/scipia/',src:'국립과천과학관 공식',interests:['과학']},
-  {id:11,title:'🚀 스페이스 아날로그 우주 체험',place:'국립과천과학관',date:'상시 운영',age:'초등5학년 이상',cat:'과학',emoji:'🚀',tag:'t-sci',isFree:false,price:'10,000원(체험)/2,000원(해설)',hot:false,clicks:312,ageMin:10,ageMax:99,desc:'우주탐사 시뮬레이션 체험! 실제 우주 환경과 유사한 공간에서 우주인이 되어봐요.',url:'https://www.sciencecenter.go.kr/scipia/',src:'국립과천과학관 공식',interests:['과학','체험']},
-  {id:12,title:'🌊 국립과천과학관 여름 물놀이',place:'국립과천과학관 야외',date:'2026 여름방학',age:'전 연령',cat:'자연',emoji:'🌊',tag:'t-nat',isFree:false,price:'입장료 포함',hot:true,clicks:489,ageMin:3,ageMax:99,desc:'뜨거운 여름! 야외 물놀이장에서 과학과 물놀이를 동시에 즐겨봐요.',url:'https://www.sciencecenter.go.kr',src:'국립과천과학관 공식',interests:['자연','체험']},
-  {id:13,title:'✨ SODA Museum 미디어 아트 전시',place:'SODA뮤지엄 (동탄)',date:'2026.06.01~12.31',age:'전 연령',cat:'미술',emoji:'🌈',tag:'t-art',isFree:false,price:'어린이 7,000원/성인 13,000원',hot:false,clicks:643,ageMin:0,ageMax:99,desc:'화성시 동탄의 미디어 아트 뮤지엄! 빛과 색채로 가득한 몰입형 예술 공간. 온 가족이 함께하는 특별한 예술 여행.',url:'https://soda.museum',src:'SODA Museum 공식',interests:['미술']},
-  {id:14,title:'📚 화성시 여름방학 독서교실',place:'화성동탄중앙/병점/태안도서관',date:'2026.07~08 (각 도서관별 상이)',age:'6~9세',cat:'독서',emoji:'📚',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:521,ageMin:6,ageMax:9,desc:'화성시 도서관 여름방학 독서교실! 책과 함께하는 다양한 활동으로 독서 습관을 길러요.',url:'https://www.hscitylib.or.kr',src:'화성시도서관 통합포털',interests:['독서']},
-  {id:15,title:'📖 그림책과 음악놀이',place:'화성시 봉담/삼괴도서관',date:'2026 하반기',age:'유아~초등',cat:'독서',emoji:'🎶',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:187,ageMin:4,ageMax:8,desc:'그림책을 읽고 음악과 함께 즐기는 독서문화 프로그램!',url:'https://www.hscitylib.or.kr',src:'화성시도서관 통합포털',interests:['독서','음악']},
-  {id:16,title:'🍳 푸드아트 동화요리 프로그램',place:'화성시 도서관',date:'2026 하반기',age:'유아~초등',cat:'체험',emoji:'🍳',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:145,ageMin:4,ageMax:9,desc:'동화 속 이야기로 맛있는 요리를 만들어봐요!',url:'https://www.hscitylib.or.kr',src:'화성시도서관 통합포털',interests:['독서','요리']},
-  {id:17,title:'🏯 수원화성박물관 역사 탐방',place:'수원화성박물관',date:'2026 상반기',age:'어린이·가족',cat:'역사',emoji:'🏯',tag:'t-his',isFree:false,price:'무료 (사전예약)',hot:false,clicks:298,ageMin:6,ageMax:13,desc:'수원화성 배경으로 역사 문화를 탐방! 전문 해설사와 함께하는 박물관 옆 역사 탐방 프로그램.',url:'https://smuseum.suwon.go.kr',src:'수원화성박물관 공식',interests:['역사','자연']},
-  {id:18,title:'🎭 수원광교박물관 어린이 아동극',place:'수원광교박물관',date:'2026.04,05,09 마지막주 수요일',age:'어린이',cat:'공연',emoji:'🎭',tag:'t-cul',isFree:true,price:'무료',hot:false,clicks:167,ageMin:4,ageMax:10,desc:'문화가 있는 날! 마지막주 수요일에 펼쳐지는 어린이 아동극.',url:'https://smuseum.suwon.go.kr',src:'수원시박물관 공식',interests:['공연']},
-  {id:19,title:'🏛️ 화성독립운동기념관 역사탐험대',place:'화성시독립운동기념관',date:'2026.07.12~08.23',age:'8~13세',cat:'역사',emoji:'🏛️',tag:'t-his',isFree:true,price:'무료',hot:false,clicks:387,ageMin:8,ageMax:13,desc:'화성 3.1운동의 역사를 배우는 체험 탐험대! 유물 관람과 퀴즈로 역사를 배워요.',url:'https://www.hscity.go.kr',src:'화성시청 공식',interests:['역사','체험']},
-  {id:20,title:'🎪 경기도어린이박물관 상설 체험',place:'경기도어린이박물관 (용인)',date:'화~일 10:00~18:00',age:'영유아~초등',cat:'체험',emoji:'🎪',tag:'t-edu',isFree:false,price:'사전예약 필수',hot:false,clicks:356,ageMin:2,ageMax:10,desc:'물놀이, 자연, 예술 등 종합 체험 공간. 1회차(10~13:30), 2회차(14~18시).',url:'https://gcm.ggcf.kr/',src:'경기도어린이박물관 공식',interests:['체험','자연']},
-  {id:21,title:'🎨 경기도미술관 어린이 아트워크샵',place:'경기도미술관 (안산)',date:'2026 하반기',age:'6~12세',cat:'미술',emoji:'🎨',tag:'t-art',isFree:false,price:'15,000원',hot:false,clicks:298,ageMin:6,ageMax:12,desc:'경기도미술관 어린이 전용 미술 워크샵! 다양한 재료로 나만의 작품을.',url:'https://gmoma.ggcf.kr/',src:'경기도미술관 공식',interests:['미술','공예']},
-  {id:22,title:'🏺 국립중앙박물관 어린이박물관',place:'국립중앙박물관 (서울)',date:'2026 운영 중',age:'영유아~초등',cat:'역사',emoji:'🏺',tag:'t-his',isFree:true,price:'무료 (사전예약 필수)',hot:false,clicks:445,ageMin:3,ageMax:12,desc:'역사와 문화를 체험하는 어린이 전용 박물관! QR 모바일 입장.',url:'https://www.museum.go.kr',src:'국립중앙박물관 공식',interests:['역사','체험']},
-  {id:23,title:'🦖 4차원 공룡 탈출 대작전',place:'국립어린이청소년도서관 (서울)',date:'2026 진행 중',age:'어린이',cat:'체험',emoji:'🦖',tag:'t-edu',isFree:true,price:'무료 (선착순)',hot:true,clicks:523,ageMin:5,ageMax:12,desc:'5면 실감형 체험동화구연! 공룡이 살아움직이는 실감 체험 공간 대탈출 어드벤처.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['체험','독서']},
-  {id:24,title:'🤖 도서관에서 만나는 로봇 친구',place:'국립어린이청소년도서관 (서울)',date:'2026 진행 중',age:'어린이',cat:'과학',emoji:'🤖',tag:'t-sci',isFree:true,price:'무료',hot:false,clicks:341,ageMin:6,ageMax:12,desc:'핑퐁로봇과 코딩로봇 체험! 도서관에서 만나는 신기한 로봇 친구들과 코딩을 배워봐요.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['로봇','과학']},
-  {id:25,title:'🎵 어린이 클래식 콘서트',place:'화성시어린이문화센터 공연장',date:'2026.07 (일정 공지 예정)',age:'3~8세',cat:'공연',emoji:'🎵',tag:'t-cul',isFree:false,price:'7,000~10,000원',hot:false,clicks:189,ageMin:3,ageMax:8,desc:'어린이를 위한 클래식 음악 공연! 귀여운 연주자들이 클래식 음악을 쉽게 들려드려요.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['음악','공연']},
-  {id:26,title:'🎭 가족뮤지컬 루루섬의 비밀',place:'화성시어린이문화센터 공연장',date:'2026.07.12~07.19',age:'4~8세',cat:'공연',emoji:'🎭',tag:'t-cul',isFree:false,price:'7,000원',hot:false,clicks:212,ageMin:4,ageMax:8,desc:'어린이들이 사랑하는 루루섬 뮤지컬! 신비로운 루루섬에서 일어나는 이야기.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터 공식',interests:['공연']},
-  {id:27,title:'🌿 화성시 자연탐험 생태교육',place:'화성 삼괴도서관/야외',date:'2026.07~08',age:'5~10세',cat:'자연',emoji:'🌿',tag:'t-nat',isFree:true,price:'무료',hot:false,clicks:234,ageMin:5,ageMax:10,desc:'화성시 자연 속에서 곤충, 식물, 생태를 탐험! 전문 강사와 함께하는 야외 자연체험.',url:'https://www.hscitylib.or.kr',src:'화성시도서관 통합포털',interests:['자연']},
-  {id:28,title:'🌟 화성형 아이키움터 놀이교실',place:'화성시 아이키움터(동탄/봉담/향남)',date:'2026 상시',age:'0~5세',cat:'체험',emoji:'🌟',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:234,ageMin:0,ageMax:5,desc:'화성시 특화 영유아 놀이교실! 엄마아빠 육아교실, 아기랑 놀이교실, 장난감 도서관 이용 가능.',url:'https://www.hscity.go.kr',src:'화성시청 공식',interests:['체험']},
-  {id:29,title:'🏃 화성시 가족사랑 스포츠 축제',place:'화성시 일대',date:'2026 하반기 (공지 예정)',age:'전 가족',cat:'체험',emoji:'🏃',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:198,ageMin:3,ageMax:99,desc:'화성시문화관광재단 주관 가족 스포츠 축제! 온 가족이 함께 즐기는 다양한 스포츠 체험.',url:'https://www.hcf.or.kr',src:'화성시문화관광재단',interests:['스포츠','체험']},
-  {id:30,title:'📱 이야기 코딩 삐오로봇',place:'국립어린이청소년도서관',date:'2026 진행 중',age:'유아',cat:'과학',emoji:'📱',tag:'t-sci',isFree:true,price:'무료',hot:false,clicks:178,ageMin:4,ageMax:7,desc:'귀여운 삐오로봇과 함께 책과 코딩을 동시에! 유아도 쉽게 배우는 스토리 코딩 체험.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['로봇','독서']}
+  {id:1,title:'🏗️ 건축놀이학교',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🏗️',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:true,clicks:892,ageMin:5,ageMax:13,desc:'나만의 집을 설계하고 미니 건축 모형을 만들어보는 창의 체험! 어린이 발달 수준에 맞춘 2단계 체험 교육.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['체험','공예']},
+  {id:2,title:'🦕 코리아케라톱스와 백악기 여행',place:'화성시어린이문화센터',date:'2026.02~10 상설',age:'4~10세',cat:'자연',emoji:'🦕',tag:'t-nat',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:412,ageMin:4,ageMax:10,desc:'화성에서 발견된 코리아케라톱스! 공룡의 왕국 백악기로 시간여행. 화석발굴 체험 포함.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['자연','체험']},
+  {id:3,title:'🤖 로보틱스연구소 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'과학',emoji:'🤖',tag:'t-sci',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:289,ageMin:5,ageMax:13,desc:'로봇공학자가 되어 로봇을 직접 조립하고 프로그래밍해봐요!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['로봇','과학']},
+  {id:4,title:'🎬 어린이방송국 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🎬',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:231,ageMin:5,ageMax:13,desc:'어린이 PD, 아나운서, 카메라 감독이 되어 직접 방송을 만들어봐요!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['체험']},
+  {id:5,title:'🌾 스마트농업연구소',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'자연',emoji:'🌾',tag:'t-nat',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:198,ageMin:5,ageMax:13,desc:'미래 농업 기술 체험! 식물이 자라는 원리를 배우고 씨앗을 심어봐요.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['자연','체험']},
+  {id:6,title:'🎨 캐릭터디자인스쿨',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'미술',emoji:'🎨',tag:'t-art',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:267,ageMin:5,ageMax:13,desc:'나만의 캐릭터를 직접 디자인! 애니메이터·웹툰 작가의 세계로 초대.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['미술','공예']},
+  {id:7,title:'🔬 탐이꿈이의 비밀실험실',place:'국립어린이과학관 (서울)',date:'2026 여름방학',age:'초등학생',cat:'과학',emoji:'🔬',tag:'t-sci',isFree:false,price:'사전예매 필수',hot:true,clicks:756,ageMin:7,ageMax:13,desc:'한국로봇융합연구원과 함께하는 특별 실험 프로그램! 어린이 과학자가 되어봐요.',url:'https://www.csc.go.kr/',src:'국립어린이과학관',interests:['과학','로봇']},
+  {id:8,title:'🔭 천체투영관 별자리 탐험',place:'국립과천과학관',date:'상시 운영',age:'6세 이상',cat:'과학',emoji:'🔭',tag:'t-sci',isFree:false,price:'2,000원(청소년/성인)',hot:false,clicks:445,ageMin:6,ageMax:99,desc:'돔 스크린에 펼쳐지는 웅장한 우주! 별자리와 행성의 세계. 14일 전 온라인 예매.',url:'https://www.sciencecenter.go.kr/scipia/',src:'국립과천과학관',interests:['과학']},
+  {id:9,title:'🚀 스페이스 아날로그 우주 체험',place:'국립과천과학관',date:'상시 운영',age:'초등5학년 이상',cat:'과학',emoji:'🚀',tag:'t-sci',isFree:false,price:'10,000원',hot:false,clicks:312,ageMin:10,ageMax:99,desc:'우주탐사 시뮬레이션 체험! 실제 우주 환경과 유사한 공간에서 우주인이 되어봐요.',url:'https://www.sciencecenter.go.kr/scipia/',src:'국립과천과학관',interests:['과학','체험']},
+  {id:10,title:'🌊 국립과천과학관 여름 물놀이',place:'국립과천과학관 야외',date:'2026 여름방학',age:'전 연령',cat:'자연',emoji:'🌊',tag:'t-nat',isFree:false,price:'입장료 포함',hot:true,clicks:489,ageMin:3,ageMax:99,desc:'뜨거운 여름! 야외 물놀이장에서 과학과 물놀이를 동시에 즐겨봐요.',url:'https://www.sciencecenter.go.kr',src:'국립과천과학관',interests:['자연','체험']},
+  {id:11,title:'✨ SODA Museum 미디어 아트 전시',place:'SODA뮤지엄 (동탄)',date:'2026.06.01~12.31',age:'전 연령',cat:'미술',emoji:'🌈',tag:'t-art',isFree:false,price:'어린이 7,000원/성인 13,000원',hot:false,clicks:643,ageMin:0,ageMax:99,desc:'화성시 동탄의 미디어 아트 뮤지엄! 빛과 색채로 가득한 몰입형 예술 공간.',url:'https://soda.museum',src:'SODA Museum',interests:['미술']},
+  {id:12,title:'📚 화성시 여름방학 독서교실',place:'화성동탄중앙/병점/태안도서관',date:'2026.07~08',age:'6~9세',cat:'독서',emoji:'📚',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:521,ageMin:6,ageMax:9,desc:'화성시 도서관 여름방학 독서교실! 책과 함께하는 다양한 활동으로 독서 습관을 길러요.',url:'https://www.hscitylib.or.kr',src:'화성시도서관',interests:['독서']},
+  {id:13,title:'📖 그림책과 음악놀이',place:'화성시 봉담/삼괴도서관',date:'2026 하반기',age:'유아~초등',cat:'독서',emoji:'🎶',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:187,ageMin:4,ageMax:8,desc:'그림책을 읽고 음악과 함께 즐기는 독서문화 프로그램!',url:'https://www.hscitylib.or.kr',src:'화성시도서관',interests:['독서','음악']},
+  {id:14,title:'🏯 수원화성박물관 역사 탐방',place:'수원화성박물관',date:'2026 상반기',age:'어린이·가족',cat:'역사',emoji:'🏯',tag:'t-his',isFree:false,price:'무료(사전예약)',hot:false,clicks:298,ageMin:6,ageMax:13,desc:'수원화성 배경으로 역사 문화를 탐방! 전문 해설사와 함께하는 박물관 역사 탐방 프로그램.',url:'https://smuseum.suwon.go.kr',src:'수원화성박물관',interests:['역사']},
+  {id:15,title:'🎭 수원광교박물관 어린이 아동극',place:'수원광교박물관',date:'2026.04,05,09 마지막주 수요일',age:'어린이',cat:'공연',emoji:'🎭',tag:'t-cul',isFree:true,price:'무료',hot:false,clicks:167,ageMin:4,ageMax:10,desc:'문화가 있는 날 마지막주 수요일 어린이 아동극.',url:'https://smuseum.suwon.go.kr',src:'수원시박물관',interests:['공연']},
+  {id:16,title:'🏛️ 화성독립운동기념관 역사탐험대',place:'화성시독립운동기념관',date:'2026.07.12~08.23',age:'8~13세',cat:'역사',emoji:'🏛️',tag:'t-his',isFree:true,price:'무료',hot:false,clicks:387,ageMin:8,ageMax:13,desc:'화성 3.1운동의 역사를 배우는 체험 탐험대! 유물 관람과 퀴즈로 역사를 배워요.',url:'https://www.hscity.go.kr',src:'화성시청',interests:['역사','체험']},
+  {id:17,title:'🎪 경기도어린이박물관 상설 체험',place:'경기도어린이박물관 (용인)',date:'화~일 10:00~18:00',age:'영유아~초등',cat:'체험',emoji:'🎪',tag:'t-edu',isFree:false,price:'사전예약 필수',hot:false,clicks:356,ageMin:2,ageMax:10,desc:'물놀이, 자연, 예술 등 종합 체험 공간. 1회차(10~13:30), 2회차(14~18시).',url:'https://gcm.ggcf.kr/',src:'경기도어린이박물관',interests:['체험','자연']},
+  {id:18,title:'🎨 경기도미술관 어린이 아트워크샵',place:'경기도미술관 (안산)',date:'2026 하반기',age:'6~12세',cat:'미술',emoji:'🎨',tag:'t-art',isFree:false,price:'15,000원',hot:false,clicks:298,ageMin:6,ageMax:12,desc:'경기도미술관 어린이 전용 미술 워크샵! 다양한 재료로 나만의 작품을.',url:'https://gmoma.ggcf.kr/',src:'경기도미술관',interests:['미술','공예']},
+  {id:19,title:'🏺 국립중앙박물관 어린이박물관',place:'국립중앙박물관 (서울)',date:'2026 운영 중',age:'영유아~초등',cat:'역사',emoji:'🏺',tag:'t-his',isFree:true,price:'무료(사전예약 필수)',hot:false,clicks:445,ageMin:3,ageMax:12,desc:'역사와 문화를 체험하는 어린이 전용 박물관! QR 모바일 입장.',url:'https://www.museum.go.kr',src:'국립중앙박물관',interests:['역사','체험']},
+  {id:20,title:'🦖 4차원 공룡 탈출 대작전',place:'국립어린이청소년도서관 (서울)',date:'2026 진행 중',age:'어린이',cat:'체험',emoji:'🦖',tag:'t-edu',isFree:true,price:'무료(선착순)',hot:true,clicks:523,ageMin:5,ageMax:12,desc:'5면 실감형 체험동화구연! 공룡이 살아움직이는 실감 체험 공간 대탈출 어드벤처.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['체험','독서']},
+  {id:21,title:'🤖 도서관에서 만나는 로봇 친구',place:'국립어린이청소년도서관 (서울)',date:'2026 진행 중',age:'어린이',cat:'과학',emoji:'🤖',tag:'t-sci',isFree:true,price:'무료',hot:false,clicks:341,ageMin:6,ageMax:12,desc:'핑퐁로봇과 코딩로봇 체험! 도서관에서 신기한 로봇 친구들과 코딩 체험.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['로봇','과학']},
+  {id:22,title:'🎵 어린이 클래식 콘서트',place:'화성시어린이문화센터 공연장',date:'2026.07 (공지 예정)',age:'3~8세',cat:'공연',emoji:'🎵',tag:'t-cul',isFree:false,price:'7,000~10,000원',hot:false,clicks:189,ageMin:3,ageMax:8,desc:'어린이를 위한 클래식 음악 공연! 귀여운 연주자들이 클래식 음악을 쉽게 들려드려요.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['음악','공연']},
+  {id:23,title:'🎭 가족뮤지컬 루루섬의 비밀',place:'화성시어린이문화센터 공연장',date:'2026.07.12~07.19',age:'4~8세',cat:'공연',emoji:'🎭',tag:'t-cul',isFree:false,price:'7,000원',hot:false,clicks:212,ageMin:4,ageMax:8,desc:'어린이들이 사랑하는 루루섬 뮤지컬!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['공연']},
+  {id:24,title:'🌿 화성시 자연탐험 생태교육',place:'화성 삼괴도서관/야외',date:'2026.07~08',age:'5~10세',cat:'자연',emoji:'🌿',tag:'t-nat',isFree:true,price:'무료',hot:false,clicks:234,ageMin:5,ageMax:10,desc:'화성시 자연 속에서 곤충, 식물, 생태를 탐험! 전문 강사와 야외 자연체험.',url:'https://www.hscitylib.or.kr',src:'화성시도서관',interests:['자연']},
+  {id:25,title:'🌟 화성형 아이키움터 놀이교실',place:'화성시 아이키움터(동탄/봉담/향남)',date:'2026 상시',age:'0~5세',cat:'체험',emoji:'🌟',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:234,ageMin:0,ageMax:5,desc:'화성시 특화 영유아 놀이교실! 엄마아빠 육아교실, 아기랑 놀이교실.',url:'https://www.hscity.go.kr',src:'화성시청',interests:['체험']},
+  {id:26,title:'🍳 푸드아트 동화요리',place:'화성시 도서관',date:'2026 하반기',age:'유아~초등',cat:'체험',emoji:'🍳',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:145,ageMin:4,ageMax:9,desc:'동화 속 이야기로 맛있는 요리를 만들어봐요!',url:'https://www.hscitylib.or.kr',src:'화성시도서관',interests:['독서','요리']},
+  {id:27,title:'📱 이야기 코딩 삐오로봇',place:'국립어린이청소년도서관',date:'2026 진행 중',age:'유아',cat:'과학',emoji:'📱',tag:'t-sci',isFree:true,price:'무료',hot:false,clicks:178,ageMin:4,ageMax:7,desc:'귀여운 삐오로봇과 함께 책과 코딩을 동시에! 유아도 쉽게 배우는 스토리 코딩.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['로봇','독서']},
+  {id:28,title:'🏃 화성시 가족사랑 스포츠 축제',place:'화성시 일대',date:'2026 하반기(공지 예정)',age:'전 가족',cat:'체험',emoji:'🏃',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:198,ageMin:3,ageMax:99,desc:'화성시문화관광재단 주관 가족 스포츠 축제! 다양한 스포츠 체험.',url:'https://www.hcf.or.kr',src:'화성시문화관광재단',interests:['스포츠','체험']},
+  {id:29,title:'🦠 미생물의 세계 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'과학',emoji:'🦠',tag:'t-sci',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:213,ageMin:5,ageMax:13,desc:'눈에 보이지 않는 미생물의 세계를 탐험! 현미경으로 관찰하고 실험.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['과학','자연']},
+  {id:30,title:'🍎 로컬푸드마켓&레스토랑',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🍎',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:176,ageMin:5,ageMax:13,desc:'화성 로컬푸드로 요리를 만들고 레스토랑에서 요리사 체험!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['요리','체험']}
+];
+let eventsDB = [...BASE_EVENTS];
+
+const WELFARE_DB = [
+  {id:'w1',ico:'👶',bg:'#FFF5C0',title:'2026년 아동수당 지급 대상 확대 안내',date:'2026.06.01',clicks:2341,hot:true,prev:'2026년부터 아동수당 지급 대상이 만 8세 이하로 확대됩니다.',detail:'📌 변경사항\n- 기존: 만 8세 미만 → 변경: 만 8세 이하\n- 지급금액: 월 10만원\n\n📋 신청방법\n- 온라인: 복지로(bokjiro.go.kr)\n- 방문: 읍면동 주민센터\n\n💡 기존 수급자는 자동 연장',url:'https://www.bokjiro.go.kr',sn:'복지로'},
+  {id:'w2',ico:'🦷',bg:'#E8F4FF',title:'영유아 구강검진 대상 나이 확대',date:'2026.05.15',clicks:1876,hot:true,prev:'영유아 구강검진 지원 대상 확대 - 66~72개월(5차) 신규 추가',detail:'📌 검진 가능 시기\n1차: 18~24개월\n2차: 30~36개월\n3차: 42~48개월\n4차: 54~60개월\n★ 신규 5차: 66~72개월\n\n💡 건강보험공단 발송 안내문 지참 후 지정 치과 방문',url:'https://www.nhis.or.kr',sn:'국민건강보험'},
+  {id:'w3',ico:'📚',bg:'#E8F5E9',title:'화성시 초등 돌봄교실 2학기 신청',date:'2026.06.10',clicks:1234,hot:false,prev:'2026년 2학기 화성시 초등 돌봄교실 신청 기간: 2026.07.01~07.31',detail:'📋 대상: 화성시 관내 초등 1~6학년\n🗓 신청: 2026.07.01~07.31\n✅ 우선배정: 맞벌이·한부모·다자녀 가정\n\n📞 문의: 화성오산교육지원청 031-369-0000',url:'https://www.goehs.kr',sn:'화성오산교육지원청'},
+  {id:'w4',ico:'🍱',bg:'#FFF0E6',title:'화성시 어린이 무상급식 전 학년 확대',date:'2026.03.01',clicks:987,hot:false,prev:'2026년부터 화성시 초등학교 전 학년 무상급식 시행',detail:'🍱 화성시 초등학교 1~6학년 전 학생 학교급식비 전액 지원\n\n✅ 별도 신청 불필요 - 자동 적용\n📞 문의: 화성시청 교육청소년과',url:'https://www.hscity.go.kr',sn:'화성시청'},
+  {id:'w5',ico:'💉',bg:'#F0EBFF',title:'2026년 어린이 국가예방접종 안내',date:'2026.01.15',clicks:876,hot:false,prev:'만 12세 이하 어린이 국가예방접종 무료 지원',detail:'💉 무료 대상: 만 12세 이하\n주요 접종: 수두, MMR, 뇌수막염, 일본뇌염, 독감 등\n\n🏥 예방접종도우미(nip.kdca.go.kr)에서 지정 의료기관 확인',url:'https://nip.kdca.go.kr',sn:'예방접종도우미'},
+  {id:'w6',ico:'🌟',bg:'#FFF9D0',title:'화성형 아이키움터 프로그램 안내',date:'2026.06.05',clicks:654,hot:false,prev:'화성시 특화 보육 서비스 - 영유아 놀이교실, 육아상담, 장난감 도서관',detail:'🌟 주요 프로그램\n- 엄마아빠 육아교실\n- 아기랑 놀이교실 (0~2세)\n- 장난감 도서관\n- 부모 상담\n\n📍 동탄·봉담·향남 거점센터\n📞 031-369-0000',url:'https://www.hscity.go.kr',sn:'화성시청'}
 ];
 
-let eventsDB=[...BASE_EVENTS];
+// ============================================================
+// 전역 STATE
+// ============================================================
+const S = {
+  user: null, fbUser: null,
+  liked: new Set(), disliked: new Set(), confirmed: new Set(),
+  tab: 'home', calM: new Date(2026,5,1), calD: null,
+  obStep: 0, childCnt: 0,
+  notices: [{title:'6월 신규 행사 등록 완료',date:'2026.06.20'}],
+  notifications: [
+    {id:1,ico:'🎈',msg:'파티가 성사됐어요! 동탄센트럴파크 7월 5일',time:'방금 전',unread:true,type:'party'},
+    {id:2,ico:'📩',msg:'하준맘님이 친구 요청을 보냈어요',time:'1시간 전',unread:true,type:'friend'},
+    {id:3,ico:'🎪',msg:'새 행사가 등록됐어요: SODA뮤지엄 여름 특별전',time:'어제',unread:false,type:'event'}
+  ],
+  friends: [
+    {id:'f1',name:'하준맘',code:'KORIYO-HJ01',status:'accepted',emoji:'🐻'},
+    {id:'f2',name:'서연아빠',code:'KORIYO-SY02',status:'accepted',emoji:'🦊'}
+  ],
+  friendRequests: [
+    {id:'fr1',name:'민지맘',code:'KORIYO-MJ03',emoji:'🐱'}
+  ],
+  messages: [
+    {id:'m1',from:'하준맘',fromEmoji:'🐻',preview:'안녕하세요! 다음 파티 같이 가실래요?',time:'오늘 오후 2시',unread:true},
+    {id:'m2',from:'서연아빠',fromEmoji:'🦊',preview:'저번 파티 너무 즐거웠어요 😊',time:'어제',unread:false}
+  ],
+  parties: [],
+  currentPartyId: null,
+  partyMaxCount: 5,
+  selectedPlace: null,
+  msgToFriend: null
+};
 
-const WELFARE_DB=[
-  {id:'w1',ico:'👶',bg:'#FFF5C0',title:'2026년 아동수당 지급 대상 확대 안내',date:'2026.06.01',clicks:2341,hot:true,
-   prev:'2026년부터 아동수당 지급 대상이 만 8세 이하로 확대됩니다.',
-   detail:'📌 변경사항\n- 기존: 만 8세 미만 → 변경: 만 8세 이하\n- 지급금액: 월 10만원 (동일)\n\n📋 신청방법\n- 온라인: 복지로(bokjiro.go.kr)\n- 방문: 읍면동 주민센터\n\n💡 기존 수급자는 별도 신청 없이 자동 연장됩니다.',
-   url:'https://www.bokjiro.go.kr',sn:'복지로'},
-  {id:'w2',ico:'🦷',bg:'#E8F4FF',title:'영유아 구강검진 대상 나이 확대',date:'2026.05.15',clicks:1876,hot:true,
-   prev:'영유아 구강검진 지원 대상 확대 - 66~72개월(5차) 신규 추가',
-   detail:'📌 검진 가능 시기\n1차: 18~24개월\n2차: 30~36개월\n3차: 42~48개월\n4차: 54~60개월\n★ 신규 5차: 66~72개월\n\n💡 건강보험공단 발송 안내문 지참 후 지정 치과 방문',
-   url:'https://www.nhis.or.kr',sn:'국민건강보험'},
-  {id:'w3',ico:'📚',bg:'#E8F5E9',title:'화성시 초등 돌봄교실 2학기 신청 안내',date:'2026.06.10',clicks:1234,hot:false,
-   prev:'2026년 2학기 화성시 초등 돌봄교실 신청 기간: 2026.07.01~07.31',
-   detail:'📋 대상: 화성시 관내 초등 1~6학년\n🗓 신청: 2026.07.01~07.31\n✅ 우선배정: 맞벌이·한부모·다자녀(3명+) 가정\n\n📞 문의: 화성오산교육지원청 031-369-0000',
-   url:'https://www.goehs.kr',sn:'화성오산교육지원청'},
-  {id:'w4',ico:'🍱',bg:'#FFF0E6',title:'화성시 어린이 무상급식 전 학년 확대',date:'2026.03.01',clicks:987,hot:false,
-   prev:'2026년부터 화성시 초등학교 전 학년 무상급식 시행',
-   detail:'🍱 화성시 초등학교 1~6학년 전 학생 학교급식비 전액 지원\n\n✅ 별도 신청 불필요 - 자동 적용\n📞 문의: 화성시청 교육청소년과',
-   url:'https://www.hscity.go.kr',sn:'화성시청'},
-  {id:'w5',ico:'💉',bg:'#F0EBFF',title:'2026년 어린이 국가예방접종 안내',date:'2026.01.15',clicks:876,hot:false,
-   prev:'만 12세 이하 어린이 국가예방접종 무료 지원 종목 및 일정',
-   detail:'💉 무료 대상: 만 12세 이하\n주요 접종: 수두, MMR, 뇌수막염, 일본뇌염, 독감 등\n\n🏥 예방접종도우미(nip.kdca.go.kr)에서 지정 의료기관 확인\n온라인 예약 후 방문하세요',
-   url:'https://nip.kdca.go.kr',sn:'예방접종도우미'},
-  {id:'w6',ico:'🌟',bg:'#FFF9D0',title:'화성형 아이키움터 프로그램 안내',date:'2026.06.05',clicks:654,hot:false,
-   prev:'화성시 특화 보육 서비스 - 영유아 놀이교실, 육아상담, 장난감 도서관',
-   detail:'🌟 주요 프로그램\n- 엄마아빠 육아교실\n- 아기랑 놀이교실 (0~2세)\n- 장난감 도서관 이용\n- 부모 상담 서비스\n\n📍 동탄·봉담·향남 거점센터\n📞 문의: 031-369-0000',
-   url:'https://www.hscity.go.kr',sn:'화성시청'}
-];
+// 친구코드 생성
+function genFriendCode(uid) {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let code = 'KORIYO-';
+  for(let i=0;i<4;i++) code += chars[Math.floor(Math.random()*chars.length)];
+  return code;
+}
 
-const PARTY_DB=[
-  {id:'p1',title:'🎨 동탄센트럴파크 미술 파티',place:'동탄센트럴파크',date:'2026.07.05 (토)',time:'오후 3시',status:'gathering',cur:4,max:5,ageR:'8~11세',atts:[{e:'🐻',a:'8세'},{e:'🦊',a:'6세'},{e:'🐰',a:'10세'},{e:'🐥',a:'9세'}]},
-  {id:'p2',title:'🌿 반석산 자연탐험 파티',place:'반석산어린이공원',date:'2026.07.12 (토)',time:'오전 10시',status:'confirmed',cur:3,max:3,ageR:'5~8세',atts:[{e:'🦁',a:'5세'},{e:'🐱',a:'7세'},{e:'🐨',a:'6세'}]},
-  {id:'p3',title:'🔬 동탄호수공원 과학 탐험대',place:'동탄호수공원',date:'2026.07.19 (일)',time:'오후 2시',status:'gathering',cur:2,max:5,ageR:'7~12세',atts:[{e:'🦅',a:'9세'},{e:'🦉',a:'11세'}]}
-];
-
-// ====== STATE ======
-const S={user:null,liked:new Set(),disliked:new Set(),confirmed:new Set(),tab:'home',calM:new Date(2026,5,1),calD:null,obStep:0,childCnt:0,notices:[{title:'6월 신규 행사 등록 완료',date:'2026.06.20'}]};
-
-// ====== SCREEN ======
-function showScreen(id){
+// ============================================================
+// SCREEN 전환
+// ============================================================
+window.showScreen = function(id) {
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('mainApp').style.display='none';
   document.getElementById('adminScreen').style.display='none';
-  if(id)document.getElementById(id)?.classList.add('active');
+  document.getElementById('myPageSc').classList.remove('active');
+  if(id) document.getElementById(id)?.classList.add('active');
+};
+window.showLogin = function() { showScreen('loginScreen'); };
+window.showSignup = function() { showScreen('signupScreen'); initChildren(); };
+
+window.doLogin = async function() {
+  const id = document.getElementById('loginId').value.trim();
+  const pw = document.getElementById('loginPw').value.trim();
+  if(!id||!pw) { showToast('⚠️','아이디와 비밀번호를 입력해주세요'); return; }
+  if(id==='admin' && pw==='admin1234') {
+    S.user={id:'admin',name:'관리자',isAdmin:true,friendCode:'KORIYO-ADMIN'};
+    showAdmin(); return;
+  }
+  // Firebase Auth 이메일 형식으로 변환
+  const email = id.includes('@') ? id : id+'@koriyo.app';
+  try {
+    const cred = await signInWithEmailAndPassword(auth, email, pw);
+    S.fbUser = cred.user;
+    await loadUserProfile(cred.user.uid, id);
+    setFbStatus(true,'로그인 성공!');
+    showMain();
+  } catch(e) {
+    if(e.code==='auth/user-not-found'||e.code==='auth/invalid-credential'||e.code==='auth/wrong-password') {
+      showToast('❌','아이디 또는 비밀번호를 확인해주세요');
+    } else {
+      // 오프라인 fallback
+      S.user={id,name:id+'맘',isAdmin:false,children:[{name:'하랑',age:10}],interests:['미술','과학'],friendCode:genFriendCode(id)};
+      showToast('📴','오프라인 모드로 시작해요');
+      showMain();
+    }
+  }
+};
+
+async function loadUserProfile(uid, id) {
+  try {
+    const docSnap = await getDoc(doc(db,'users',uid));
+    if(docSnap.exists()) {
+      S.user = docSnap.data();
+      S.user.id = id;
+    } else {
+      S.user = {id,name:id+'맘',isAdmin:false,children:[{name:'하랑',age:10}],interests:['미술','과학'],friendCode:genFriendCode(uid)};
+      await setDoc(doc(db,'users',uid), S.user);
+    }
+  } catch(e) {
+    S.user = {id,name:id+'맘',isAdmin:false,children:[{name:'하랑',age:10}],interests:['미술','과학'],friendCode:genFriendCode(id)};
+  }
 }
-function showLogin(){showScreen('loginScreen');}
-function showSignup(){showScreen('signupScreen');initChildren();}
-function doLogin(){
-  const id=document.getElementById('loginId').value.trim();
-  const pw=document.getElementById('loginPw').value.trim();
-  if(!id||!pw){showToast('⚠️','아이디와 비밀번호를 입력해주세요');return;}
-  if(id==='admin'&&pw==='admin1234'){
-    S.user={id:'admin',name:'관리자',isAdmin:true};showAdmin();
-  } else if(id&&pw){
-    S.user={id,name:id+'맘',isAdmin:false,children:[{name:'하랑',age:10}],interests:['미술','과학']};showMain();
-  } else showToast('❌','아이디 또는 비밀번호를 확인해주세요');
-}
-function showMain(){
+
+window.showMain = function() {
   showScreen(null);
   document.getElementById('mainApp').style.display='';
   document.getElementById('mainApp').classList.add('active');
-  renderHome();renderEvts();renderWelfare();renderParty();
+  renderHome(); renderEvts(); renderWelfare(); renderParty();
+  renderNotifPanel();
+  initDragScroll();
   doAISearch();
-  setTimeout(showInv,3000);
-}
-function showAdmin(){
+  setTimeout(showInv, 3500);
+};
+
+window.showAdmin = function() {
   showScreen(null);
   document.getElementById('adminScreen').style.display='';
   document.getElementById('adminScreen').classList.add('active');
-  renderAdmCharts();renderAdmParty();renderAdmNotices();
-}
+  renderAdmCharts();
+  loadAdminParties();
+  renderAdmNotices();
+};
 
-// ====== SIGNUP ======
-function initChildren(){document.getElementById('childrenList').innerHTML='';S.childCnt=0;addChild();}
-function addChild(){
-  S.childCnt++;const n=S.childCnt;
-  const d=document.createElement('div');d.className='child-card';d.id='cc'+n;
+// ============================================================
+// SIGNUP
+// ============================================================
+window.initChildren = function() { document.getElementById('childrenList').innerHTML=''; S.childCnt=0; addChild(); };
+window.addChild = function() {
+  S.childCnt++;
+  const n=S.childCnt;
+  const d=document.createElement('div'); d.className='child-card'; d.id='cc'+n;
   d.innerHTML=`<button class="rm-child" onclick="document.getElementById('cc${n}').remove()">✕</button>
     <div class="fg"><label class="fl">이름(별명)</label><input type="text" class="fi" placeholder="예) 하랑" id="cn${n}"></div>
     <div style="display:flex;gap:10px;">
@@ -891,8 +1259,9 @@ function addChild(){
       <div class="fg" style="flex:1"><label class="fl">성별</label><select class="fsel" id="cg${n}"><option value="여">여아</option><option value="남">남아</option></select></div>
     </div>`;
   document.getElementById('childrenList').appendChild(d);
-}
-function nextStep(cur){
+};
+
+window.nextStep = function(cur) {
   if(cur===0){if(!document.getElementById('su_id').value.trim()||!document.getElementById('su_name').value.trim()){showToast('⚠️','아이디와 닉네임을 입력해주세요');return;}}
   if(cur===1){
     const kids=[];
@@ -900,94 +1269,158 @@ function nextStep(cur){
     if(!kids.length){showToast('⚠️','자녀 정보를 입력해주세요');return;}
     S._kids=kids;
   }
-  if(cur===2){
-    const ints=[...document.querySelectorAll('.ci:checked')].filter(c=>['i_art','i_sci','i_nat','i_mus','i_prf','i_bk','i_sp','i_exp','i_his','i_cook','i_rob','i_cft'].includes(c.id)).map(c=>c.value);
-    if(!ints.length){showToast('⚠️','관심사를 1개 이상 선택해주세요');return;}
-    S._ints=ints;
-  }
+  if(cur===2){const ints=[...document.querySelectorAll('.ci:checked')].filter(c=>c.id.startsWith('i_')).map(c=>c.value);if(!ints.length){showToast('⚠️','관심사를 1개 이상 선택해주세요');return;}S._ints=ints;}
   goStep(cur+1);
-}
-function prevStep(){if(S.obStep>0)goStep(S.obStep-1);}
-function goStep(n){
-  document.querySelectorAll('.ob-step').forEach((s,i)=>s.classList.toggle('active',i===n));
-  document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('done',i<=n));
-  S.obStep=n;
-}
-function completeSignup(){
-  const child=S._kids?.[0]||{name:'아이',age:7};
-  S.user={id:document.getElementById('su_id').value||'user1',name:document.getElementById('su_name').value||'학부모',children:S._kids||[child],interests:S._ints||[]};
-  showToast('🎉',`${child.name}이와 코리요 파티 시작!`);setTimeout(showMain,500);
-}
+};
+window.prevStep = function(){if(S.obStep>0)goStep(S.obStep-1);};
+function goStep(n){document.querySelectorAll('.ob-step').forEach((s,i)=>s.classList.toggle('active',i===n));document.querySelectorAll('.ob-dot').forEach((d,i)=>d.classList.toggle('done',i<=n));S.obStep=n;}
 
-// ====== NAV ======
-function switchTab(t){
+window.completeSignup = async function() {
+  const id=document.getElementById('su_id').value||'user1';
+  const child=S._kids?.[0]||{name:'아이',age:7};
+  const email=id+'@koriyo.app', pw=document.getElementById('su_pw').value||'password123';
+  S.user={id,name:document.getElementById('su_name').value||'학부모',children:S._kids||[child],interests:S._ints||[],friendCode:genFriendCode(id)};
+  try {
+    const cred = await createUserWithEmailAndPassword(auth, email, pw);
+    S.fbUser = cred.user;
+    await setDoc(doc(db,'users',cred.user.uid), S.user);
+    setFbStatus(true,'Firebase 계정 생성 완료!');
+  } catch(e) { setFbStatus(false,'오프라인 모드로 진행'); }
+  showToast('🎉',`${child.name}이와 코리요 파티 시작!`);
+  setTimeout(showMain,500);
+};
+
+// ============================================================
+// NAV
+// ============================================================
+window.switchTab = function(t) {
   S.tab=t;
   document.querySelectorAll('.tabc').forEach(c=>c.classList.remove('active'));
   document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
   document.getElementById('tab-'+t)?.classList.add('active');
-  const order=['home','events','calendar','welfare','party'];
-  document.querySelectorAll('.ni')[order.indexOf(t)]?.classList.add('active');
+  ['home','events','calendar','welfare','party'].forEach((x,i)=>{if(x===t)document.querySelectorAll('.ni')[i]?.classList.add('active');});
   if(t==='calendar')renderCal();
+  closeNotifPanel();
+};
+
+// ============================================================
+// 드래그 스크롤 (PC 마우스 드래그 지원)
+// ============================================================
+function initDragScroll() {
+  document.querySelectorAll('.drag-scroll').forEach(el => {
+    let isDragging=false, startX=0, scrollLeft=0;
+    el.addEventListener('mousedown', e=>{isDragging=true;startX=e.pageX-el.offsetLeft;scrollLeft=el.scrollLeft;el.classList.add('dragging');e.preventDefault();});
+    el.addEventListener('mouseleave',()=>{isDragging=false;el.classList.remove('dragging');});
+    el.addEventListener('mouseup',()=>{isDragging=false;el.classList.remove('dragging');});
+    el.addEventListener('mousemove',e=>{if(!isDragging)return;const x=e.pageX-el.offsetLeft;el.scrollLeft=scrollLeft-(x-startX);});
+  });
 }
 
-// ====== AI SEARCH ======
-async function doAISearch(){
-  const rb=document.getElementById('rbtn'),eb=document.getElementById('erbtn'),st=document.getElementById('aiStatus'),bb=document.getElementById('aiBubble');
+// ============================================================
+// 알림 패널
+// ============================================================
+window.toggleNotifPanel = function() {
+  const p=document.getElementById('notifPanel');
+  if(p.classList.contains('active')){p.classList.remove('active');}
+  else{renderNotifPanel();p.classList.add('active');}
+};
+window.closeNotifPanel = function(){document.getElementById('notifPanel').classList.remove('active');};
+
+function renderNotifPanel() {
+  const unread=S.notifications.filter(n=>n.unread).length;
+  document.getElementById('nbadge').textContent=unread||'';
+  document.getElementById('nbadge').style.display=unread?'flex':'none';
+  document.getElementById('notifList').innerHTML=S.notifications.length===0
+    ?'<div style="padding:20px;text-align:center;color:var(--text-light);font-size:13px;">새 알림이 없어요</div>'
+    :S.notifications.map(n=>`
+      <div class="notif-item ${n.unread?'unread':''}" onclick="clickNotif(${n.id})">
+        <div class="notif-ico" style="background:${n.type==='party'?'var(--yellow-light)':n.type==='friend'?'var(--purple-light)':'var(--blue-light)'}">${n.ico}</div>
+        <div class="notif-text">
+          <div class="notif-msg">${n.msg}</div>
+          <div class="notif-time">${n.time}</div>
+        </div>
+      </div>`).join('');
+}
+window.clickNotif = function(id) {
+  const n=S.notifications.find(x=>x.id===id);
+  if(n){n.unread=false;renderNotifPanel();}
+  closeNotifPanel();
+  if(n?.type==='party'){switchTab('party');}
+  else if(n?.type==='friend'){showMyPage();setTimeout(()=>showFriendRequests(),300);}
+};
+// 바깥 클릭시 알림 패널 닫기
+document.addEventListener('click', e=>{
+  const panel=document.getElementById('notifPanel');
+  const btn=document.getElementById('notifBtn');
+  if(panel.classList.contains('active') && !panel.contains(e.target) && !btn.contains(e.target)){
+    panel.classList.remove('active');
+  }
+});
+
+// ============================================================
+// AI SEARCH
+// ============================================================
+window.doAISearch = async function() {
+  const rb=document.getElementById('rbtn'), eb=document.getElementById('erbtn'), st=document.getElementById('aiStatus'), bb=document.getElementById('aiBubble');
   if(rb)rb.classList.add('loading');
   if(eb){eb.classList.add('loading');eb.textContent='🔄 검색 중...';}
   if(st)st.classList.add('on');
   const child=S.user?.children?.[0];
   const ints=(S.user?.interests||['미술','과학']).join(',');
-  const age=child?.age||8;const nm=child?.name||'아이';
-  const prompt=`당신은 화성시 육아 앱 코리요의 초대장 AI입니다. 코리요(귀여운 공룡) 캐릭터 말투("~에요","~해요","~거예요")로 답해주세요.
-아이 정보: ${nm}, ${age}세, 관심사: ${ints}
-아래 JSON만 응답하세요(마크다운 없이 순수 JSON):
-{"bubble":"홈 화면 코리요 말풍선 2문장 이모지포함","newEvents":[{"id":201,"title":"이벤트명 이모지포함","place":"장소","date":"날짜","age":"대상","cat":"미술또는과학또는자연또는공연또는역사또는독서또는체험","emoji":"이모지","isFree":true,"price":"가격","desc":"2~3줄설명","url":"실제공식URL","src":"출처명","interests":["관심사1"],"hot":false,"ageMin":숫자,"ageMax":숫자}]}
-경기도/화성시 인근 어린이 체험·전시·문화 행사 5개 추가. 실제 존재하는 공식 URL만 사용.`;
-  try{
+  const age=child?.age||8, nm=child?.name||'아이';
+  const prompt=`당신은 화성시 육아 앱 코리요의 초대장 AI입니다. 코리요(귀여운 공룡) 말투(~에요, ~해요)로 답해주세요.
+아이: ${nm}, ${age}세, 관심사: ${ints}
+아래 JSON만 응답(마크다운 없이):
+{"bubble":"홈화면 코리요 말풍선 2문장 이모지포함","newEvents":[{"id":201,"title":"이벤트명 이모지포함","place":"장소","date":"날짜","age":"대상","cat":"미술또는과학또는자연또는공연또는역사또는독서또는체험","emoji":"이모지","isFree":true,"price":"가격","desc":"2~3줄설명","url":"실제공식URL","src":"출처명","interests":["관심사1"],"hot":false,"ageMin":숫자,"ageMax":숫자}]}
+경기도/화성시 인근 어린이 행사 5개, 실제 존재하는 공식 URL만 사용.`;
+  try {
     const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     const txt=(data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
     const parsed=JSON.parse(txt);
-    if(parsed.bubble&&bb)bb.innerHTML=`<strong>${nm}이</strong>에게 딱 맞는 행사 찾았어요!<br>${parsed.bubble}`;
+    if(parsed.bubble&&bb) bb.innerHTML=`<strong>${nm}이</strong>에게 딱 맞는 행사 찾았어요!<br>${parsed.bubble}`;
     if(parsed.newEvents?.length){
       let added=0;
       parsed.newEvents.forEach((e,i)=>{
-        e.id=300+Math.floor(Math.random()*100)+i;
-        e.tag=c2t(e.cat);e.clicks=Math.floor(Math.random()*200)+50;
-        e.ageMin=e.ageMin||3;e.ageMax=e.ageMax||13;e._isNew=true;
+        e.id=300+Math.floor(Math.random()*100)+i; e.tag=c2t(e.cat);
+        e.clicks=Math.floor(Math.random()*200)+50; e.ageMin=e.ageMin||3; e.ageMax=e.ageMax||13; e._isNew=true;
         if(!eventsDB.find(x=>x.title===e.title)){eventsDB.unshift(e);added++;}
       });
       if(added)showToast('🤖',`AI가 새 행사 ${added}개를 추가했어요!`);
     }
-  }catch(err){
-    if(bb)bb.innerHTML=`<strong>${nm}이</strong>를 위한 맞춤 행사를 준비했어요! 관심사에 딱 맞는 체험들이에요 🎨✨`;
-    showToast('📋','최신 정보를 불러왔어요');
-  }finally{
+  } catch(err) {
+    if(bb) bb.innerHTML=`<strong>${nm}이</strong>를 위한 맞춤 행사를 준비했어요! 관심사에 딱 맞는 체험들이에요 🎨✨`;
+  } finally {
     if(rb)rb.classList.remove('loading');
     if(eb){eb.classList.remove('loading');eb.textContent='🤖 AI로 최신 행사 검색하기';}
     if(st)st.classList.remove('on');
-    renderRecEvts();filterCat(null,document.querySelector('#catFilter .chip.sel')?._cat||'all');renderHome();
+    renderRecEvts(); filterCat(null, _curCat); renderHome();
   }
-}
+};
 function c2t(cat){return{미술:'t-art',과학:'t-sci',자연:'t-nat',공연:'t-cul',역사:'t-his',독서:'t-edu',체험:'t-edu'}[cat]||'t-edu';}
 
-// ====== HOME ======
+// ============================================================
+// HOME
+// ============================================================
 function renderHome(){
   const c=S.user?.children?.[0];
   if(c){document.getElementById('heroGreet').textContent=`안녕하세요, ${S.user.name}님! 👋`;document.getElementById('heroTitle').innerHTML=`오늘도 <span style="color:#5C4DDB;">${c.name}이</span>와<br>특별한 하루 만들어요 🌟`;}
-  renderRecEvts();renderPopEvts();renderCityNews();
+  renderRecEvts(); renderPopEvts(); renderCityNews();
+  updateMypageStats();
 }
 function renderRecEvts(){
-  const c=S.user?.children?.[0];const age=c?.age||8;const ints=S.user?.interests||[];
+  const c=S.user?.children?.[0]; const age=c?.age||8; const ints=S.user?.interests||[];
   let list=eventsDB.filter(e=>!S.disliked.has(e.id)&&e.ageMin<=age&&e.ageMax>=age);
   list.sort((a,b)=>{const am=(a.interests||[]).filter(i=>ints.includes(i)).length;const bm=(b.interests||[]).filter(i=>ints.includes(i)).length;return bm-am||b.clicks-a.clicks;});
   document.getElementById('recEvents').innerHTML=list.slice(0,6).map(e=>sCard(e)).join('');
+  initDragScroll();
 }
 function sCard(e){
   const lk=S.liked.has(e.id);
   return `<div class="ecard" onclick="showEvt(${e.id})">
-    <div class="ecard-img" style="background:${cc(e.cat)}">${e.emoji}</div>
+    <div class="ecard-img" style="background:${cc(e.cat)}">
+      <img src="event_thumb.png" onerror="this.style.display='none'"><span class="eico">${e.emoji}</span>
+    </div>
     <div class="age-badge">${e.age}</div>
     <div class="ecard-body">
       <span class="etag ${e.tag}">${cl(e.cat)}</span>${e.isFree?'<span class="etag t-free" style="margin-left:3px">🆓 무료</span>':''}${e._isNew?'<span class="new-badge" style="margin-left:3px;font-size:9px">NEW</span>':''}
@@ -1005,7 +1438,7 @@ function renderPopEvts(){
   const list=[...eventsDB].filter(e=>!S.disliked.has(e.id)).sort((a,b)=>b.clicks-a.clicks).slice(0,5);
   document.getElementById('popEvents').innerHTML=list.map(e=>`
     <div class="elcard" onclick="showEvt(${e.id})">
-      <div class="elin"><div class="el-ico" style="background:${cc(e.cat)}">${e.emoji}</div>
+      <div class="elin"><div class="el-ico" style="background:${cc(e.cat)}"><span class="eico">${e.emoji}</span></div>
       <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}</div>
       <div class="el-meta">📍 ${e.place} · 📅 ${e.date} · 👶 ${e.age}</div></div></div>
       <div class="el-foot"><div style="font-size:11px;color:var(--text-light)">👁 ${e.clicks.toLocaleString()}회 · ${e.price}</div>
@@ -1014,37 +1447,41 @@ function renderPopEvts(){
 }
 function renderCityNews(){
   const news=[
-    {e:'🦕',t:'코리아케라톱스와 백악기 탐험 - 상설 전시 운영 중',p:'화성시어린이문화센터',u:'https://childrenjob.hscity.go.kr/index.do'},
+    {e:'🦕',t:'코리아케라톱스와 백악기 탐험 - 상설 전시',p:'화성시어린이문화센터',u:'https://childrenjob.hscity.go.kr/index.do'},
     {e:'📚',t:'화성시 전자책 여름방학 2배 대출 이벤트',p:'화성시도서관',u:'https://www.hscitylib.or.kr'},
     {e:'🎭',t:'화성시문화관광재단 하반기 문화 캘린더 공개',p:'화성시문화관광재단',u:'https://www.hcf.or.kr'},
     {e:'🏛️',t:'수원화성박물관 어린이·가족 역사 탐방 신청',p:'수원화성박물관',u:'https://smuseum.suwon.go.kr'}
   ];
   document.getElementById('cityNews').innerHTML=news.map(n=>`
     <div class="elcard" onclick="goUrl('${n.u}','${n.p}')">
-      <div class="elin"><div class="el-ico" style="background:var(--yellow-light)">${n.e}</div>
+      <div class="elin"><div class="el-ico" style="background:var(--yellow-light)"><span class="eico" style="font-size:32px">${n.e}</span></div>
       <div class="el-body"><div class="el-title">${n.t}</div><div class="el-meta">📢 ${n.p}</div></div></div>
       <div class="el-foot"><span></span><button class="gbtn btn-sm" onclick="event.stopPropagation();goUrl('${n.u}','${n.p}')">사이트 이동</button></div>
     </div>`).join('');
 }
 
-// ====== EVENTS ======
+// ============================================================
+// EVENTS
+// ============================================================
 let _curCat='all';
 function renderEvts(){filterCat(null,'all');}
-function filterCat(el,cat){
+window.filterCat = function(el, cat) {
   _curCat=cat;
   if(el){document.querySelectorAll('#catFilter .chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');}
   let list=eventsDB.filter(e=>!S.disliked.has(e.id));
   if(cat==='무료')list=list.filter(e=>e.isFree);
   else if(cat!=='all')list=list.filter(e=>e.cat===cat);
   list.sort((a,b)=>b.clicks-a.clicks);
-  const cnt=document.getElementById('evtCount');if(cnt)cnt.textContent=`총 ${list.length}개`;
+  const cnt=document.getElementById('evtCount'); if(cnt) cnt.textContent=`총 ${list.length}개`;
   document.getElementById('allEvts').innerHTML=list.map(e=>{
     const lk=S.liked.has(e.id);
     return `<div class="elcard">
-      <div class="elin" onclick="showEvt(${e.id})"><div class="el-ico" style="background:${cc(e.cat)};font-size:34px">${e.emoji}</div>
-      <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}</div>
-      <div class="el-meta">📍 ${e.place}<br>📅 ${e.date} · 👶 ${e.age}<br>💰 ${e.price}</div>
-      <div style="margin-top:4px"><span class="src-tag">📌 ${e.src||e.place}</span></div></div></div>
+      <div class="elin" onclick="showEvt(${e.id})">
+        <div class="el-ico" style="background:${cc(e.cat)}"><span class="eico" style="font-size:34px">${e.emoji}</span></div>
+        <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}</div>
+        <div class="el-meta">📍 ${e.place}<br>📅 ${e.date} · 👶 ${e.age}<br>💰 ${e.price}</div>
+        <div style="margin-top:4px"><span class="src-tag">📌 ${e.src||e.place}</span></div></div>
+      </div>
       <div class="el-foot">
         <div style="display:flex;gap:6px">
           <button class="hbtn ${lk?'on':''}" onclick="toggleLike(${e.id},this)" style="width:28px;height:28px;font-size:14px">${lk?'❤️':'🤍'}</button>
@@ -1054,14 +1491,16 @@ function filterCat(el,cat){
       </div>
     </div>`;
   }).join('')||'<div style="text-align:center;padding:40px;color:var(--text-light)">행사가 없어요</div>';
-}
+};
 
-// ====== EVENT DETAIL ======
-function showEvt(id){
+window.showEvt = function(id){
   const e=eventsDB.find(x=>x.id===id);if(!e)return;
   const lk=S.liked.has(id),cf=S.confirmed.has(id);
   document.getElementById('evtContent').innerHTML=`
-    <div class="det-hero" style="background:${cc(e.cat)}">${e.emoji}</div>
+    <div class="det-hero" style="background:${cc(e.cat)}">
+      <img src="banner_summer.png" onerror="this.style.display='none'">
+      <span class="det-eco">${e.emoji}</span>
+    </div>
     <div class="det-body">
       <span class="etag ${e.tag}">${cl(e.cat)}</span>${e.isFree?'<span class="etag t-free" style="margin-left:6px">🆓 무료</span>':''}
       <h2 class="det-title">${e.title}</h2>
@@ -1079,10 +1518,12 @@ function showEvt(id){
       <div style="margin-top:8px;text-align:center;font-size:11px;color:var(--text-light)">* 공식 사이트에서 정확한 정보를 확인하세요</div>
     </div>`;
   openModal('evtModal');
-}
-function confirmEvt(id){S.confirmed.add(id);closeModal('evtModal');showRes('📌','참여 확정!','캘린더에 일정이 추가됐어요!\n당일에 코리요 초대장을 보내드릴게요 🦕');renderCal();}
+};
+window.confirmEvt = function(id){S.confirmed.add(id);closeModal('evtModal');showRes('📌','참여 확정!','캘린더에 일정이 추가됐어요!\n당일에 코리요 초대장을 보내드릴게요 🦕');renderCal();updateMypageStats();};
 
-// ====== WELFARE ======
+// ============================================================
+// WELFARE
+// ============================================================
 function renderWelfare(){
   document.getElementById('welfareList').innerHTML=WELFARE_DB.map(w=>`
     <div class="wcard" onclick="showWlf('${w.id}')">
@@ -1093,7 +1534,7 @@ function renderWelfare(){
       <div class="wc-foot"><span style="font-size:11px;color:var(--text-light)">👁 ${w.clicks.toLocaleString()}명이 봤어요</span><span style="font-size:12px;color:#5C4DDB;font-weight:700">자세히 보기 →</span></div>
     </div>`).join('');
 }
-function showWlf(id){
+window.showWlf = function(id){
   const w=WELFARE_DB.find(x=>x.id===id);if(!w)return;
   document.getElementById('wlfContent').innerHTML=`
     <div style="padding-top:8px">
@@ -1104,116 +1545,585 @@ function showWlf(id){
       <div style="margin-top:8px;text-align:center;font-size:11px;color:var(--text-light)">출처: ${w.sn} (${w.url})</div>
     </div>`;
   openModal('wlfModal');
-}
+};
 
-// ====== CALENDAR ======
+// ============================================================
+// CALENDAR + 날짜 팝업
+// ============================================================
 function renderCal(){
   const y=S.calM.getFullYear(),m=S.calM.getMonth();
   document.getElementById('calML').textContent=`${y}년 ${m+1}월`;
-  const fd=new Date(y,m,1).getDay(),dm=new Date(y,m+1,0).getDate(),td=new Date();
+  const fd=new Date(y,m,1).getDay(), dm=new Date(y,m+1,0).getDate(), td=new Date();
   const edates=new Set();
   eventsDB.forEach(e=>{
     const ms=`${y}.${String(m+1).padStart(2,'0')}`;
-    if(e.date.includes(ms)){const r=e.date.match(/\.(\d{1,2})$/);if(r)edates.add(parseInt(r[1]));}
-    if(e.date.includes('상설')||e.date.includes('운영'))[5,10,15,20,25].forEach(d=>edates.add(d));
+    if(e.date.includes(ms)){const r=e.date.match(/\.(\d{1,2})(?:~|\.|$)/g);if(r)r.forEach(x=>{const d=parseInt(x.replace(/\./g,''));if(d>=1&&d<=31)edates.add(d);});}
+    if(e.date.includes('상설')||e.date.includes('운영')||e.date.includes('상시'))[5,10,15,20,25].forEach(d=>edates.add(d));
   });
   let h='';
   ['일','월','화','수','목','금','토'].forEach(d=>h+=`<div class="cldn">${d}</div>`);
-  for(let i=0;i<fd;i++)h+='<div class="cldc" style="visibility:hidden"></div>';
+  for(let i=0;i<fd;i++) h+='<div style="visibility:hidden;min-height:38px;"></div>';
   for(let d=1;d<=dm;d++){
     const dow=(fd+d-1)%7;
-    let cls='cldc'+(d===td.getDate()&&m===td.getMonth()&&y===td.getFullYear()?' today':'')+(edates.has(d)?' hase':'')+(dow===0?' sun':'')+(dow===6?' sat':'');
-    h+=`<div class="${cls}" onclick="selDay(${d})">${d}</div>`;
+    const isTd=d===td.getDate()&&m===td.getMonth()&&y===td.getFullYear();
+    const hasE=edates.has(d);
+    const isConf=S.confirmed.size>0;
+    let cls='cldc'+(isTd?' today':'')+(hasE?' hase':'')+(dow===0?' sun':'')+(dow===6?' sat':'');
+    h+=`<div class="${cls}" onclick="selCalDay(${d},${m+1},${y})">${d}</div>`;
   }
   document.getElementById('calGrid').innerHTML=h;
-  renderCalEvts(S.calD,m+1,y);
 }
-function selDay(d){S.calD=d;const m=S.calM.getMonth()+1;document.getElementById('calDL').textContent=`${m}월 ${d}일 행사`;renderCalEvts(d,m,S.calM.getFullYear());}
-function renderCalEvts(day,month,year){
-  const list=eventsDB.filter(e=>e.date.includes('상설')||e.date.includes('운영')||e.date.includes(`${year}.${String(month).padStart(2,'0')}`));
-  document.getElementById('calEvts').innerHTML=list.slice(0,8).map(e=>`
-    <div class="ce-item" onclick="showEvt(${e.id})">
-      <div class="ce-title">${e.emoji} ${e.title}</div>
-      <div class="ce-meta">📍 ${e.place} · 👶 ${e.age} · 💰 ${e.price}</div>
-    </div>`).join('')||'<div style="text-align:center;padding:24px;color:var(--text-light)">이 날 행사가 없어요 🦕</div>';
-}
-function chgMonth(d){S.calM.setMonth(S.calM.getMonth()+d);S.calD=null;document.getElementById('calDL').textContent=`${S.calM.getMonth()+1}월의 행사`;renderCal();}
 
-// ====== PARTY ======
+window.selCalDay = function(d, month, year) {
+  S.calD=d;
+  // 캘린더 팝업 띄우기
+  const dateStr=`${year}년 ${month}월 ${d}일`;
+  document.getElementById('cdpTitle').textContent=`📅 ${dateStr} 행사`;
+  const ms=`${year}.${String(month).padStart(2,'0')}`;
+  const list=eventsDB.filter(e=>
+    e.date.includes('상설')||e.date.includes('운영')||e.date.includes('상시')||e.date.includes(ms)
+  );
+  if(list.length===0){
+    document.getElementById('cdpSub').textContent='이날 등록된 행사가 없어요 🦕';
+    document.getElementById('cdpList').innerHTML='';
+  } else {
+    document.getElementById('cdpSub').textContent=`총 ${list.length}개의 행사가 있어요!`;
+    document.getElementById('cdpList').innerHTML=list.slice(0,6).map(e=>`
+      <div class="cdp-evt" onclick="closeModal('calDayPop');showEvt(${e.id})">
+        <div class="cdp-evt-title">${e.emoji} ${e.title}</div>
+        <div class="cdp-evt-meta">📍 ${e.place} · 👶 ${e.age} · 💰 ${e.price}</div>
+        <div style="margin-top:8px;display:flex;gap:8px;">
+          <button class="gbtn btn-sm" onclick="event.stopPropagation();closeModal('calDayPop');showEvt(${e.id})" style="flex:2">상세보기</button>
+          <button class="gbtn btn-sm" onclick="event.stopPropagation();goUrl('${e.url}','${e.place}')" style="flex:2;background:var(--blue-light);color:#2A6A9F">바로가기 📎</button>
+        </div>
+      </div>`).join('');
+  }
+  openModal('calDayPop');
+};
+window.chgMonth = function(d){S.calM.setMonth(S.calM.getMonth()+d);S.calD=null;renderCal();};
+
+// ============================================================
+// FIREBASE PARTY (실시간)
+// ============================================================
+let partiesUnsub = null;
+
+window.loadParties = async function() {
+  document.getElementById('partyFbStatus').textContent='🔄 불러오는 중...';
+  try {
+    const q = query(collection(db,'parties'), orderBy('createdAt','desc'));
+    if(partiesUnsub) partiesUnsub();
+    partiesUnsub = onSnapshot(q, snap=>{
+      S.parties=[];
+      snap.forEach(d=>S.parties.push({fbId:d.id,...d.data()}));
+      renderParty();
+      document.getElementById('partyFbStatus').textContent=`Firebase 실시간 (${S.parties.length}개)`;
+      updateAdminStats();
+    }, err=>{
+      document.getElementById('partyFbStatus').textContent='오프라인 모드';
+      renderPartyFallback();
+    });
+    setFbStatus(true,'파티 실시간 연결됨');
+  } catch(e) {
+    document.getElementById('partyFbStatus').textContent='오프라인 모드';
+    renderPartyFallback();
+  }
+};
+
 function renderParty(){
-  document.getElementById('partyList').innerHTML=PARTY_DB.map(p=>`
-    <div class="pcard" onclick="openModal('chatModal')">
-      <span class="psbadge ${p.status==='gathering'?'psg':'psc'}">${p.status==='gathering'?'🔍 모집 중':'✅ 성사'}</span>
-      <div style="font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:6px">${p.title}</div>
-      <div style="font-size:12px;color:var(--text-mid);line-height:1.7">📍 ${p.place}<br>📅 ${p.date} ${p.time}<br>👶 ${p.ageR} · 👨‍👩‍👧 ${p.cur}/${p.max}명</div>
-      <div class="progw"><div class="progf" style="width:${(p.cur/p.max)*100}%"></div></div>
-      <div class="patts">${p.atts.map(a=>`<div class="patt">${a.e} ${a.a}</div>`).join('')}</div>
-    </div>`).join('');
+  const list=S.parties.length>0?S.parties:getFallbackParties();
+  document.getElementById('partyList').innerHTML=list.map(p=>{
+    const isMine=p.createdBy===S.user?.id;
+    const statusLabel=p.status==='gathering'?'🔍 모집 중':p.status==='confirmed'?'✅ 성사':'❌ 취소';
+    const statusCls=p.status==='gathering'?'psg':p.status==='confirmed'?'psc':'pse';
+    const cur=(p.participants||[]).length;
+    const max=p.maxCount||5;
+    return `<div class="pcard" onclick="${p.status==='confirmed'?`openChatForParty('${p.fbId||p.id}')`:''}">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:6px">
+        <span class="psbadge ${statusCls}">${statusLabel}</span>
+        ${isMine?`<span style="font-size:11px;color:var(--text-light)">내가 만든 파티</span>`:''}
+      </div>
+      <div style="font-size:15px;font-weight:800;color:var(--text-dark);margin-bottom:6px">${p.title||'파티'}</div>
+      <div style="font-size:12px;color:var(--text-mid);line-height:1.7">📍 ${p.place||'-'}<br>📅 ${p.date||'-'} ${p.time||''}<br>👶 ${p.ageRange||'-'} · 👨‍👩‍👧 ${cur}/${max}명</div>
+      <div class="progw"><div class="progf" style="width:${Math.min((cur/max)*100,100)}%"></div></div>
+      <div class="patts">${(p.participants||[]).map(a=>`<div class="patt">${a.emoji||'👤'} ${a.childAge||'?'}세</div>`).join('')}</div>
+      ${p.status==='gathering'?`<button class="btn btn-y btn-sm" style="width:100%;margin-top:10px;" onclick="event.stopPropagation();joinParty('${p.fbId||p.id}')">참여 신청하기 🙋</button>`:''}
+    </div>`;
+  }).join('')||'<div style="text-align:center;padding:30px;color:var(--text-light)">진행 중인 파티가 없어요<br>첫 파티를 만들어봐요! 🎈</div>';
 }
-function submitParty(){closeModal('partyJoinModal');showRes('🎈','파티 신청 완료!','매칭이 완료되면\n코리요 초대장을 보내드릴게요! 🦕');}
 
-// ====== INVITATION ======
-function showInv(){document.getElementById('invOv').classList.add('active');document.getElementById('nbadge').style.display='none';}
-function closeInv(){document.getElementById('invOv').classList.remove('active');}
-function confirmParty(){closeInv();setTimeout(()=>{openModal('chatModal');showToast('🎉','파티 채팅방에 입장했어요!');},300);}
+function getFallbackParties(){
+  return [
+    {id:'p1',title:'🎨 동탄센트럴파크 미술 파티',place:'동탄센트럴파크',date:'2026.07.05 (토)',time:'오후 3시',status:'gathering',participants:[{emoji:'🐻',childAge:'8'},{emoji:'🦊',childAge:'6'},{emoji:'🐰',childAge:'10'},{emoji:'🐥',childAge:'9'}],maxCount:5,ageRange:'8~11세',createdBy:'test'},
+    {id:'p2',title:'🌿 반석산 자연탐험 파티',place:'반석산어린이공원',date:'2026.07.12 (토)',time:'오전 10시',status:'confirmed',participants:[{emoji:'🦁',childAge:'5'},{emoji:'🐱',childAge:'7'},{emoji:'🐨',childAge:'6'}],maxCount:3,ageRange:'5~8세',createdBy:'test'},
+    {id:'p3',title:'🔬 동탄호수공원 과학 탐험대',place:'동탄호수공원',date:'2026.07.19 (일)',time:'오후 2시',status:'gathering',participants:[{emoji:'🦅',childAge:'9'},{emoji:'🦉',childAge:'11'}],maxCount:5,ageRange:'7~12세',createdBy:'test'}
+  ];
+}
+function renderPartyFallback(){S.parties=[];renderParty();}
 
-// ====== CHAT ======
-function sendChat(){
-  const inp=document.getElementById('chatInp');const msg=inp.value.trim();if(!msg)return;
-  const a=document.getElementById('chatMsgs');
-  a.innerHTML+=`<div class="cmsg mine"><div class="cbw"><div class="cnm" style="text-align:right">나</div><div class="ctxt">${msg}</div></div></div>`;
-  inp.value='';a.scrollTop=a.scrollHeight;
+// 파티 신청 제출
+window.selPlaceChip = function(el){document.querySelectorAll('#pj_place_chips .chip').forEach(c=>c.classList.remove('sel'));el.classList.add('sel');S.selectedPlace=el.textContent;};
+window.selMaxChip = function(el){document.querySelectorAll('#partyJoinModal .chip').forEach(c=>{if(c.dataset.v)c.classList.remove('sel');});el.classList.add('sel');S.partyMaxCount=parseInt(el.dataset.v)||5;};
+
+window.submitParty = async function() {
+  const title=document.getElementById('pj_title').value.trim();
+  const place=S.selectedPlace||document.querySelector('#pj_place_chips .chip.sel')?.textContent;
+  const date=document.getElementById('pj_date').value;
+  const time=document.getElementById('pj_time').value;
+  const age=document.getElementById('pj_age').value;
+  if(!title){showToast('⚠️','파티 제목을 입력해주세요');return;}
+  if(!place){showToast('⚠️','장소를 선택해주세요');return;}
+  const btn=document.getElementById('partySubmitBtn');
+  btn.textContent='등록 중...'; btn.disabled=true;
+  const child=S.user?.children?.[0];
+  const partyData={
+    title, place,
+    date: date||'2026-07-05',
+    time: time||'15:00',
+    ageRange: age||'전연령',
+    maxCount: S.partyMaxCount,
+    status: 'gathering',
+    createdBy: S.user?.id||'익명',
+    createdAt: serverTimestamp(),
+    participants:[{userId:S.user?.id||'익명',name:S.user?.name||'익명',emoji:'🌸',childAge:String(child?.age||7),childName:child?.name||'아이'}]
+  };
+  try {
+    const docRef=await addDoc(collection(db,'parties'),partyData);
+    S.currentPartyId=docRef.id;
+    closeModal('partyJoinModal');
+    S.notifications.unshift({id:Date.now(),ico:'🎈',msg:`파티 "${title}"이 등록됐어요!`,time:'방금 전',unread:true,type:'party'});
+    renderNotifPanel();
+    showRes('🎈','파티 신청 완료!','Firebase에 파티가 등록됐어요!\n매칭이 완료되면 초대장을 보내드릴게요 🦕');
+    setFbStatus(true,'파티 Firebase 등록 완료!');
+  } catch(err) {
+    showToast('📴','오프라인: 임시 등록됨');
+    closeModal('partyJoinModal');
+    showRes('🎈','파티 신청 완료!','(오프라인 모드) 파티가 임시 등록됐어요!');
+  } finally { btn.textContent='파티 신청! 🎈'; btn.disabled=false; }
+};
+
+// 파티 참여
+window.joinParty = async function(partyId) {
+  const child=S.user?.children?.[0];
+  const participant={userId:S.user?.id||'익명',name:S.user?.name||'익명',emoji:'🌸',childAge:String(child?.age||7),childName:child?.name||'아이',joinedAt:new Date().toISOString()};
+  try {
+    const partyRef=doc(db,'parties',partyId);
+    const partySnap=await getDoc(partyRef);
+    if(!partySnap.exists()){showToast('❌','파티를 찾을 수 없어요');return;}
+    const pdata=partySnap.data();
+    const newParticipants=[...(pdata.participants||[]),participant];
+    const newStatus=newParticipants.length>=pdata.maxCount?'confirmed':'gathering';
+    await updateDoc(partyRef,{participants:newParticipants,status:newStatus});
+    if(newStatus==='confirmed'){
+      // 파티 성사!
+      S.currentPartyId=partyId;
+      document.getElementById('partySuccessMsg').textContent=`${pdata.place}에서 만나요! 🎈\n채팅방에서 서로 인사 나눠봐요.`;
+      document.getElementById('partySuccessPop').classList.add('active');
+      S.notifications.unshift({id:Date.now(),ico:'🎉',msg:`파티 성사! ${pdata.title} - ${pdata.place}`,time:'방금 전',unread:true,type:'party'});
+      renderNotifPanel();
+      setFbStatus(true,'파티 성사!');
+    } else {
+      showToast('✅',`파티 참여 신청 완료! (${newParticipants.length}/${pdata.maxCount}명)`);
+      setFbStatus(true,'참여 신청 완료');
+    }
+  } catch(err) { showToast('⚠️','참여 처리 중 오류가 발생했어요'); }
+};
+
+window.openChatForParty = function(partyId){
+  S.currentPartyId=partyId;
+  const party=S.parties.find(p=>(p.fbId||p.id)===partyId);
+  if(party){document.getElementById('chatTitle').textContent=`🎉 ${party.title||'파티'} 채팅방`;document.getElementById('chatSubTitle').textContent=`${party.place||''} · ${party.date||''} ${party.time||''}`;}
+  openModal('chatModal');
+  loadFirebaseChat(partyId);
+};
+
+// 파티 취소 (어드민)
+window.adminCancelParty = async function(partyId) {
+  if(!confirm('정말 이 파티를 취소하시겠어요?'))return;
+  try {
+    await updateDoc(doc(db,'parties',partyId),{status:'cancelled'});
+    document.getElementById('partyCancelMsg').textContent='관리자가 파티를 취소했어요.\n이용해주셔서 감사해요! 🦕';
+    document.getElementById('partyCancelPop').classList.add('active');
+    setFbStatus(true,'파티 취소 완료');
+  } catch(e) { showToast('⚠️','취소 처리 중 오류'); }
+};
+
+window.adminConfirmParty = async function(partyId) {
+  try {
+    await updateDoc(doc(db,'parties',partyId),{status:'confirmed'});
+    document.getElementById('partySuccessMsg').textContent='관리자가 파티를 성사시켰어요! 🎉';
+    document.getElementById('partySuccessPop').classList.add('active');
+    setFbStatus(true,'파티 성사 처리 완료');
+  } catch(e) { showToast('⚠️','성사 처리 중 오류'); }
+};
+
+window.closePartyPop = function(){document.getElementById('partySuccessPop').classList.remove('active');document.getElementById('partyCancelPop').classList.remove('active');};
+
+// ============================================================
+// FIREBASE CHAT
+// ============================================================
+let chatUnsub=null;
+async function loadFirebaseChat(partyId){
+  const area=document.getElementById('chatMsgs');
+  area.innerHTML='<div class="cmsg"><div class="cav">🦕</div><div class="cbw"><div class="cnm">코리요</div><div class="ctxt">안녕하세요! 파티 채팅방에 오신 걸 환영해요~ 🎉</div></div></div>';
+  if(!partyId)return;
+  try {
+    if(chatUnsub)chatUnsub();
+    const q=query(collection(db,'parties',partyId,'chats'),orderBy('createdAt','asc'));
+    chatUnsub=onSnapshot(q,snap=>{
+      snap.docChanges().forEach(change=>{
+        if(change.type==='added'){
+          const d=change.doc.data();
+          const isMine=d.userId===S.user?.id;
+          area.innerHTML+=`<div class="cmsg ${isMine?'mine':''}"><div class="cav">${isMine?'🌸':d.emoji||'👤'}</div><div class="cbw"><div class="cnm">${d.name||'익명'}</div><div class="ctxt">${d.text}</div></div></div>`;
+          area.scrollTop=area.scrollHeight;
+        }
+      });
+    });
+  } catch(e){}
+}
+
+window.sendChat = async function(){
+  const inp=document.getElementById('chatInp'), msg=inp.value.trim(); if(!msg)return;
+  inp.value='';
+  if(S.currentPartyId&&S.fbUser){
+    try {
+      await addDoc(collection(db,'parties',S.currentPartyId,'chats'),{
+        text:msg, userId:S.user?.id||'익명', name:S.user?.name||'익명',
+        emoji:'🌸', createdAt:serverTimestamp()
+      });
+      return;
+    } catch(e){}
+  }
+  // 오프라인 fallback
+  const area=document.getElementById('chatMsgs');
+  area.innerHTML+=`<div class="cmsg mine"><div class="cbw"><div class="cnm" style="text-align:right">나</div><div class="ctxt">${msg}</div></div></div>`;
+  area.scrollTop=area.scrollHeight;
   const rs=['반갑습니다! 🎉','저희 아이도 기대해요 😊','날씨 좋으면 좋겠네요!','코리요 앱 너무 편해요!'];
-  const em=['🐻','🦊','🐰'];const nm=['하준맘','서연아빠','민서맘'];const i=Math.floor(Math.random()*3);
-  setTimeout(()=>{a.innerHTML+=`<div class="cmsg"><div class="cav">${em[i]}</div><div class="cbw"><div class="cnm">${nm[i]}</div><div class="ctxt">${rs[Math.floor(Math.random()*4)]}</div></div></div>`;a.scrollTop=a.scrollHeight;},1000);
-}
+  const em=['🐻','🦊','🐰'], nm=['하준맘','서연아빠','민서맘'], i=Math.floor(Math.random()*3);
+  setTimeout(()=>{area.innerHTML+=`<div class="cmsg"><div class="cav">${em[i]}</div><div class="cbw"><div class="cnm">${nm[i]}</div><div class="ctxt">${rs[Math.floor(Math.random()*4)]}</div></div></div>`;area.scrollTop=area.scrollHeight;},1000);
+};
 
-// ====== LIKE/DISLIKE ======
-function toggleLike(id,btn){
+// ============================================================
+// INVITATION
+// ============================================================
+window.showInv = function(){document.getElementById('invOv').classList.add('active');document.getElementById('nbadge').style.display='none';};
+window.closeInv = function(){document.getElementById('invOv').classList.remove('active');};
+window.confirmParty = function(){closeInv();setTimeout(()=>{openModal('chatModal');showToast('🎉','파티 채팅방에 입장했어요!');},300);};
+
+// ============================================================
+// 마이페이지
+// ============================================================
+window.showMyPage = function(){
+  const mp=document.getElementById('myPageSc');
+  mp.classList.add('active');
+  document.getElementById('mypageName').textContent=S.user?.name||'코리요 가족';
+  document.getElementById('mypageCode').textContent=`👤 내 친구코드: ${S.user?.friendCode||'KORIYO-????'} (탭하여 복사)`;
+  updateMypageStats();
+};
+window.closeMyPage = function(){document.getElementById('myPageSc').classList.remove('active');};
+function updateMypageStats(){
+  const likedEl=document.getElementById('likedCount'); if(likedEl) likedEl.textContent=S.liked.size||'';
+  const confEl=document.getElementById('confirmedCount'); if(confEl) confEl.textContent=S.confirmed.size||'';
+  const friendEl=document.getElementById('friendCount'); if(friendEl) friendEl.textContent=S.friends.filter(f=>f.status==='accepted').length||'';
+  const reqEl=document.getElementById('friendReqCount'); if(reqEl) reqEl.textContent=S.friendRequests.length?`${S.friendRequests.length}건`:'';
+  const msgEl=document.getElementById('msgCount'); if(msgEl) msgEl.textContent=S.messages.filter(m=>m.unread).length?`${S.messages.filter(m=>m.unread).length}개 안읽음`:'';
+}
+window.copyFriendCode = function(){
+  const code=S.user?.friendCode||'KORIYO-????';
+  navigator.clipboard?.writeText(code).then(()=>showToast('📋','친구코드가 복사됐어요!')).catch(()=>showToast('📋',`내 코드: ${code}`));
+};
+
+window.showAddFriend = function(){openModal('addFriendModal');};
+window.sendFriendRequest = async function(){
+  const code=document.getElementById('friendCodeInput').value.trim().toUpperCase();
+  if(!code.startsWith('KORIYO-')){showToast('⚠️','올바른 친구코드를 입력해주세요 (예: KORIYO-AB12)');return;}
+  if(code===S.user?.friendCode){showToast('⚠️','내 친구코드예요! 다른 분의 코드를 입력하세요');return;}
+  try {
+    await addDoc(collection(db,'friendRequests'),{
+      fromId:S.user?.id, fromName:S.user?.name, fromCode:S.user?.friendCode,
+      toCode:code, status:'pending', createdAt:serverTimestamp()
+    });
+    setFbStatus(true,'친구 요청 전송!');
+  } catch(e){}
+  closeModal('addFriendModal');
+  showToast('📩','친구 요청을 보냈어요!');
+  document.getElementById('friendCodeInput').value='';
+};
+
+window.showFriendRequests = function(){
+  document.getElementById('wlfContent').innerHTML=`
+    <div style="padding-top:8px">
+      <div class="mtitle">📩 받은 친구 요청</div>
+      <div style="margin-top:12px">
+        ${S.friendRequests.length===0
+          ?'<div style="text-align:center;padding:30px;color:var(--text-light)">받은 친구 요청이 없어요</div>'
+          :S.friendRequests.map(f=>`
+            <div class="friend-card">
+              <div class="friend-av">${f.emoji}</div>
+              <div class="friend-info"><div class="friend-name">${f.name}</div><div class="friend-sub">${f.code}</div></div>
+              <button class="friend-btn fb-accept" onclick="acceptFriend('${f.id}')">수락</button>
+              <button class="friend-btn fb-del" style="margin-left:4px" onclick="rejectFriend('${f.id}')">거절</button>
+            </div>`).join('')}
+      </div>
+    </div>`;
+  openModal('wlfModal');
+};
+
+window.acceptFriend = function(id){
+  const req=S.friendRequests.find(r=>r.id===id);
+  if(!req)return;
+  S.friends.push({id:'f'+Date.now(),name:req.name,code:req.code,status:'accepted',emoji:req.emoji});
+  S.friendRequests=S.friendRequests.filter(r=>r.id!==id);
+  closeModal('wlfModal');
+  showToast('🎉',`${req.name}님과 친구가 됐어요!`);
+  updateMypageStats();
+};
+window.rejectFriend = function(id){S.friendRequests=S.friendRequests.filter(r=>r.id!==id);updateMypageStats();showToast('👋','친구 요청을 거절했어요');closeModal('wlfModal');};
+
+window.showFriendList = function(){
+  const accepted=S.friends.filter(f=>f.status==='accepted');
+  document.getElementById('wlfContent').innerHTML=`
+    <div style="padding-top:8px">
+      <div class="mtitle">⭐ 내 친구 (${accepted.length}명)</div>
+      <div style="margin-top:12px">
+        ${accepted.length===0
+          ?'<div style="text-align:center;padding:30px;color:var(--text-light)">아직 친구가 없어요<br>파티에서 만난 분과 친구를 맺어봐요!</div>'
+          :accepted.map(f=>`
+            <div class="friend-card">
+              <div class="friend-av">${f.emoji}</div>
+              <div class="friend-info"><div class="friend-name">${f.name}</div><div class="friend-sub">${f.code||''}</div></div>
+              <button class="friend-btn fb-msg" onclick="startMsg('${f.id}','${f.name}')">쪽지</button>
+            </div>`).join('')}
+      </div>
+    </div>`;
+  openModal('wlfModal');
+};
+
+window.showMessages = function(){
+  document.getElementById('wlfContent').innerHTML=`
+    <div style="padding-top:8px">
+      <div class="mtitle">📬 받은 쪽지</div>
+      <div style="margin-top:12px">
+        ${S.messages.length===0
+          ?'<div style="text-align:center;padding:30px;color:var(--text-light)">받은 쪽지가 없어요</div>'
+          :S.messages.map(m=>`
+            <div class="msg-item ${m.unread?'unread':''}" onclick="readMsg('${m.id}')">
+              <div class="msg-item-hd">
+                <div class="msg-from">${m.fromEmoji} ${m.from}</div>
+                <div style="display:flex;align-items:center;gap:6px">${m.unread?'<div class="unread-dot"></div>':''}<div class="msg-time">${m.time}</div></div>
+              </div>
+              <div class="msg-preview">${m.preview}</div>
+            </div>`).join('')}
+      </div>
+    </div>`;
+  openModal('wlfModal');
+};
+window.readMsg = function(id){const m=S.messages.find(x=>x.id===id);if(m)m.unread=false;updateMypageStats();};
+window.showSentMessages = function(){showToast('📤','보낸 쪽지함은 준비 중이에요!');};
+
+window.startMsg = function(friendId, friendName){
+  S.msgToFriend={id:friendId,name:friendName};
+  document.getElementById('msgToLabel').textContent=`받는 분: ${friendName}`;
+  closeModal('wlfModal');
+  openModal('msgComposeModal');
+};
+window.sendMessage = async function(){
+  const body=document.getElementById('msgBody').value.trim();
+  if(!body){showToast('⚠️','내용을 입력해주세요');return;}
+  try {
+    await addDoc(collection(db,'messages'),{
+      from:S.user?.id, fromName:S.user?.name,
+      to:S.msgToFriend?.id, toName:S.msgToFriend?.name,
+      body, createdAt:serverTimestamp(), read:false
+    });
+    setFbStatus(true,'쪽지 전송 완료!');
+  } catch(e){}
+  closeModal('msgComposeModal');
+  document.getElementById('msgBody').value='';
+  showToast('💌',`${S.msgToFriend?.name}님께 쪽지를 보냈어요!`);
+};
+
+window.showLikedEvents = function(){
+  const list=eventsDB.filter(e=>S.liked.has(e.id));
+  document.getElementById('wlfContent').innerHTML=`
+    <div style="padding-top:8px">
+      <div class="mtitle">❤️ 찜한 행사 (${list.length}개)</div>
+      <div style="margin-top:12px">
+        ${list.length===0
+          ?'<div style="text-align:center;padding:30px;color:var(--text-light)">찜한 행사가 없어요<br>행사에서 ❤️를 눌러봐요!</div>'
+          :list.map(e=>`
+            <div class="ce-item" onclick="closeModal('wlfModal');showEvt(${e.id})">
+              <div class="ce-title">${e.emoji} ${e.title}</div>
+              <div class="ce-meta">📍 ${e.place} · 📅 ${e.date}</div>
+            </div>`).join('')}
+      </div>
+    </div>`;
+  openModal('wlfModal');
+};
+window.showConfirmedEvents = function(){
+  const list=eventsDB.filter(e=>S.confirmed.has(e.id));
+  document.getElementById('wlfContent').innerHTML=`
+    <div style="padding-top:8px">
+      <div class="mtitle">📌 참여 확정 행사 (${list.length}개)</div>
+      <div style="margin-top:12px">
+        ${list.length===0
+          ?'<div style="text-align:center;padding:30px;color:var(--text-light)">참여 확정한 행사가 없어요</div>'
+          :list.map(e=>`
+            <div class="ce-item" onclick="closeModal('wlfModal');showEvt(${e.id})">
+              <div class="ce-title">${e.emoji} ${e.title}</div>
+              <div class="ce-meta">📍 ${e.place} · 📅 ${e.date}</div>
+            </div>`).join('')}
+      </div>
+    </div>`;
+  openModal('wlfModal');
+};
+window.showMyParties = function(){switchTab('party');closeMyPage();};
+
+// ============================================================
+// LIKE / DISLIKE
+// ============================================================
+window.toggleLike = function(id,btn){
   if(S.liked.has(id)){S.liked.delete(id);btn.classList.remove('on');btn.textContent='🤍';showToast('💔','찜 목록에서 제거했어요');}
   else{S.liked.add(id);btn.classList.add('on');btn.textContent='❤️';showToast('❤️','찜 목록에 추가했어요!');}
-}
-function dislike(id){S.disliked.add(id);showToast('👋','이 행사는 더 이상 보여드리지 않을게요');renderRecEvts();filterCat(null,_curCat);}
-function goUrl(url,name){showToast('🔗',`${name} 사이트로 이동해요`);setTimeout(()=>window.open(url,'_blank'),400);}
+  updateMypageStats();
+};
+window.dislike = function(id){S.disliked.add(id);showToast('👋','이 행사는 더 이상 보여드리지 않을게요');renderRecEvts();filterCat(null,_curCat);};
+window.goUrl = function(url,name){showToast('🔗',`${name} 사이트로 이동해요`);setTimeout(()=>window.open(url,'_blank'),400);};
 
-// ====== MODAL ======
-function openModal(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden';}
-function closeModal(id){document.getElementById(id).classList.remove('active');document.body.style.overflow='';}
-document.querySelectorAll('.mov').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
+// ============================================================
+// MODAL
+// ============================================================
+window.openModal = function(id){document.getElementById(id).classList.add('active');document.body.style.overflow='hidden';};
+window.closeModal = function(id){document.getElementById(id).classList.remove('active');document.body.style.overflow='';};
+document.querySelectorAll('.mov, .cal-day-pop, .msg-compose').forEach(o=>o.addEventListener('click',e=>{if(e.target===o)closeModal(o.id);}));
 
-// ====== RESULT ======
-function showRes(e,t,s){document.getElementById('resE').textContent=e;document.getElementById('resT').textContent=t;document.getElementById('resS').textContent=s;document.getElementById('resPop').classList.add('active');}
-function closeRes(){document.getElementById('resPop').classList.remove('active');}
+// ============================================================
+// RESULT POPUP
+// ============================================================
+window.showRes = function(e,t,s){document.getElementById('resE').textContent=e;document.getElementById('resT').textContent=t;document.getElementById('resS').textContent=s;document.getElementById('resPop').classList.add('active');};
+window.closeRes = function(){document.getElementById('resPop').classList.remove('active');};
 
-// ====== TOAST ======
+// ============================================================
+// TOAST
+// ============================================================
 let _tt;
-function showToast(ico,msg){const t=document.getElementById('toast');document.getElementById('tIco').textContent=ico;document.getElementById('tMsg').textContent=msg;t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2600);}
+window.showToast = function(ico,msg){
+  const t=document.getElementById('toast');
+  document.getElementById('tIco').textContent=ico;document.getElementById('tMsg').textContent=msg;
+  t.classList.add('show');clearTimeout(_tt);_tt=setTimeout(()=>t.classList.remove('show'),2800);
+};
 
-// ====== ADMIN ======
-function swAdmTab(el,id){document.querySelectorAll('.adtab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.adtc').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById(id).classList.add('active');}
-function renderAdmCharts(){
-  const mv=['1월','2월','3월','4월','5월','6월'];const sv=[62,78,95,112,134,87];const mx=Math.max(...sv);
-  document.getElementById('ch1').innerHTML=mv.map((m,i)=>`<div class="bw"><div class="br" style="height:${(sv[i]/mx)*90}px;background:${i===5?'#FFD84D':'rgba(92,77,219,.6)'}"></div><div class="bl">${m}</div></div>`).join('');
-  const tl=['10시','11시','13시','14시','15시','16시'];const tv=[45,32,67,89,98,54];const mt=Math.max(...tv);
-  document.getElementById('ch2').innerHTML=tl.map((t,i)=>`<div class="bw"><div class="br" style="height:${(tv[i]/mt)*90}px;background:${i===4?'#FFD84D':'rgba(168,216,168,.8)'}"></div><div class="bl">${t}</div></div>`).join('');
-  const il=['미술','과학','자연','공연','체험','독서'];const iv=[82,78,65,54,91,47];const mi=Math.max(...iv);
-  document.getElementById('ch3').innerHTML=il.map((l,i)=>`<div class="bw"><div class="br" style="height:${(iv[i]/mi)*90}px;background:rgba(201,179,255,.8)"></div><div class="bl">${l}</div></div>`).join('');
-  const sp=[28,35,42,38,51,47,58,63,71,67,82,78];const ms=Math.max(...sp);
-  document.getElementById('ch4').innerHTML=sp.map((v,i)=>`<div class="spkb" style="height:${(v/ms)*46}px;opacity:${.4+i*.05}"></div>`).join('');
+// ============================================================
+// ADMIN
+// ============================================================
+window.swAdmTab = function(el,id){document.querySelectorAll('.adtab').forEach(t=>t.classList.remove('active'));document.querySelectorAll('.adtc').forEach(t=>t.classList.remove('active'));el.classList.add('active');document.getElementById(id).classList.add('active');};
+
+window.loadAdminParties = async function(){
+  const listEl=document.getElementById('adPartyList');
+  listEl.innerHTML='<div style="color:rgba(255,255,255,.4);font-size:13px;padding:20px;text-align:center;">불러오는 중...</div>';
+  try {
+    const q=query(collection(db,'parties'),orderBy('createdAt','desc'));
+    const snap=await getDocs(q);
+    const parties=[];
+    snap.forEach(d=>parties.push({fbId:d.id,...d.data()}));
+    if(parties.length===0){listEl.innerHTML='<div style="color:rgba(255,255,255,.4);font-size:13px;padding:20px;text-align:center;">등록된 파티가 없어요</div>';return;}
+    listEl.innerHTML=parties.map(p=>{
+      const cur=(p.participants||[]).length, max=p.maxCount||5;
+      const statusLabel=p.status==='gathering'?'모집중':p.status==='confirmed'?'성사':'취소';
+      const pillCls=p.status==='gathering'?'ppw':p.status==='confirmed'?'ppa':'ppe';
+      return `<div class="adpr">
+        <div class="adpri">
+          <div class="adprt">${p.title||'파티'}</div>
+          <div class="adprm">${p.place||'-'} · ${p.date||'-'} · ${cur}/${max}명</div>
+          <div class="pbw"><div class="pbf" style="width:${Math.min((cur/max)*100,100)}%"></div></div>
+          <div class="adm-party-actions">
+            ${p.status==='gathering'?`<button class="adm-btn-confirm" onclick="adminConfirmParty('${p.fbId}')">✅ 성사 처리</button>`:''}
+            ${p.status!=='cancelled'?`<button class="adm-btn-cancel" onclick="adminCancelParty('${p.fbId}')">❌ 취소 처리</button>`:''}
+          </div>
+        </div>
+        <span class="ppill ${pillCls}">${statusLabel}</span>
+      </div>`;
+    }).join('');
+    updateAdminStats(parties);
+  } catch(e){listEl.innerHTML=`<div style="color:rgba(255,100,100,.6);font-size:13px;padding:20px;text-align:center;">Firebase 연결 오류<br>${e.message}</div>`;}
+};
+
+function updateAdminStats(parties){
+  if(!parties && S.parties.length>0) parties=S.parties;
+  if(!parties)return;
+  const total=parties.length, confirmed=parties.filter(p=>p.status==='confirmed').length;
+  const gathering=parties.filter(p=>p.status==='gathering').length;
+  const cancelled=parties.filter(p=>p.status==='cancelled').length;
+  const el=id=>document.getElementById(id);
+  if(el('ad_parties'))el('ad_parties').textContent=total;
+  if(el('ad_confirmed'))el('ad_confirmed').textContent=confirmed;
+  if(el('ad_gathering'))el('ad_gathering').textContent=gathering;
+  if(el('ad_cancelled'))el('ad_cancelled').textContent=cancelled;
+  const rate=total>0?Math.round((confirmed/total)*100):0;
+  if(el('ad_rate'))el('ad_rate').textContent=rate+'%';
+  if(el('ad_rate_sub'))el('ad_rate_sub').textContent=`성사 ${confirmed} / 전체 ${total}`;
+  // 장소별 통계
+  const places={'동탄센트럴파크':0,'반석산어린이공원':0,'동탄호수공원':0,'화성행궁 광장':0,'병점근린공원':0};
+  parties.forEach(p=>{if(p.place&&places[p.place]!==undefined)places[p.place]++;});
+  const placeKeys=Object.keys(places), maxP=Math.max(...Object.values(places),1);
+  placeKeys.forEach((k,i)=>{
+    const n=i+1, v=places[k];
+    const lbl=el('place'+n), bar=el('place'+n+'bar');
+    if(lbl)lbl.textContent=v+'건';
+    if(bar)bar.style.width=Math.round((v/maxP)*90)+'%';
+  });
 }
-function renderAdmParty(){document.getElementById('adPartyList').innerHTML=PARTY_DB.map(p=>`<div class="adpr"><div class="adpri"><div class="adprt">${p.title}</div><div class="adprm">${p.place} · ${p.date} · ${p.cur}/${p.max}명</div><div class="pbw"><div class="pbf" style="width:${(p.cur/p.max)*100}%"></div></div></div><span class="ppill ${p.status==='confirmed'?'ppa':'ppw'}">${p.status==='gathering'?'모집중':'성사'}</span></div>`).join('');}
-function adminAddEvt(){
+
+window.renderAdmCharts = function(){
+  const mv=['1월','2월','3월','4월','5월','6월'],sv=[62,78,95,112,134,87],mx=Math.max(...sv);
+  document.getElementById('ch1').innerHTML=mv.map((m,i)=>`<div class="bw"><div class="br" style="height:${(sv[i]/mx)*90}px;background:${i===5?'#FFD84D':'rgba(92,77,219,.6)'}"></div><div class="bl">${m}</div></div>`).join('');
+  const tl=['10시','11시','13시','14시','15시','16시'],tv=[45,32,67,89,98,54],mt=Math.max(...tv);
+  document.getElementById('ch2').innerHTML=tl.map((t,i)=>`<div class="bw"><div class="br" style="height:${(tv[i]/mt)*90}px;background:${i===4?'#FFD84D':'rgba(168,216,168,.8)'}"></div><div class="bl">${t}</div></div>`).join('');
+  const sp=[28,35,42,38,51,47,58,63,71,67,82,78],ms=Math.max(...sp);
+  document.getElementById('ch4').innerHTML=sp.map((v,i)=>`<div class="spkb" style="height:${(v/ms)*46}px;opacity:${.4+i*.05}"></div>`).join('');
+};
+window.adminAddEvt = function(){
   const t=document.getElementById('ae_t').value.trim();if(!t){alert('제목을 입력하세요');return;}
   eventsDB.unshift({id:Date.now(),title:t,emoji:'📌',place:document.getElementById('ae_p').value||'화성시',date:document.getElementById('ae_d').value||'미정',age:document.getElementById('ae_a').value||'전연령',cat:document.getElementById('ae_c').value||'체험',tag:'t-edu',isFree:false,price:'확인 필요',hot:false,clicks:0,ageMin:0,ageMax:99,desc:document.getElementById('ae_desc').value||'',url:document.getElementById('ae_u').value||'#',src:'관리자 등록',interests:[]});
-  ['ae_t','ae_p','ae_d','ae_a','ae_c','ae_u','ae_desc'].forEach(i=>document.getElementById(i).value='');
+  ['ae_t','ae_p','ae_d','ae_a','ae_c','ae_u','ae_desc'].forEach(id=>document.getElementById(id).value='');
   alert('✅ 이벤트가 등록되었습니다!');
-}
-function renderAdmNotices(){document.getElementById('adNoticeList').innerHTML=S.notices.map(n=>`<div class="adpr"><div class="adpri"><div class="adprt">${n.title}</div><div class="adprm">${n.date||''}</div></div></div>`).join('');}
-function adminAddNotice(){const t=document.getElementById('an_t').value.trim();if(!t)return;S.notices.unshift({title:t,body:document.getElementById('an_b').value,date:new Date().toLocaleDateString('ko-KR')});document.getElementById('an_t').value='';document.getElementById('an_b').value='';renderAdmNotices();alert('등록되었습니다!');}
+};
+window.renderAdmNotices = function(){document.getElementById('adNoticeList').innerHTML=S.notices.map(n=>`<div class="adpr"><div class="adpri"><div class="adprt">${n.title}</div><div class="adprm">${n.date||''}</div></div></div>`).join('');};
+window.adminAddNotice = function(){
+  const t=document.getElementById('an_t').value.trim();if(!t)return;
+  S.notices.unshift({title:t,body:document.getElementById('an_b').value,date:new Date().toLocaleDateString('ko-KR')});
+  document.getElementById('an_t').value='';document.getElementById('an_b').value='';
+  renderAdmNotices();alert('공지가 등록되었습니다!');
+};
 
-// ====== HELPERS ======
+// ============================================================
+// HELPERS
+// ============================================================
 function cc(cat){return{미술:'#F0EBFF',과학:'#E8F4FF',자연:'#E8F5E9',공연:'#FFE4EC',역사:'#FFF0E6',독서:'#FFF9D0',체험:'#FFF5C0'}[cat]||'#F5F5FF';}
 function cl(cat){return{미술:'🎨 미술',과학:'🔬 과학',자연:'🌱 자연',공연:'🎭 공연',역사:'🏛️ 역사',독서:'📚 독서',체험:'🏃 체험'}[cat]||cat;}
+
+// ============================================================
+// INIT
+// ============================================================
+// Firebase Auth 상태 감지
+onAuthStateChanged(auth, user=>{
+  S.fbUser=user;
+  if(user && !S.user){
+    loadUserProfile(user.uid, user.email?.replace('@koriyo.app','')||'user');
+  }
+});
+
+// 파티 목록 자동 로드 (탭 전환시)
+const origSwitchTab=window.switchTab;
+window.switchTab=function(t){origSwitchTab(t);if(t==='party')loadParties();};
+
+// ✅ 모듈 로딩 완료 - 모든 window 함수에 준비 완료 마킹
+Object.keys(window).forEach(k => { if(typeof window[k]==='function') window[k]._ready=true; });
+// 로딩 오버레이 제거
+const loadOv = document.getElementById('_loadingOv');
+if(loadOv) loadOv.remove();
+console.log('✅ 코리요 앱 모듈 로딩 완료');
+
 </script>
 </body>
 </html>
