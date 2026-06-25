@@ -645,7 +645,7 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
           <span class="chip" onclick="filterCat(this,'무료')">🆓 무료</span>
         </div>
       </div>
-      <button class="rbtn" id="erbtn" onclick="doAISearch()">🤖 AI로 최신 행사 검색하기</button>
+      <button class="rbtn" id="erbtn" onclick="doAISearch()">🌐 인터넷에서 최신 행사 검색하기</button>
       <div class="ai-status" id="aiStatus"><div class="ai-dot"></div><span id="aiTxt">AI가 최신 행사를 검색 중이에요...</span></div>
       <div id="allEvts"></div>
     </div>
@@ -1523,63 +1523,200 @@ document.addEventListener('click', e=>{
 // ============================================================
 // AI SEARCH
 // ============================================================
+// ============================================================
+// AI 웹서치 검색 (2단계: 웹서치 → 필터링 → 앱 표시)
+// ============================================================
+
+// [1단계] 웹서치 툴로 실제 인터넷에서 행사 검색
+async function fetchWebSearchEvents(queries) {
+  const results = [];
+  for (const query of queries) {
+    try {
+      const res = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-6',
+          max_tokens: 2000,
+          tools: [{type: 'web_search_20250305', name: 'web_search'}],
+          messages: [{
+            role: 'user',
+            content: query
+          }]
+        })
+      });
+      const data = await res.json();
+      // 텍스트 블록만 추출
+      const text = (data.content || [])
+        .filter(b => b.type === 'text')
+        .map(b => b.text)
+        .join('\n');
+      if (text) results.push(text);
+    } catch(e) { /* 개별 검색 실패 무시 */ }
+  }
+  return results.join('\n\n---\n\n');
+}
+
+// [2단계] 검색 결과를 앱 데이터 형식으로 정제
+async function parseSearchToEvents(searchResult, nm, age, ints) {
+  const existingTitles = eventsDB.map(e =>
+    e.title.replace(/^[^\w가-힣]+/, '').substring(0, 15)
+  ).join(', ');
+
+  const prompt = `당신은 화성시 육아 앱 코리요의 AI입니다. 코리요 말투(~에요, ~해요)로 답해주세요.
+
+아래는 실제 인터넷 검색 결과입니다:
+===
+${searchResult.substring(0, 3000)}
+===
+
+아이 정보: ${nm}, ${age}세, 관심사: ${ints}
+이미 등록된 행사(중복 제외): ${existingTitles.substring(0, 300)}
+
+위 검색 결과에서 어린이·가족 대상 행사/체험/전시/교육 프로그램을 추출해서 정제해주세요.
+- 실제 검색에서 찾은 정보만 사용 (없으면 빈 배열)
+- 중복된 행사는 제외
+- URL은 검색 결과에 나온 실제 URL 우선 사용
+
+아래 JSON만 응답 (마크다운/코드블록 없이):
+{"bubble":"코리요 말풍선 2문장 이모지포함","newEvents":[{"title":"이벤트명 이모지포함","place":"장소","date":"날짜 또는 상설 운영","age":"대상연령","cat":"미술또는과학또는자연또는공연또는역사또는독서또는체험","emoji":"이모지","isFree":true또는false,"price":"가격(무료면 무료)","desc":"2~3줄 설명","url":"실제URL","src":"출처기관명","interests":["관심사"],"hot":false,"ageMin":숫자,"ageMax":숫자}]}`;
+
+  const res = await fetch('https://api.anthropic.com/v1/messages', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-6',
+      max_tokens: 2500,
+      messages: [{role: 'user', content: prompt}]
+    })
+  });
+  const data = await res.json();
+  const txt = (data.content?.[0]?.text || '').replace(/```json|```/g, '').trim();
+  return JSON.parse(txt);
+}
+
 window.doAISearch = async function() {
-  const rb=document.getElementById('rbtn'), eb=document.getElementById('erbtn'), st=document.getElementById('aiStatus'), bb=document.getElementById('aiBubble');
+  const rb=document.getElementById('rbtn'), eb=document.getElementById('erbtn'),
+        st=document.getElementById('aiStatus'), bb=document.getElementById('aiBubble');
   if(rb)rb.classList.add('loading');
-  if(eb){eb.classList.add('loading');eb.textContent='🔄 검색 중...';}
-  if(st)st.classList.add('on');
-  const child=S.user?.children?.[0];
-  const ints=(S.user?.interests||['미술','과학']).join(',');
-  const age=child?.age||8, nm=child?.name||'아이';
-  // 이미 있는 이벤트 제목 목록 (중복 방지)
-  const existingTitles=eventsDB.map(e=>e.title.replace(/^[^\w가-힣]+/,'')).join('|').substring(0,300);
-  const callCount=(window._aiCallCount=(window._aiCallCount||0)+1);
-  const themes=['미술·공예','과학·로봇','자연·생태','공연·뮤지컬','역사·문화','독서·도서관','스포츠·체험'];
-  const focusTheme=themes[(callCount-1)%themes.length];
-  
-  const prompt=`당신은 화성시 육아 앱 코리요의 AI입니다. 코리요(귀여운 공룡) 말투(~에요, ~해요)로 답해주세요.
+  if(eb){eb.classList.add('loading');eb.textContent='🔍 인터넷 검색 중...';}
+  if(st){st.classList.add('on'); document.getElementById('aiTxt').textContent='실제 인터넷에서 최신 행사 검색 중이에요...';}
 
-아이: ${nm}, ${age}세, 관심사: ${ints}
-이번 검색 테마: ${focusTheme}
-현재 등록된 행사 수: ${eventsDB.length}개
+  const child = S.user?.children?.[0];
+  const ints = (S.user?.interests || ['미술','과학']).join(',');
+  const age = child?.age || 8, nm = child?.name || '아이';
+  const callCount = (window._aiCallCount = (window._aiCallCount || 0) + 1);
 
-중요 지침:
-1. 화성시 통합예약시스템(yeyak.hscity.go.kr), 문화포털(culture.go.kr) 화성시 행사를 우선 포함하세요
-2. 이미 있는 행사와 겹치지 않는 새로운 행사 8개를 찾아주세요
-3. 이미 있는 행사 제목 키워드(참고용): ${existingTitles.substring(0,200)}
-4. 날짜가 있는 행사(뮤지컬/축제/특강)와 상설 운영 행사를 섞어 포함하세요
-5. URL은 실제 공식 사이트만 사용하세요
+  // 검색 쿼리를 회차마다 다르게 (테마 순환)
+  const queryGroups = [
+    [ // 1회차: 화성시 여름 행사
+      `화성시 어린이 체험 행사 2026 여름 site:yeyak.hscity.go.kr OR site:hscity.go.kr OR site:hcf.or.kr`,
+      `화성시 아이들 교육 프로그램 2026 여름방학 체험 신청`,
+    ],
+    [ // 2회차: 경기도 문화포털
+      `경기도 어린이 문화행사 2026 여름 site:culture.go.kr`,
+      `경기도 화성 수원 아이들 전시 공연 2026 7월 8월`,
+    ],
+    [ // 3회차: 화성시 문화·공연
+      `화성시 공연 전시 2026 어린이 가족 site:hcf.or.kr OR site:hscity.go.kr`,
+      `화성행궁 동탄 수원 어린이 축제 2026 여름`,
+    ],
+    [ // 4회차: 경기도 과학·자연
+      `경기도 과학관 자연체험 어린이 2026 여름방학`,
+      `국립과천과학관 경기도어린이박물관 2026 특별 프로그램`,
+    ],
+    [ // 5회차: 화성시 도서관·교육
+      `화성시 도서관 여름방학 어린이 프로그램 2026 신청`,
+      `화성시 청소년 문화센터 어린이 특강 2026`,
+    ],
+    [ // 6회차: 뮤지컬·공연
+      `경기도 어린이 뮤지컬 가족공연 2026 7월 8월`,
+      `수원 화성 인근 키즈 공연 2026 여름`,
+    ],
+    [ // 7회차: 전시·박물관
+      `경기도 박물관 어린이 체험 전시 2026 여름`,
+      `화성시 역사 문화 어린이 탐방 프로그램 2026`,
+    ],
+  ];
+  const queries = queryGroups[(callCount - 1) % queryGroups.length];
 
-아래 JSON만 응답(마크다운 없이, 코드블록 없이):
-{"bubble":"홈화면 코리요 말풍선 2문장 이모지포함","newEvents":[{"id":201,"title":"이벤트명 이모지포함","place":"장소","date":"날짜(예:2026.07.19 또는 상설 운영)","age":"대상연령","cat":"미술또는과학또는자연또는공연또는역사또는독서또는체험","emoji":"이모지","isFree":true또는false,"price":"가격","desc":"2~3줄설명","url":"실제공식URL","src":"출처명(화성시통합예약시스템/문화포털/기관명)","interests":["관심사"],"hot":false,"ageMin":숫자,"ageMax":숫자}]}
-경기도/화성시 인근 어린이 행사 8개 필수.`;
   try {
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:prompt}]})});
-    const data=await res.json();
-    const txt=(data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
-    const parsed=JSON.parse(txt);
-    if(parsed.bubble&&bb) bb.innerHTML=`<strong>${nm}이</strong>에게 딱 맞는 행사 찾았어요!<br>${parsed.bubble}`;
+    if(st) document.getElementById('aiTxt').textContent = `🔍 ${queries[0].substring(0,20)}... 검색 중`;
+
+    // 1단계: 실제 웹서치
+    const searchResult = await fetchWebSearchEvents(queries);
+
+    if(st) document.getElementById('aiTxt').textContent = '✅ 검색 완료! AI가 정보 정제 중...';
+
+    // 2단계: 검색결과 정제
+    const parsed = await parseSearchToEvents(searchResult, nm, age, ints);
+
+    if(parsed.bubble && bb)
+      bb.innerHTML = `<strong>${nm}이</strong>를 위해 지금 막 찾아왔어요! 🌐<br>${parsed.bubble}`;
+
+    if(parsed.newEvents?.length) {
+      let added = 0;
+      parsed.newEvents.forEach((e, i) => {
+        e.id = Date.now() + i;
+        e.tag = c2t(e.cat);
+        e.clicks = Math.floor(Math.random() * 200) + 50;
+        e.ageMin = e.ageMin || 3;
+        e.ageMax = e.ageMax || 13;
+        e._isNew = true;
+        e._fromWeb = true; // 웹서치 출처 표시
+        const cleanTitle = e.title.replace(/^[^\w가-힣]+/, '');
+        const isDup = eventsDB.some(x =>
+          x.title.replace(/^[^\w가-힣]+/, '').includes(cleanTitle.substring(0, 10))
+        );
+        if (!isDup) { eventsDB.push(e); added++; }
+      });
+      if(added) showToast('🌐', `인터넷 검색으로 새 행사 ${added}개 추가됐어요!`);
+      else showToast('🤖', '검색 완료! 새로운 행사는 없었어요');
+    }
+  } catch(err) {
+    console.warn('웹서치 실패, 폴백:', err);
+    // 웹서치 실패 시 기존 AI 생성 방식으로 폴백
+    await doAISearchFallback(nm, age, ints, bb);
+  } finally {
+    if(rb) rb.classList.remove('loading');
+    if(eb) {eb.classList.remove('loading'); eb.textContent='🌐 인터넷에서 최신 행사 검색하기';}
+    if(st) st.classList.remove('on');
+    renderRecEvts(); filterCat(null, _curCat); renderHome();
+  }
+};
+
+// 웹서치 실패 시 기존 방식 폴백
+async function doAISearchFallback(nm, age, ints, bb) {
+  const callCount = window._aiCallCount || 1;
+  const themes = ['미술·공예','과학·로봇','자연·생태','공연·뮤지컬','역사·문화','독서·도서관','스포츠·체험'];
+  const focusTheme = themes[(callCount-1) % themes.length];
+  const existingTitles = eventsDB.map(e=>e.title.replace(/^[^\w가-힣]+/,'')).join('|').substring(0,300);
+  const prompt = `당신은 화성시 육아 앱 코리요의 AI입니다. 코리요 말투로 답해주세요.
+아이: ${nm}, ${age}세, 관심사: ${ints} / 테마: ${focusTheme}
+이미 있는 행사(중복제외): ${existingTitles.substring(0,200)}
+화성시·경기도 인근 어린이 행사 8개. JSON만 응답(마크다운 없이):
+{"bubble":"2문장 이모지포함","newEvents":[{"title":"이모지+이벤트명","place":"장소","date":"날짜 또는 상설 운영","age":"대상","cat":"미술또는과학또는자연또는공연또는역사또는독서또는체험","emoji":"이모지","isFree":true,"price":"가격","desc":"설명","url":"URL","src":"출처","interests":["관심사"],"hot":false,"ageMin":3,"ageMax":13}]}`;
+  try {
+    const res = await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:prompt}]})});
+    const data = await res.json();
+    const txt = (data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
+    const parsed = JSON.parse(txt);
+    if(parsed.bubble && bb) bb.innerHTML=`<strong>${nm}이</strong>에게 딱 맞는 행사 찾았어요!<br>${parsed.bubble}`;
     if(parsed.newEvents?.length){
       let added=0;
       parsed.newEvents.forEach((e,i)=>{
-        e.id=Date.now()+i; e.tag=c2t(e.cat);
-        e.clicks=Math.floor(Math.random()*200)+50; e.ageMin=e.ageMin||3; e.ageMax=e.ageMax||13; e._isNew=true;
-        // 제목 앞 이모지 제거 후 비교
+        e.id=Date.now()+i+500; e.tag=c2t(e.cat); e.clicks=Math.floor(Math.random()*200)+50;
+        e.ageMin=e.ageMin||3; e.ageMax=e.ageMax||13; e._isNew=true;
         const cleanTitle=e.title.replace(/^[^\w가-힣]+/,'');
         const isDup=eventsDB.some(x=>x.title.replace(/^[^\w가-힣]+/,'').includes(cleanTitle.substring(0,10)));
         if(!isDup){eventsDB.push(e);added++;}
       });
-      if(added)showToast('🤖',`AI가 새 행사 ${added}개를 추가했어요!`);
+      if(added&&bb) bb.innerHTML += ` (${added}개 추가됨)`;
     }
-  } catch(err) {
-    if(bb) bb.innerHTML=`<strong>${nm}이</strong>를 위한 맞춤 행사를 준비했어요! 관심사에 딱 맞는 체험들이에요 🎨✨`;
-  } finally {
-    if(rb)rb.classList.remove('loading');
-    if(eb){eb.classList.remove('loading');eb.textContent='🤖 AI로 최신 행사 검색하기';}
-    if(st)st.classList.remove('on');
-    renderRecEvts(); filterCat(null, _curCat); renderHome();
+  } catch(e) {
+    if(bb) bb.innerHTML=`<strong>${nm}이</strong>를 위한 행사를 준비했어요! 🎨✨`;
   }
-};
+}
 function c2t(cat){return{미술:'t-art',과학:'t-sci',자연:'t-nat',공연:'t-cul',역사:'t-his',독서:'t-edu',체험:'t-edu'}[cat]||'t-edu';}
 
 // ============================================================
@@ -1606,7 +1743,7 @@ function sCard(e){
     </div>
     <div class="age-badge">${e.age}</div>
     <div class="ecard-body">
-      <span class="etag ${e.tag}">${cl(e.cat)}</span>${e.isFree?'<span class="etag t-free" style="margin-left:3px">🆓 무료</span>':''}${e._isNew?'<span class="new-badge" style="margin-left:3px;font-size:9px">NEW</span>':''}
+      <span class="etag ${e.tag}">${cl(e.cat)}</span>${e.isFree?'<span class="etag t-free" style="margin-left:3px">🆓 무료</span>':''}${e._isNew?'<span class="new-badge" style="margin-left:3px;font-size:9px">NEW</span>':''}${e._fromWeb?'<span class="new-badge" style="margin-left:3px;font-size:9px;background:#2A9D8F;">🌐 실시간</span>':''}
       <div class="ecard-title">${e.title}</div>
       <div class="ecard-info">📍 ${e.place}<br>📅 ${e.date}<br>💰 ${e.price}</div>
       <div class="ecard-acts" onclick="event.stopPropagation()">
@@ -1622,8 +1759,7 @@ function renderPopEvts(){
   document.getElementById('popEvents').innerHTML=list.map(e=>`
     <div class="elcard" onclick="showEvt(${e.id})">
       <div class="elin"><div class="el-ico" style="background:${cc(e.cat)}"><span class="eico">${e.emoji}</span></div>
-      <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}</div>
-      <div class="el-meta">📍 ${e.place} · 📅 ${e.date} · 👶 ${e.age}</div></div></div>
+      <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}${e._fromWeb?'<span class="new-badge" style="background:#2A9D8F;">🌐</span>':''}</div>
       <div class="el-foot"><div style="font-size:11px;color:var(--text-light)">👁 ${e.clicks.toLocaleString()}회 · ${e.price}</div>
       <button class="gbtn btn-sm" onclick="event.stopPropagation();goUrl('${e.url}','${e.place}')">바로가기</button></div>
     </div>`).join('');
@@ -1661,9 +1797,9 @@ window.filterCat = function(el, cat) {
     return `<div class="elcard">
       <div class="elin" onclick="showEvt(${e.id})">
         <div class="el-ico" style="background:${cc(e.cat)}"><span class="eico" style="font-size:34px">${e.emoji}</span></div>
-        <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}</div>
+        <div class="el-body"><div class="el-title">${e.title}${e.hot?'<span class="hot-badge">HOT</span>':''}${e._isNew?'<span class="new-badge">NEW</span>':''}${e._fromWeb?'<span class="new-badge" style="background:#2A9D8F;">🌐 실시간</span>':''}</div>
         <div class="el-meta">📍 ${e.place}<br>📅 ${e.date} · 👶 ${e.age}<br>💰 ${e.price}</div>
-        <div style="margin-top:4px"><span class="src-tag">📌 ${e.src||e.place}</span></div></div>
+        <div style="margin-top:4px"><span class="src-tag">${e._fromWeb?'🌐':'📌'} ${e.src||e.place}</span></div></div>
       </div>
       <div class="el-foot">
         <div style="display:flex;gap:6px">
