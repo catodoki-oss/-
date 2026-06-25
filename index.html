@@ -661,7 +661,8 @@ body{font-family:'Apple SD Gothic Neo','Noto Sans KR',sans-serif;background:var(
         <div class="cal-grid" id="calGrid"></div>
       </div>
       <div class="cal-evts-area">
-        <div style="font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:12px;" id="calDL">날짜를 클릭하면 행사가 보여요 📅</div>
+        <div style="font-size:14px;font-weight:700;color:var(--text-dark);margin-bottom:6px;" id="calDL">날짜를 클릭하면 행사가 보여요 📅</div>
+        <div style="font-size:11px;color:var(--text-light);margin-bottom:12px;">🔵 동글뱅이 = 실제 그 날 열리는 행사 &nbsp;⭐ = 내가 참여확정한 행사</div>
         <div id="calEvts"></div>
       </div>
     </div>
@@ -1223,7 +1224,43 @@ const BASE_EVENTS = [
   {id:27,title:'📱 이야기 코딩 삐오로봇',place:'국립어린이청소년도서관',date:'2026 진행 중',age:'유아',cat:'과학',emoji:'📱',tag:'t-sci',isFree:true,price:'무료',hot:false,clicks:178,ageMin:4,ageMax:7,desc:'귀여운 삐오로봇과 함께 책과 코딩을 동시에! 유아도 쉽게 배우는 스토리 코딩.',url:'https://nlcy.go.kr',src:'국립어린이청소년도서관',interests:['로봇','독서']},
   {id:28,title:'🏃 화성시 가족사랑 스포츠 축제',place:'화성시 일대',date:'2026 하반기(공지 예정)',age:'전 가족',cat:'체험',emoji:'🏃',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:198,ageMin:3,ageMax:99,desc:'화성시문화관광재단 주관 가족 스포츠 축제! 다양한 스포츠 체험.',url:'https://www.hcf.or.kr',src:'화성시문화관광재단',interests:['스포츠','체험']},
   {id:29,title:'🦠 미생물의 세계 체험',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'과학',emoji:'🦠',tag:'t-sci',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:213,ageMin:5,ageMax:13,desc:'눈에 보이지 않는 미생물의 세계를 탐험! 현미경으로 관찰하고 실험.',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['과학','자연']},
-  {id:30,title:'🍎 로컬푸드마켓&레스토랑',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🍎',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:176,ageMin:5,ageMax:13,desc:'화성 로컬푸드로 요리를 만들고 레스토랑에서 요리사 체험!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['요리','체험']}
+  {id:30,title:'🍎 로컬푸드마켓&레스토랑',place:'화성시어린이문화센터',date:'상설 운영',age:'5~13세',cat:'체험',emoji:'🍎',tag:'t-edu',isFree:false,price:'9,000원(화성시민)',hot:false,clicks:176,ageMin:5,ageMax:13,desc:'화성 로컬푸드로 요리를 만들고 레스토랑에서 요리사 체험!',url:'https://childrenjob.hscity.go.kr/index.do',src:'화성시어린이문화센터',interests:['요리','체험']},
+
+  // === 화성시 통합예약시스템 (yeyak.hscity.go.kr) ===
+  {id:31,title:'🎨 화성시청소년수련관 도예교실',place:'화성시청소년수련관',date:'2026.07~08 매주 토요일',age:'7~15세',cat:'미술',emoji:'🎨',tag:'t-art',isFree:false,price:'30,000원(4회)',hot:false,clicks:198,ageMin:7,ageMax:15,desc:'흙으로 만드는 나만의 도자기! 핀칭, 물레 성형 등 다양한 기법을 배워요.',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['미술','공예']},
+  {id:32,title:'🌿 동탄복합문화센터 자연공예 체험',place:'동탄복합문화센터',date:'2026.07.05~08.30 토요일',age:'5~12세',cat:'자연',emoji:'🌿',tag:'t-nat',isFree:false,price:'10,000원',hot:false,clicks:167,ageMin:5,ageMax:12,desc:'자연재료로 만드는 나뭇잎 프린팅, 꽃누르미 액자 등 자연 공예 체험!',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['자연','공예']},
+  {id:33,title:'🎭 향남문화센터 어린이 연기교실',place:'향남문화센터',date:'2026.07~08 화목반',age:'6~12세',cat:'공연',emoji:'🎭',tag:'t-cul',isFree:false,price:'40,000원(8회)',hot:false,clicks:143,ageMin:6,ageMax:12,desc:'어린이 연기 수업! 동화극, 즉흥연기, 발표까지 배우는 어린이 뮤지컬 입문 과정.',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['공연']},
+  {id:34,title:'🏊 화성시 수영장 어린이 수영교실',place:'화성시어린이수영장(동탄)',date:'2026.07~08 여름방학특강',age:'5~13세',cat:'체험',emoji:'🏊',tag:'t-edu',isFree:false,price:'70,000원(4주)',hot:true,clicks:521,ageMin:5,ageMax:13,desc:'화성시민 할인! 여름방학 어린이 수영 특강. 초보부터 자유형까지 단계별 수업.',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['스포츠','체험']},
+  {id:35,title:'⚽ 화성시 어린이축구교실',place:'화성시 체육시설(동탄/봉담)',date:'2026.07~08 주말반',age:'5~10세',cat:'체험',emoji:'⚽',tag:'t-edu',isFree:false,price:'50,000원',hot:false,clicks:234,ageMin:5,ageMax:10,desc:'화성시 체육시설에서 운영하는 어린이 축구교실. 기초 드리블부터 팀플레이까지!',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['스포츠']},
+  {id:36,title:'🎹 화성시문화센터 어린이 피아노교실',place:'화성시문화센터',date:'2026.07~08 평일반',age:'6~12세',cat:'공연',emoji:'🎹',tag:'t-cul',isFree:false,price:'45,000원(8회)',hot:false,clicks:156,ageMin:6,ageMax:12,desc:'피아노 입문 어린이 여름방학 특강! 기초 악보 읽기부터 동요 연주까지.',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['음악']},
+  {id:37,title:'🖼️ 봉담문화센터 서양화 어린이반',place:'봉담문화센터',date:'2026.07~08 수금반',age:'7~13세',cat:'미술',emoji:'🖼️',tag:'t-art',isFree:false,price:'48,000원(8회)',hot:false,clicks:134,ageMin:7,ageMax:13,desc:'서양화의 기초! 수채화, 아크릴화를 배우는 어린이 미술 여름방학 특강.',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['미술']},
+  {id:38,title:'🥋 화성시 어린이 태권도 특강',place:'화성시 체육시설',date:'2026.07~08 여름특강',age:'5~12세',cat:'체험',emoji:'🥋',tag:'t-edu',isFree:false,price:'40,000원',hot:false,clicks:178,ageMin:5,ageMax:12,desc:'화성시 공공체육시설 여름방학 태권도 특강. 기초 발차기부터 품새까지!',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['스포츠']},
+  {id:39,title:'🧘 화성시 어린이 요가교실',place:'화성시 복합문화센터',date:'2026.07~08 화목반',age:'5~10세',cat:'체험',emoji:'🧘',tag:'t-edu',isFree:false,price:'35,000원(8회)',hot:false,clicks:112,ageMin:5,ageMax:10,desc:'어린이 마음챙김 요가! 스트레칭과 명상으로 몸과 마음 건강하게.',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['스포츠','체험']},
+  {id:40,title:'🎸 화성시문화센터 우쿨렐레 어린이반',place:'화성시문화센터(향남)',date:'2026.07~08 토요일',age:'7~13세',cat:'공연',emoji:'🎸',tag:'t-cul',isFree:false,price:'42,000원(8회)',hot:false,clicks:98,ageMin:7,ageMax:13,desc:'귀여운 우쿨렐레로 배우는 음악의 즐거움! 여름방학 악기 입문 특강.',url:'https://yeyak.hscity.go.kr',src:'화성시통합예약시스템',interests:['음악']},
+
+  // === 문화포털 (culture.go.kr) 화성시 행사 ===
+  {id:41,title:'🏯 화성행궁 야간개장 가족투어',place:'화성행궁 (수원)',date:'2026.07.04~08.30 금토일',age:'전 가족',cat:'역사',emoji:'🏯',tag:'t-his',isFree:false,price:'성인 1,500원/어린이 700원',hot:true,clicks:678,ageMin:4,ageMax:99,desc:'수원화성 세계문화유산! 야간 조명으로 더욱 아름다운 화성행궁 가족 야간투어.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['역사']},
+  {id:42,title:'🎪 화성 공룡세계엑스포 특별전',place:'화성시 엑스포공원',date:'2026.07.19~08.31',age:'전 연령',cat:'자연',emoji:'🦕',tag:'t-nat',isFree:false,price:'성인 10,000원/어린이 7,000원',hot:true,clicks:892,ageMin:3,ageMax:99,desc:'화성시에서 발굴된 코리아케라톱스를 주제로 한 공룡 세계 특별 전시! 화석 발굴 체험 포함.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['자연','체험']},
+  {id:43,title:'🎨 화성시문화재단 어린이미술관 전시',place:'화성시문화예술회관',date:'2026.07.01~08.31',age:'전 연령',cat:'미술',emoji:'🎨',tag:'t-art',isFree:false,price:'어린이 2,000원',hot:false,clicks:312,ageMin:3,ageMax:99,desc:'화성시문화예술회관 여름 어린이 특별 미술전시! 지역 어린이 작품과 체험 공간.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['미술']},
+  {id:44,title:'🎭 화성시 어린이 공연예술축제',place:'화성시어린이문화센터 야외무대',date:'2026.07.26~07.27',age:'전 가족',cat:'공연',emoji:'🎭',tag:'t-cul',isFree:true,price:'무료',hot:true,clicks:567,ageMin:3,ageMax:99,desc:'화성시에서 열리는 어린이 공연예술축제! 마술, 버블, 인형극, 댄스 공연 무료 관람.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['공연']},
+  {id:45,title:'🏛️ 용주사·융릉 역사체험 가족투어',place:'화성시 용주사/융릉건릉',date:'2026.07~08 주말 운영',age:'6세 이상',cat:'역사',emoji:'🏛️',tag:'t-his',isFree:false,price:'입장료 별도',hot:false,clicks:234,ageMin:6,ageMax:99,desc:'사도세자의 능 융릉과 정조대왕 건릉을 탐방! 문화해설사와 함께하는 가족 역사 투어.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['역사']},
+  {id:46,title:'🌊 화성 제부도 생태탐험',place:'제부도 (화성시)',date:'2026.07~08 주말',age:'5세 이상',cat:'자연',emoji:'🌊',tag:'t-nat',isFree:false,price:'프로그램별 상이',hot:false,clicks:445,ageMin:5,ageMax:99,desc:'바닷물이 갈라지는 모세의 기적! 제부도 갯벌 생태 체험 및 해양생물 관찰.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['자연','체험']},
+  {id:47,title:'🎵 화성시필하모닉 어린이 음악회',place:'화성시문화예술회관 대공연장',date:'2026.08.09 (토) 오후 3시',age:'5세 이상',cat:'공연',emoji:'🎵',tag:'t-cul',isFree:false,price:'어린이 5,000원/성인 10,000원',hot:false,clicks:289,ageMin:5,ageMax:99,desc:'화성시필하모닉오케스트라와 함께하는 어린이 클래식 음악회. 디즈니, 애니메이션 OST 연주.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['음악','공연']},
+  {id:48,title:'🖌️ 화성시 공공미술 투어 가족 워크샵',place:'화성시 동탄신도시 일대',date:'2026.07.12·26 (토)',age:'6세 이상 가족',cat:'미술',emoji:'🖌️',tag:'t-art',isFree:true,price:'무료(사전예약)',hot:false,clicks:198,ageMin:6,ageMax:99,desc:'동탄 도시 속 공공미술 작품을 찾아가는 가족 투어와 따라 그리기 워크샵!',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['미술']},
+  {id:49,title:'📸 화성 가을꽃 축제 어린이 사진교실',place:'화성시 공원 일대',date:'2026.09 예정',age:'7세 이상',cat:'체험',emoji:'📸',tag:'t-edu',isFree:true,price:'무료',hot:false,clicks:145,ageMin:7,ageMax:99,desc:'꽃과 자연을 담는 어린이 사진 교실! 스마트폰으로 배우는 쉬운 사진 구도와 촬영 기법.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['미술','자연']},
+  {id:50,title:'🎆 화성 여름밤 별빛축제',place:'화성시 어린이공원 일대',date:'2026.07.18~07.19',age:'전 가족',cat:'자연',emoji:'🎆',tag:'t-nat',isFree:true,price:'무료',hot:true,clicks:734,ageMin:0,ageMax:99,desc:'화성시 주관 별빛 관측 + 여름밤 문화축제! 천체망원경 관측, 풍등 날리기, 야외 공연.',url:'https://www.culture.go.kr',src:'문화포털(화성)',interests:['자연','공연']},
+
+  // === 추가 경기도/화성권 행사 ===
+  {id:51,title:'🦋 경기도자연환경연구소 생태 탐험',place:'경기도자연환경연구소(수원)',date:'2026.07~08 토요 운영',age:'6~12세',cat:'자연',emoji:'🦋',tag:'t-nat',isFree:true,price:'무료(예약제)',hot:false,clicks:189,ageMin:6,ageMax:12,desc:'경기도 생태 전문가와 함께하는 곤충, 식물, 양서류 관찰 탐험 프로그램!',url:'https://nre.gg.go.kr',src:'경기도자연환경연구소',interests:['자연']},
+  {id:52,title:'🏺 경기도박물관 어린이역사탐험',place:'경기도박물관(용인)',date:'2026 하반기',age:'7~12세',cat:'역사',emoji:'🏺',tag:'t-his',isFree:true,price:'무료(예약제)',hot:false,clicks:267,ageMin:7,ageMax:12,desc:'경기도의 역사를 직접 체험! 유물 복원 체험, 역사 퀴즈 등 재미있는 역사 탐험.',url:'https://musenet.ggcf.kr',src:'경기도박물관',interests:['역사','체험']},
+  {id:53,title:'🎡 수원 어린이 뮤지컬 "피터팬의 모험"',place:'경기아트센터 소극장',date:'2026.07.19~07.20',age:'4~10세',cat:'공연',emoji:'🎡',tag:'t-cul',isFree:false,price:'어린이 15,000원',hot:false,clicks:356,ageMin:4,ageMax:10,desc:'경기아트센터에서 공연하는 어린이 뮤지컬! 피터팬과 함께하는 네버랜드 대모험.',url:'https://www.ggac.or.kr',src:'경기아트센터',interests:['공연']},
+  {id:54,title:'🔬 기초과학연구원 어린이과학체험전',place:'IBS 과학문화센터(대전/출장전시)',date:'2026.08 예정',age:'초등학생',cat:'과학',emoji:'🔬',tag:'t-sci',isFree:true,price:'무료',hot:false,clicks:223,ageMin:7,ageMax:13,desc:'노벨상 수준 연구를 쉽게 체험! 기초과학연구원 어린이 사이언스 팝업.',url:'https://www.ibs.re.kr',src:'기초과학연구원',interests:['과학']},
+  {id:55,title:'🎪 경기도 어린이박물관 특별기획전',place:'경기도어린이박물관(용인)',date:'2026.07.01~09.30',age:'3~10세',cat:'체험',emoji:'🎪',tag:'t-edu',isFree:false,price:'입장권 포함',hot:false,clicks:412,ageMin:3,ageMax:10,desc:'경기도어린이박물관 여름 특별기획전! 테마별 몰입 체험공간으로 구성된 여름 특별 전시.',url:'https://gcm.ggcf.kr',src:'경기도어린이박물관',interests:['체험']},
+  {id:56,title:'📚 수원시 여름방학 독서 캠프',place:'수원시립중앙도서관',date:'2026.07.28~08.01 (5일)',age:'초등 3~5학년',cat:'독서',emoji:'📚',tag:'t-edu',isFree:true,price:'무료(사전신청)',hot:false,clicks:178,ageMin:8,ageMax:11,desc:'수원시립도서관 5일간 독서 캠프! 독서토론, 독후활동, 작가 강연 등 다채로운 프로그램.',url:'https://suwonlib.go.kr',src:'수원시립도서관',interests:['독서']},
+  {id:57,title:'🌱 화성호 철새도래지 생태투어',place:'화성호 탐조대',date:'2026.08~09 주말 운영',age:'6세 이상',cat:'자연',emoji:'🌱',tag:'t-nat',isFree:true,price:'무료',hot:false,clicks:145,ageMin:6,ageMax:99,desc:'화성호 철새도래지에서 탐조 체험! 전문 해설사와 함께하는 생태 탐방.',url:'https://www.hscity.go.kr',src:'화성시청',interests:['자연']},
+  {id:58,title:'🎨 SODA뮤지엄 어린이 디지털아트 워크샵',place:'SODA뮤지엄(동탄)',date:'2026.07~08 주말 운영',age:'5~13세',cat:'미술',emoji:'🖥️',tag:'t-art',isFree:false,price:'25,000원(전시관람 포함)',hot:false,clicks:287,ageMin:5,ageMax:13,desc:'SODA뮤지엄 미디어 아트와 연계한 어린이 디지털 아트 창작 워크샵!',url:'https://soda.museum',src:'SODA Museum',interests:['미술','과학']},
+  {id:59,title:'🏛️ 독립기념관 어린이 역사교실',place:'독립기념관(천안) - 당일투어',date:'2026.08 주말 단체투어',age:'초등학생',cat:'역사',emoji:'🏛️',tag:'t-his',isFree:false,price:'차량+입장료 포함',hot:false,clicks:189,ageMin:7,ageMax:13,desc:'화성시 출발 독립기념관 어린이 역사교실 당일투어! 전문 해설사 동행.',url:'https://www.i815.or.kr',src:'독립기념관',interests:['역사']},
+  {id:60,title:'🎠 화성종합운동장 어린이 스포츠페스티벌',place:'화성종합운동장',date:'2026.08.16 (일)',age:'전 가족',cat:'체험',emoji:'🏅',tag:'t-edu',isFree:true,price:'무료',hot:true,clicks:534,ageMin:3,ageMax:99,desc:'광복절 연휴 화성시 어린이 스포츠 페스티벌! 달리기, 줄다리기, 에어바운스 등 가족 모두 즐기는 스포츠 축제.',url:'https://www.hscity.go.kr',src:'화성시청',interests:['스포츠','체험']}
 ];
 let eventsDB = [...BASE_EVENTS];
 
@@ -1494,13 +1531,30 @@ window.doAISearch = async function() {
   const child=S.user?.children?.[0];
   const ints=(S.user?.interests||['미술','과학']).join(',');
   const age=child?.age||8, nm=child?.name||'아이';
-  const prompt=`당신은 화성시 육아 앱 코리요의 초대장 AI입니다. 코리요(귀여운 공룡) 말투(~에요, ~해요)로 답해주세요.
+  // 이미 있는 이벤트 제목 목록 (중복 방지)
+  const existingTitles=eventsDB.map(e=>e.title.replace(/^[^\w가-힣]+/,'')).join('|').substring(0,300);
+  const callCount=(window._aiCallCount=(window._aiCallCount||0)+1);
+  const themes=['미술·공예','과학·로봇','자연·생태','공연·뮤지컬','역사·문화','독서·도서관','스포츠·체험'];
+  const focusTheme=themes[(callCount-1)%themes.length];
+  
+  const prompt=`당신은 화성시 육아 앱 코리요의 AI입니다. 코리요(귀여운 공룡) 말투(~에요, ~해요)로 답해주세요.
+
 아이: ${nm}, ${age}세, 관심사: ${ints}
-아래 JSON만 응답(마크다운 없이):
-{"bubble":"홈화면 코리요 말풍선 2문장 이모지포함","newEvents":[{"id":201,"title":"이벤트명 이모지포함","place":"장소","date":"날짜","age":"대상","cat":"미술또는과학또는자연또는공연또는역사또는독서또는체험","emoji":"이모지","isFree":true,"price":"가격","desc":"2~3줄설명","url":"실제공식URL","src":"출처명","interests":["관심사1"],"hot":false,"ageMin":숫자,"ageMax":숫자}]}
-경기도/화성시 인근 어린이 행사 5개, 실제 존재하는 공식 URL만 사용.`;
+이번 검색 테마: ${focusTheme}
+현재 등록된 행사 수: ${eventsDB.length}개
+
+중요 지침:
+1. 화성시 통합예약시스템(yeyak.hscity.go.kr), 문화포털(culture.go.kr) 화성시 행사를 우선 포함하세요
+2. 이미 있는 행사와 겹치지 않는 새로운 행사 8개를 찾아주세요
+3. 이미 있는 행사 제목 키워드(참고용): ${existingTitles.substring(0,200)}
+4. 날짜가 있는 행사(뮤지컬/축제/특강)와 상설 운영 행사를 섞어 포함하세요
+5. URL은 실제 공식 사이트만 사용하세요
+
+아래 JSON만 응답(마크다운 없이, 코드블록 없이):
+{"bubble":"홈화면 코리요 말풍선 2문장 이모지포함","newEvents":[{"id":201,"title":"이벤트명 이모지포함","place":"장소","date":"날짜(예:2026.07.19 또는 상설 운영)","age":"대상연령","cat":"미술또는과학또는자연또는공연또는역사또는독서또는체험","emoji":"이모지","isFree":true또는false,"price":"가격","desc":"2~3줄설명","url":"실제공식URL","src":"출처명(화성시통합예약시스템/문화포털/기관명)","interests":["관심사"],"hot":false,"ageMin":숫자,"ageMax":숫자}]}
+경기도/화성시 인근 어린이 행사 8개 필수.`;
   try {
-    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:1500,messages:[{role:'user',content:prompt}]})});
+    const res=await fetch('https://api.anthropic.com/v1/messages',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({model:'claude-sonnet-4-6',max_tokens:2000,messages:[{role:'user',content:prompt}]})});
     const data=await res.json();
     const txt=(data.content?.[0]?.text||'').replace(/```json|```/g,'').trim();
     const parsed=JSON.parse(txt);
@@ -1508,9 +1562,12 @@ window.doAISearch = async function() {
     if(parsed.newEvents?.length){
       let added=0;
       parsed.newEvents.forEach((e,i)=>{
-        e.id=300+Math.floor(Math.random()*100)+i; e.tag=c2t(e.cat);
+        e.id=Date.now()+i; e.tag=c2t(e.cat);
         e.clicks=Math.floor(Math.random()*200)+50; e.ageMin=e.ageMin||3; e.ageMax=e.ageMax||13; e._isNew=true;
-        if(!eventsDB.find(x=>x.title===e.title)){eventsDB.unshift(e);added++;}
+        // 제목 앞 이모지 제거 후 비교
+        const cleanTitle=e.title.replace(/^[^\w가-힣]+/,'');
+        const isDup=eventsDB.some(x=>x.title.replace(/^[^\w가-힣]+/,'').includes(cleanTitle.substring(0,10)));
+        if(!isDup){eventsDB.push(e);added++;}
       });
       if(added)showToast('🤖',`AI가 새 행사 ${added}개를 추가했어요!`);
     }
@@ -1680,11 +1737,43 @@ function renderCal(){
   const y=S.calM.getFullYear(),m=S.calM.getMonth();
   document.getElementById('calML').textContent=`${y}년 ${m+1}월`;
   const fd=new Date(y,m,1).getDay(), dm=new Date(y,m+1,0).getDate(), td=new Date();
-  const edates=new Set();
+  // 실제 날짜가 명시된 행사만 파싱 (상설/상시/운영 제외)
+  const edates=new Set(); // 날짜 있는 행사
+  const cdates=new Set(); // 참여확정한 행사 날짜
   eventsDB.forEach(e=>{
+    // 상설/상시/운영 키워드 포함 시 캘린더 표기 제외
+    if(e.date.includes('상설')||e.date.includes('상시')||e.date.includes('운영')||e.date.includes('예정')||e.date.includes('방학')) return;
+    // 실제 날짜 파싱: "2026.07.12" 또는 "2026.07.12~07.19" 형태
     const ms=`${y}.${String(m+1).padStart(2,'0')}`;
-    if(e.date.includes(ms)){const r=e.date.match(/\.(\d{1,2})(?:~|\.|$)/g);if(r)r.forEach(x=>{const d=parseInt(x.replace(/\./g,''));if(d>=1&&d<=31)edates.add(d);});}
-    if(e.date.includes('상설')||e.date.includes('운영')||e.date.includes('상시'))[5,10,15,20,25].forEach(d=>edates.add(d));
+    if(e.date.includes(ms)){
+      // 시작일 파싱
+      const startMatch=e.date.match(new RegExp(ms.replace('.','\\.') + '\\.?(\\d{1,2})'));
+      if(startMatch){
+        const startD=parseInt(startMatch[1]);
+        if(startD>=1&&startD<=31) edates.add(startD);
+        // 종료일 파싱 (같은 월 범위)
+        const endMatch=e.date.match(/~(?:\d{4}\.)?0?(\d{1,2})\.(\d{1,2})/);
+        if(endMatch){
+          const endD=parseInt(endMatch[2]);
+          if(endD>=startD&&endD<=31){for(let d=startD;d<=endD;d++)edates.add(d);}
+        }
+      }
+      // 참여확정 행사
+      if(S.confirmed.has(e.id)){
+        const m2=e.date.match(new RegExp(ms.replace('.','\\.') + '\\.?(\\d{1,2})'));
+        if(m2)cdates.add(parseInt(m2[1]));
+      }
+    }
+  });
+  // 참여확정 중 날짜 있는 행사 별도 표시
+  S.confirmed.forEach(id=>{
+    const e=eventsDB.find(x=>x.id===id);
+    if(!e)return;
+    const ms=`${y}.${String(m+1).padStart(2,'0')}`;
+    if(e.date.includes(ms)){
+      const m2=e.date.match(new RegExp(ms.replace('.','\\.') + '\\.?(\\d{1,2})'));
+      if(m2)cdates.add(parseInt(m2[1]));
+    }
   });
   let h='';
   ['일','월','화','수','목','금','토'].forEach(d=>h+=`<div class="cldn">${d}</div>`);
@@ -1693,8 +1782,8 @@ function renderCal(){
     const dow=(fd+d-1)%7;
     const isTd=d===td.getDate()&&m===td.getMonth()&&y===td.getFullYear();
     const hasE=edates.has(d);
-    const isConf=S.confirmed.size>0;
-    let cls='cldc'+(isTd?' today':'')+(hasE?' hase':'')+(dow===0?' sun':'')+(dow===6?' sat':'');
+    const isConf=cdates.has(d);
+    let cls='cldc'+(isTd?' today':'')+(hasE?' hase':'')+(isConf?' conf-day':'')+(dow===0?' sun':'')+(dow===6?' sat':'');
     h+=`<div class="${cls}" onclick="selCalDay(${d},${m+1},${y})">${d}</div>`;
   }
   document.getElementById('calGrid').innerHTML=h;
@@ -1702,27 +1791,45 @@ function renderCal(){
 
 window.selCalDay = function(d, month, year) {
   S.calD=d;
-  // 캘린더 팝업 띄우기
   const dateStr=`${year}년 ${month}월 ${d}일`;
   document.getElementById('cdpTitle').textContent=`📅 ${dateStr} 행사`;
   const ms=`${year}.${String(month).padStart(2,'0')}`;
-  const list=eventsDB.filter(e=>
-    e.date.includes('상설')||e.date.includes('운영')||e.date.includes('상시')||e.date.includes(ms)
-  );
-  if(list.length===0){
+  const dayStr=`${ms}.${String(d).padStart(2,'0')}`;
+  // 실제 이 날짜에 열리는 행사 (날짜 명시된 것)
+  const datedList=eventsDB.filter(e=>{
+    if(e.date.includes('상설')||e.date.includes('상시')||e.date.includes('운영')) return false;
+    return e.date.includes(ms);
+  });
+  // 상설/상시 운영 행사 (날짜 클릭시 별도 섹션)
+  const permanentList=eventsDB.filter(e=>e.date.includes('상설')||e.date.includes('상시')||e.date.includes('운영'));
+  const total=datedList.length;
+  if(total===0&&permanentList.length===0){
     document.getElementById('cdpSub').textContent='이날 등록된 행사가 없어요 🦕';
     document.getElementById('cdpList').innerHTML='';
   } else {
-    document.getElementById('cdpSub').textContent=`총 ${list.length}개의 행사가 있어요!`;
-    document.getElementById('cdpList').innerHTML=list.slice(0,6).map(e=>`
-      <div class="cdp-evt" onclick="closeModal('calDayPop');showEvt(${e.id})">
-        <div class="cdp-evt-title">${e.emoji} ${e.title}</div>
-        <div class="cdp-evt-meta">📍 ${e.place} · 👶 ${e.age} · 💰 ${e.price}</div>
-        <div style="margin-top:8px;display:flex;gap:8px;">
-          <button class="gbtn btn-sm" onclick="event.stopPropagation();closeModal('calDayPop');showEvt(${e.id})" style="flex:2">상세보기</button>
-          <button class="gbtn btn-sm" onclick="event.stopPropagation();goUrl('${e.url}','${e.place}')" style="flex:2;background:var(--blue-light);color:#2A6A9F">바로가기 📎</button>
-        </div>
-      </div>`).join('');
+    document.getElementById('cdpSub').textContent=`${total>0?`📌 이 날 ${total}개 행사`+'  ·  ':''}🏛️ 상설운영 ${permanentList.length}개`;
+    let html='';
+    if(datedList.length>0){
+      html+=`<div style="font-size:12px;font-weight:700;color:#5C4DDB;margin:8px 0 6px;">📌 이 날짜 행사</div>`;
+      html+=datedList.slice(0,4).map(e=>`
+        <div class="cdp-evt" onclick="closeModal('calDayPop');showEvt(${e.id})">
+          <div class="cdp-evt-title">${e.emoji} ${e.title}</div>
+          <div class="cdp-evt-meta">📍 ${e.place} · 👶 ${e.age} · 💰 ${e.price}</div>
+          <div style="margin-top:8px;display:flex;gap:8px;">
+            <button class="gbtn btn-sm" onclick="event.stopPropagation();closeModal('calDayPop');showEvt(${e.id})" style="flex:2">상세보기</button>
+            <button class="gbtn btn-sm" onclick="event.stopPropagation();goUrl('${e.url}','${e.place}')" style="flex:2;background:var(--blue-light);color:#2A6A9F">바로가기 📎</button>
+          </div>
+        </div>`).join('');
+    }
+    if(permanentList.length>0){
+      html+=`<div style="font-size:12px;font-weight:700;color:var(--text-mid);margin:12px 0 6px;">🏛️ 언제든 가능한 상설 운영</div>`;
+      html+=permanentList.slice(0,3).map(e=>`
+        <div class="cdp-evt" style="border-left-color:var(--border);" onclick="closeModal('calDayPop');showEvt(${e.id})">
+          <div class="cdp-evt-title" style="color:var(--text-mid)">${e.emoji} ${e.title}</div>
+          <div class="cdp-evt-meta">📍 ${e.place} · 💰 ${e.price}</div>
+        </div>`).join('');
+    }
+    document.getElementById('cdpList').innerHTML=html;
   }
   openModal('calDayPop');
 };
@@ -2119,7 +2226,12 @@ window.toggleLike = function(id,btn){
   else{S.liked.add(id);btn.classList.add('on');btn.textContent='❤️';showToast('❤️','찜 목록에 추가했어요!');}
   updateMypageStats();
 };
-window.dislike = function(id){S.disliked.add(id);showToast('👋','이 행사는 더 이상 보여드리지 않을게요');renderRecEvts();filterCat(null,_curCat);};
+window.dislike = function(id){
+  S.disliked.add(id);
+  showToast('👋','이 행사는 더 이상 보여드리지 않을게요');
+  if(S.disliked.size>0&&S.disliked.size%5===0){showToast('🤖','새 행사를 더 찾아올게요!');setTimeout(()=>doAISearch(),800);}
+  renderRecEvts();filterCat(null,_curCat);
+};
 window.goUrl = function(url,name){showToast('🔗',`${name} 사이트로 이동해요`);setTimeout(()=>window.open(url,'_blank'),400);};
 
 // ============================================================
